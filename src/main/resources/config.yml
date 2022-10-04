@@ -10,7 +10,7 @@
 #   ░         ░  ░                    ░  ░   ░              ░     ░  ░░ ░         ░        ░      ░            ░ ░
 #        ░                                                            ░                                        ░ ░
 #
-#   Version: 1.1.1 | Free Version
+#   Version: 1.1.2 | Free Version
 #   Configuration
 #
 # Function of the executors:
@@ -49,8 +49,9 @@
 # ------------------
 # General Settings
 Settings:
-  locale: en_US
   prefix: '&eBetterSecurity ┃ &7'
+  # Available languages: en_US, it_IT
+  locale: en_US
   check_update:
     enabled: true
     # Types Available: NORMAL, DOWNLOAD

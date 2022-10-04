@@ -1,5 +1,5 @@
 name: BetterSecurity
-version: '1.1.1'
+version: '1.1.2'
 main: it.zs0bye.bettersecurity.BetterSecurity
 softdepend: [PlaceholderAPI, ProtocolLib, Vault]
 api-version: 1.13
@@ -34,13 +34,17 @@ permissions:
   bettersecurity.bypass.*:
     description: Gives access to all bypasses of BetterSecurity
     children:
+      bettersecurity.bypass.antitab: true
       bettersecurity.bypass.blocksyntax: true
       bettersecurity.bypass.blockscmds: true
+  bettersecurity.bypass.antitab:
+    description: Bypass the tab complete
+    default: op
   bettersecurity.bypass.blocksyntax:
-    description: Allow to use bypass syntax
+    description: Bypass syntax
     default: op
   bettersecurity.bypass.blockscmds:
-    description: Allow to use bypass blockscmds
+    description: Bypass blockscmds
     default: op
   bettersecurity.broadcast.*:
     description: Gives access to all BetterSecurity broadcast messages

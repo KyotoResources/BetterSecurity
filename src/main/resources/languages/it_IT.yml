@@ -10,7 +10,7 @@
 #   ░         ░  ░                    ░  ░   ░              ░     ░  ░░ ░         ░        ░      ░            ░ ░
 #        ░                                                            ░                                        ░ ░
 #
-#   Version: 1.1.1 | Versione Gratuita
+#   Version: 1.1.2 | Versione Gratuita
 #   Messages - it_IT [Italiano]
 #
 
@@ -18,7 +18,7 @@
 # Messaggi Generali
 is_not_number: '%prefix%&cPer favore, inserisci un numero valido!'
 insufficient_permissions: '%prefix%&cNon hai abbastanza permessi!'
-update_notification: '%prefix%È disponibile un nuovo aggiornamento! Scarica la versione &e%new%&7 da &bhttps://www.spigotmc.org/resources/bettersecurity-free-%E2%9C%A8-the-best-security-for-your-server.105608/&7, al momento hai la versione &c%old%&7.'
+update_notification: '%prefix%È disponibile un nuovo aggiornamento! (Attualmente hai: &c%old%&7), Scarica la nuova versione &e%new%&7 da &ahttps://www.spigotmc.org/resources/bettersecurity-free-%E2%9C%A8-the-best-security-for-your-server.105608/'
 
 # ------------------
 # Messaggi Comando Di Aiuto
