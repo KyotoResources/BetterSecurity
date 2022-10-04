@@ -1,0 +1,475 @@
+#
+#   ▄▄▄▄   ▓█████▄▄▄█████▓▄▄▄█████▓▓█████  ██▀███       ██████ ▓█████  ▄████▄   █    ██  ██▀███   ██▓▄▄▄█████▓▓██   ██▓
+#  ▓█████▄ ▓█   ▀▓  ██▒ ▓▒▓  ██▒ ▓▒▓█   ▀ ▓██ ▒ ██▒   ▒██    ▒ ▓█   ▀ ▒██▀ ▀█   ██  ▓██▒▓██ ▒ ██▒▓██▒▓  ██▒ ▓▒ ▒██  ██▒
+#  ▒██▒ ▄██▒███  ▒ ▓██░ ▒░▒ ▓██░ ▒░▒███   ▓██ ░▄█ ▒   ░ ▓██▄   ▒███   ▒▓█    ▄ ▓██  ▒██░▓██ ░▄█ ▒▒██▒▒ ▓██░ ▒░  ▒██ ██░
+#  ▒██░█▀  ▒▓█  ▄░ ▓██▓ ░ ░ ▓██▓ ░ ▒▓█  ▄ ▒██▀▀█▄       ▒   ██▒▒▓█  ▄ ▒▓▓▄ ▄██▒▓▓█  ░██░▒██▀▀█▄  ░██░░ ▓██▓ ░   ░ ▐██▓░
+#  ░▓█  ▀█▓░▒████▒ ▒██▒ ░   ▒██▒ ░ ░▒████▒░██▓ ▒██▒   ▒██████▒▒░▒████▒▒ ▓███▀ ░▒▒█████▓ ░██▓ ▒██▒░██░  ▒██▒ ░   ░ ██▒▓░
+#  ░▒▓███▀▒░░ ▒░ ░ ▒ ░░     ▒ ░░   ░░ ▒░ ░░ ▒▓ ░▒▓░   ▒ ▒▓▒ ▒ ░░░ ▒░ ░░ ░▒ ▒  ░░▒▓▒ ▒ ▒ ░ ▒▓ ░▒▓░░▓    ▒ ░░      ██▒▒▒
+#  ▒░▒   ░  ░ ░  ░   ░        ░     ░ ░  ░  ░▒ ░ ▒░   ░ ░▒  ░ ░ ░ ░  ░  ░  ▒   ░░▒░ ░ ░   ░▒ ░ ▒░ ▒ ░    ░     ▓██ ░▒░
+#   ░    ░    ░    ░        ░         ░     ░░   ░    ░  ░  ░     ░   ░         ░░░ ░ ░   ░░   ░  ▒ ░  ░       ▒ ▒ ░░
+#   ░         ░  ░                    ░  ░   ░              ░     ░  ░░ ░         ░        ░      ░            ░ ░
+#        ░                                                            ░                                        ░ ░
+#
+#   Version: 1.1 | Free Version
+#   Configuration
+#
+# Function of the executors:
+#
+# - [MESSAGE] text                                         | (Func. Send a chat message) | (Example: [MESSAGE] &aHello World!)
+#
+# - [TITLE] title;subtitle;fade-in;stay;fade-out           | (Func. Submit a title)
+#                                                          | (Tip. If you enter "none" in the title or subtitle, it will not be displayed)
+#                                                          | (Example: [TITLE] &a&lHELLO WORLD;&a&l┃ &aThis is a fantastic world!;20;40;20)
+#
+# - [ACTION] text                                          | (Func. Send a message in the action bar) | (Example: [ACTION] &aHello World!)
+#
+# - [BOSSBAR] title;color;style;progress;times             | (Func. Send a message in the boss bar. Compatible with versions 1.9+ only)
+#                                                          | (Example: [BOSSBAR] &aHello World!;GREEN;SEGMENTED_20;1.0;5)
+#
+# - [SOUND] sound;acute;volume                             | (Func. Send a sound) | (Example: [SOUND] BLOCK_LAVA_POP;0;1)
+#
+# - [PLAYER] command without '/'                           | (Func. Send a command as a player) | (Example: [PLAYER] spawn)
+#
+# - [CONSOLE] command without '/'                          | (Func. Send a command from the console) | (Example: [CONSOLE] give %player% DIAMOND 1)
+#
+# If you put an "@" in front of the text, it will broadcast the execution.
+# Works for the following performers: [MESSAGE], [TITLE], [ACTION], [BOSSBAR], [SOUND]
+# Examples: [MESSAGE] @&aHello World! | [TITLE] @&a&lHELLO WORLD;&a&l┃ &aThis is a fantastic world!;20;40;20
+# | [ACTION] @&aHello World! | [BOSSBAR] @&aHello World!;GREEN;SEGMENTED_20;1.0;5 | [SOUND] @BLOCK_LAVA_POP;0;1
+#
+# If you don't want to do anything, just put "[]" after "executors:"
+# Example: executors: []
+#
+# You can use the following placeholders in all executors:
+# - %player% | (Name of the player who attempted to execute the command)
+# - %command% | (The command that was blocked)
+# - %unknown_command% | (The spigot.yml unknown command message will be displayed)
+
+# ------------------
+# General Settings
+Settings:
+  locale: en_US
+  prefix: '&eBetterSecurity ┃ &7'
+  check_update:
+    enabled: true
+    # Types Available: NORMAL, DOWNLOAD
+    type: NORMAL
+  hooks:
+    PlaceholderAPI: false
+    ProtocolLib: false
+    Vault: false
+
+# ------------------
+# Block Tab Complete Settings
+Block_Tab_Complete:
+
+  # --------- < ⚠ > ---------
+  # If your server version is 1.8.x-1.12.x, you need to enable ProtocolLib to use this feature.
+
+  # < ? > Does your server have version 1.13+? So if you reload the plugin,
+  # you will have to join the server again to see the changes.
+  enabled: true
+
+  # Prevents tabbing of these commands, so as not to conflict with other plugins.
+  commands:
+    - 'pl'
+    - 'plugins'
+    - 'ver'
+    - 'version'
+    - 'about'
+    - '?'
+    - 'help'
+    - 'bukkit:pl'
+    - 'bukkit:plugins'
+    - 'bukkit:ver'
+    - 'bukkit:version'
+    - 'bukkit:about'
+    - 'bukkit:?'
+    - 'bukkit:help'
+    - 'minecraft:?'
+    - 'minecraft:help'
+
+  bypass:
+    # Here you can enter what kind of bypass you prefer
+    # to be able to perform the complete tab:
+    # - PERMISSION | (Bypass via permission: bettersecurity.bypass.antitab)
+    # - PLAYERS | (Bypass by player name)
+    # - UUIDS | (Bypass via uuid)
+    # - BOTH | (Bypass by player name and uuid. Permission excluded)
+    method: 'PERMISSION'
+    players:
+      - 'playerName1'
+      - 'playerName2'
+    uuids:
+      - '8667ba71-b85a-4004-af54-457a9734eed7'
+      - '069a79f4-44e9-4726-a5be-fca90e38aaf5'
+
+  whitelisted_commands:
+
+    enabled: true
+
+    # This is the global list of tab commands that will be whitelisted.
+    # To disable global commands, just put "global: []".
+    global:
+      - 'spawn'
+      - 'tell'
+      - 'msg'
+      - 'w'
+      - 'whisper'
+      - 't'
+      - 'r'
+      - 'reply'
+
+    # Here you can request requirements to be able to show whitelisted commands.
+    # (Can be very useful for not showing staff commands to players)
+    required:
+
+      enabled: false
+
+      # Here you can add all the various groups to be able to whitelist commands by permission.
+      permissions:
+        # This is the first example group.
+        helper:
+          # Here you will need to enter the required permission.
+          permission: 'bettersecurity.tab.helper'
+          # While here you will have to put the list of commands that will have to be shown.
+          commands:
+            - 'tempban'
+            - 'tempmute'
+            - 'unban'
+            - 'pardon'
+            - 'kick'
+            - 'unmute'
+            - 'warn'
+            - 'warnings'
+            - 'history'
+            - 'dupeip'
+            - 'ss'
+            - 'freeze'
+            - 'unfreeze'
+        admin:
+          permission: 'bettersecurity.tab.admin'
+          commands:
+            - 'fly'
+            - 'gamemode'
+            - 'gm'
+            - 'god'
+            - 'mute'
+            - 'ban'
+            - 'ipban'
+            - 'ipmute'
+            - 'clearchat'
+
+
+# ------------------
+# Warnings Settings
+Warnings:
+
+  # This message will be sent to those with permission: bettersecurity.broadcast.warnings
+  # You can use the following placeholders:
+  # - %player% | (Name of the player who attempted to execute the command)
+  # - %command% | (The command that was blocked)
+  format: '&e&l⚠ ┃ &b%player% &7attempted to execute the command: &c%command%'
+
+  # In this field you can decide whether to activate the logs also via the console.
+  console:
+
+    enabled: true
+
+    # This is the message that will be sent to the console.
+    # You can use the following placeholders:
+    # - %player% | (Name of the player who attempted to execute the command)
+    # - %command% | (The command that was blocked)
+    format: '%player% attempted to execute the command: %command%'
+
+# ------------------
+# Block Syntax Settings
+Block_Syntax:
+
+  enabled: true
+
+  # If it is on "true" the execution attempt warning will be sent to chat.
+  warning: true
+
+  # Message that is sent if one tries to do: <plugin>:<command>.
+  # Tip. It is useful to avoid being in situations where you can bypass blocked commands,
+  # or commands known as minecraft:me, minecraft:tell, etc...
+  # < ? > You can find more information about the executors in the header.
+  executors:
+    - '[MESSAGE] %prefix%&cYou can''t do /<plugin>:<command>'
+    - '[TITLE] &e&lBETTER SECURITY;&c&l┃ &cYou can''t do /<plugin>:<command>;20;40;20'
+
+# ------------------
+# Blocks Commands Settings
+Blocks_Commands:
+
+  enabled: true
+
+  # If it is on "true" the execution attempt warning will be sent to chat.
+  warning: true
+
+  # Here you can enter the type of method you want to use to block commands:
+  # - BLACKLIST | (The commands in the list will be blocked)
+  # - WHITELIST | (The commands in the list will be able to execute)
+  method: 'BLACKLIST'
+
+  # This message will be shown as soon as the command is blocked.
+  # < ? > You can find more information about the executors in the header.
+  executors:
+    - '[MESSAGE] %prefix%&cYou cannot execute this command!'
+
+  # List of blocked or enabled commands according to the selected method.
+  commands:
+    - 'pl'
+    - 'plugins'
+    - 'ver'
+    - 'version'
+    - 'about'
+    - '?'
+    - 'help'
+    - 'icanhasbukkit'
+
+# ------------------
+# Commands Only Console Settings
+Commands_Only_Console:
+
+  enabled: true
+
+  # If it is on "true" the execution attempt warning will be sent to chat.
+  warning: true
+
+  # This message will be shown as soon as the command is blocked.
+  # < ? > You can find more information about the executors in the header.
+  executors:
+    - '[MESSAGE] %prefix%&cYou cannot execute this command!'
+
+  # List of commands that can only be executed from the console.
+  commands:
+    - 'op'
+    - 'minecraft:op'
+    - 'deop'
+    - 'minecraft:deop'
+    - 'reload'
+    - 'minecraft:reload'
+    - 'rl'
+    - 'minecraft:rl'
+    - 'execute'
+    - 'minecraft:execute'
+
+# ------------------
+# Commands Only Players Settings
+Commands_Only_Players:
+
+  enabled: true
+
+  # If it is on "true" the execution attempt warning will be sent to chat.
+  warning: true
+
+  # Here you can enter the type of method you want to use
+  # to enable commands to the players on the list.
+  # - PLAYERS | (It checks based on the player's name)
+  # - UUIDS | (It checks based on the player's uuid)
+  # - BOTH | (It checks based on the player's name and uuid)
+  method: 'PLAYERS'
+
+  # This message will be shown as soon as the command is blocked.
+  # < ? > You can find more information about the executors in the header.
+  executors:
+    - '[MESSAGE] %prefix%&cYou cannot execute this command!'
+
+  # List of players authorized to execute the commands below.
+  bypass_players:
+    - 'playerName1'
+    - 'playerName2'
+
+  bypass_uuids:
+    - '8667ba71-b85a-4004-af54-457a9734eed7'
+    - '069a79f4-44e9-4726-a5be-fca90e38aaf5'
+
+  # List of commands that players in the list above can perform.
+  commands:
+    - 'pl'
+    - 'plugins'
+    - 'bukkit:pl'
+    - 'bukkit:plugins'
+
+# ------------------
+# Block Custom Commands Settings
+Block_Custom_Commands:
+
+  enabled: false
+
+  # This allows you to run an executor for each command.
+  # < ? > You can find more information about the executors in the header.
+  commands:
+    # In this example the command will be blocked for everyone.
+    example_Command1:
+      command: 'exampleCommand1'
+      warning: true
+      executors:
+        - '[MESSAGE] %prefix%&cYou cannot execute this command!'
+        - '[ACTION] &c&l⚠ &7You tried to run the command: &c%command%'
+    # In this example, however, it requires permission to execute the command.
+    example_Command2:
+      command: 'exampleCommand2'
+      warning: true
+      permission_required: 'bettersecurity.bypass.exampleCommand2'
+      executors:
+        - '[MESSAGE] %prefix%&cYou cannot execute this command!'
+    # In this other example, only the players on the list will be able to perform it.
+    example_Command3:
+      command: 'exampleCommand3'
+      required_players:
+        - 'playerName1'
+        - 'playerName2'
+      executors:
+        - '[MESSAGE] %prefix%&cYou cannot execute this command!'
+    # As a last example you can decide whether to execute the command via uuid.
+    example_Command4:
+      command: 'exampleCommand4'
+      required_uuids:
+        - '8667ba71-b85a-4004-af54-457a9734eed7'
+        - '069a79f4-44e9-4726-a5be-fca90e38aaf5'
+      executors:
+        - '[MESSAGE] %prefix%&cYou cannot execute this command!'
+
+# ------------------
+# Replace Custom Messages Settings
+Replace_Custom_Messages:
+
+  # --------- < ⚠ > ---------
+  # The use of ProtocolLib is required for this feature.
+
+  enabled: false
+
+  # If it is on "true" you can replace chat messages,
+  # even from other plugins, with whatever you want.
+  messages:
+    # In this first example you are shown a classic message that occurs when you try to execute a command
+    # without minecraft/bukkit permission. And it is replaced with the one set to "replace:"
+    example_Message1:
+      # In the target you just need to insert the string without the color code.
+      # (If you enter colors in the control it may not correctly identify the target)
+      target: 'I''m sorry, but you do not have permission to perform this command. Please contact the server administrators if you believe that this is in error.'
+      # Here you can put the text to be replaced with the color codes you want.
+      replace: '&cYou cannot execute this command!'
+    # In this example it replaces the default written of the unknown command with the one written below.
+    example_Message2:
+      target: 'Unknown command. Type "/help" for help.'
+      replace: '&7Unknown command.'
+
+# ------------------
+# Permission Prevention Settings
+Permission_Prevention:
+
+  # --------- < ⚠ > ---------
+  # For group control, use of Vault is required.
+
+  enabled: false
+
+  # The checks that are made to see if the player has unwanted permissions.
+  checks:
+    chat: true
+    commands: true
+    inventory: true
+    interact: true
+    movement: true
+    join: true
+    left: true
+
+  # Removes all permissions the player cannot own.
+  # You can use the following placeholders:
+  # - %player% | (Name of the player whose permission will be removed)
+  # - %permission% | (Permission that it will remove)
+  remove_permission: 'lp user %player% permission unset %permission%'
+
+  # Removes all groups that the player cannot own.
+  # You can use the following placeholders:
+  # - %player% | (Name of the player whose group will be removed)
+  # - %group% | (Group that will remove)
+  remove_group: 'lp user %player% parent remove %group%'
+
+  # The punishment that the player who will not be enabled in the list will receive.
+  # < ? > You can find more information about the executors in the header.
+  punishment:
+    - '[CONSOLE] ban %player% You are not authorized to receive certain permissions. Contact the administrators for more information.'
+
+  # In all types of checks that are performed below,
+  # you will be able to use the following bypasses:
+  # * bypass_players:
+  #     - 'playerName1'
+  #     - 'playerName2'
+  # * bypass_uuids:
+  #     - '8667ba71-b85a-4004-af54-457a9734eed7'
+  #     - '069a79f4-44e9-4726-a5be-fca90e38aaf5'
+
+  # Players on this list will bypass the permissions, groups, and operator controls.
+  global_bypass:
+
+    enabled: true
+
+    # (Optional, but there must be at least one or both)
+    bypass_players:
+      - 'playerName1'
+      - 'playerName2'
+
+    # (Optional, but there must be at least one or both)
+    bypass_uuids:
+      - '8667ba71-b85a-4004-af54-457a9734eed7'
+      - '069a79f4-44e9-4726-a5be-fca90e38aaf5'
+
+  # Here you can make sure that only enabled players can be operators.
+  operators:
+
+    enabled: true
+
+    # (Optional, but there must be at least one or both)
+    bypass_players:
+      - 'playerName1'
+      - 'playerName2'
+
+    # (Optional, but there must be at least one or both)
+    bypass_uuids:
+      - '8667ba71-b85a-4004-af54-457a9734eed7'
+      - '069a79f4-44e9-4726-a5be-fca90e38aaf5'
+
+  # Here you can make sure that a group can only have the players enabled below.
+  groups:
+
+    enabled: true
+
+    list:
+      # Example group with players.
+      owner:
+        bypass_players:
+          - 'playerName1'
+          - 'playerName2'
+      # Second example group with uuids.
+      admin:
+        bypass_uuids:
+          - '8667ba71-b85a-4004-af54-457a9734eed7'
+          - '069a79f4-44e9-4726-a5be-fca90e38aaf5'
+      # Third example group with players and uuids.
+      mod:
+        bypass_players:
+          - 'playerName1'
+          - 'playerName2'
+        bypass_uuids:
+          - '8667ba71-b85a-4004-af54-457a9734eed7'
+          - '069a79f4-44e9-4726-a5be-fca90e38aaf5'
+
+  # Here you can make sure that only enabled players can have the permissions on the list.
+  permissions:
+
+    enabled: true
+
+    # For permissions, instead of the dot, you must enter '_'. If not, it won't work!
+    list:
+      '*':
+        bypass_players:
+          - 'playerName1'
+          - 'playerName2'
+      'plugin_*':
+        bypass_players:
+          - 'playerName1'
+          - 'playerName2'

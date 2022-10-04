@@ -1,0 +1,49 @@
+#
+#   ▄▄▄▄   ▓█████▄▄▄█████▓▄▄▄█████▓▓█████  ██▀███       ██████ ▓█████  ▄████▄   █    ██  ██▀███   ██▓▄▄▄█████▓▓██   ██▓
+#  ▓█████▄ ▓█   ▀▓  ██▒ ▓▒▓  ██▒ ▓▒▓█   ▀ ▓██ ▒ ██▒   ▒██    ▒ ▓█   ▀ ▒██▀ ▀█   ██  ▓██▒▓██ ▒ ██▒▓██▒▓  ██▒ ▓▒ ▒██  ██▒
+#  ▒██▒ ▄██▒███  ▒ ▓██░ ▒░▒ ▓██░ ▒░▒███   ▓██ ░▄█ ▒   ░ ▓██▄   ▒███   ▒▓█    ▄ ▓██  ▒██░▓██ ░▄█ ▒▒██▒▒ ▓██░ ▒░  ▒██ ██░
+#  ▒██░█▀  ▒▓█  ▄░ ▓██▓ ░ ░ ▓██▓ ░ ▒▓█  ▄ ▒██▀▀█▄       ▒   ██▒▒▓█  ▄ ▒▓▓▄ ▄██▒▓▓█  ░██░▒██▀▀█▄  ░██░░ ▓██▓ ░   ░ ▐██▓░
+#  ░▓█  ▀█▓░▒████▒ ▒██▒ ░   ▒██▒ ░ ░▒████▒░██▓ ▒██▒   ▒██████▒▒░▒████▒▒ ▓███▀ ░▒▒█████▓ ░██▓ ▒██▒░██░  ▒██▒ ░   ░ ██▒▓░
+#  ░▒▓███▀▒░░ ▒░ ░ ▒ ░░     ▒ ░░   ░░ ▒░ ░░ ▒▓ ░▒▓░   ▒ ▒▓▒ ▒ ░░░ ▒░ ░░ ░▒ ▒  ░░▒▓▒ ▒ ▒ ░ ▒▓ ░▒▓░░▓    ▒ ░░      ██▒▒▒
+#  ▒░▒   ░  ░ ░  ░   ░        ░     ░ ░  ░  ░▒ ░ ▒░   ░ ░▒  ░ ░ ░ ░  ░  ░  ▒   ░░▒░ ░ ░   ░▒ ░ ▒░ ▒ ░    ░     ▓██ ░▒░
+#   ░    ░    ░    ░        ░         ░     ░░   ░    ░  ░  ░     ░   ░         ░░░ ░ ░   ░░   ░  ▒ ░  ░       ▒ ▒ ░░
+#   ░         ░  ░                    ░  ░   ░              ░     ░  ░░ ░         ░        ░      ░            ░ ░
+#        ░                                                            ░                                        ░ ░
+#
+#   Version: 1.1 | Versione Gratuita
+#   Messages - it_IT [Italiano]
+#
+
+# ------------------
+# Messaggi Generali
+is_not_number: '%prefix%&cPer favore, inserisci un numero valido!'
+insufficient_permissions: '%prefix%&cNon hai abbastanza permessi!'
+update_notification: '%prefix%È disponibile un nuovo aggiornamento! Scarica la versione &e%new%&7 da &bhttps://www.spigotmc.org/resources/bettersecurity-free-%E2%9C%A8-the-best-security-for-your-server.105608/&7, al momento hai la versione &c%old%&7.'
+
+# ------------------
+# Messaggi Comando Di Aiuto
+Help_Command:
+  texts:
+    1:
+      - ''
+      - '&6 ┃ &e%version%'
+      - ''
+      - '&6 ┃ &d[] &7⁼ &7Opzionale'
+      - '&6 ┃ &c‹› &7⁼ &7Richiesto'
+      - ''
+      - '&6 ┃ &f/%command% help &7‑ &eApri questa pagina.'
+      - '&6 ┃ &f/%command% about &7‑ &eMostra le info del plug-in.'
+      - '&6 ┃ &f/%command% reload &7‑ &eRicarica le configurazioni.'
+      - ''
+      - '&6 ┃ &7Pagina &e%page%&7/&e%maxpage%'
+      - '&6 ┃ &e%author%'
+      - ''
+  placeholders:
+    max_page: 'Massimo'
+  errors:
+    page_not_found: '%prefix%&cQuesta pagina non è stata trovata!'
+
+# ------------------
+# Messaggi Comando Di Ricarica
+Reload_Command:
+  configurations: '%prefix%Le configurazioni sono state ricaricate!'

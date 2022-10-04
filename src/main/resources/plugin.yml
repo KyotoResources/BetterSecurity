@@ -1,0 +1,51 @@
+name: BetterSecurity
+version: '1.1'
+main: it.zs0bye.bettersecurity.BetterSecurity
+softdepend: [PlaceholderAPI, ProtocolLib, Vault]
+api-version: 1.13
+author: zS0bye
+description: Your safety is the priority of everything!
+commands:
+  bettersecurity:
+    description: Main command of BetterSecurity
+    aliases: [bsecurity, security]
+permissions:
+  bettersecurity.*:
+    description: Gives access to all BetterSecurity permissions
+    children:
+      bettersecurity.command.*: true
+      bettersecurity.bypass.*: true
+      bettersecurity.broadcast.*: true
+  bettersecurity.command.*:
+    description: Gives access to all BetterSecurity commands
+    children:
+      bettersecurity.command: true
+      bettersecurity.command.help: true
+      bettersecurity.command.reload: true
+  bettersecurity.command:
+    description: Allow to use BetterSecurity command
+    default: op
+  bettersecurity.command.help:
+    description: Allow to use help command
+    default: op
+  bettersecurity.command.reload:
+    description: Allow to use reload command
+    default: op
+  bettersecurity.bypass.*:
+    description: Gives access to all bypasses of BetterSecurity
+    children:
+      bettersecurity.bypass.blocksyntax: true
+      bettersecurity.bypass.blockscmds: true
+  bettersecurity.bypass.blocksyntax:
+    description: Allow to use bypass syntax
+    default: op
+  bettersecurity.bypass.blockscmds:
+    description: Allow to use bypass blockscmds
+    default: op
+  bettersecurity.broadcast.*:
+    description: Gives access to all BetterSecurity broadcast messages
+    children:
+      bettersecurity.broadcast.warnings: true
+  bettersecurity.broadcast.warnings:
+    description: Allows you to receive warnings
+    default: op
