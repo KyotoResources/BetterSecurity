@@ -3,7 +3,6 @@ package it.zs0bye.bettersecurity.listeners;
 import it.zs0bye.bettersecurity.BetterSecurity;
 import it.zs0bye.bettersecurity.executors.SendExecutors;
 import it.zs0bye.bettersecurity.files.enums.Config;
-import it.zs0bye.bettersecurity.hooks.HooksManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,13 +16,11 @@ import java.util.Set;
 public class PermissionPreventionListener implements Listener {
 
     private final BetterSecurity plugin;
-    private final HooksManager hooks;
 
     private final static Set<Player> punishment = new HashSet<>();
 
     public PermissionPreventionListener(final BetterSecurity plugin) {
         this.plugin = plugin;
-        this.hooks = this.plugin.getHooks();
     }
 
     @EventHandler
@@ -90,7 +87,6 @@ public class PermissionPreventionListener implements Listener {
 
     private boolean isNotPunished(final Player player, final String path, final String type, final String value) {
         if(this.bypass_players(path, player)) return true;
-        if(this.bypass_uuids(path, player)) return true;
 
         if(type.equals("PERMISSION") || type.equals("GROUP")) Bukkit.getScheduler().runTaskLater(this.plugin, () ->
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Config.valueOf("PERMISSION_PREVENTION_REMOVE_" + type).getString()
@@ -107,8 +103,7 @@ public class PermissionPreventionListener implements Listener {
     private boolean isNotBypassable(final Player player) {
         if(!Config.PERMISSION_PREVENTION_GLOBAL_BYPASS_ENABLED.getBoolean()) return false;
         final String path = Config.PERMISSION_PREVENTION_GLOBAL_BYPASS.getPath();
-        if(this.bypass_players(path, player)) return true;
-        return this.bypass_uuids(path, player);
+        return this.bypass_players(path, player);
     }
 
     private boolean checks(final Player player) {
@@ -130,8 +125,9 @@ public class PermissionPreventionListener implements Listener {
 
     private boolean groups(final Player player) {
         if(!Config.PERMISSION_PREVENTION_GROUPS_ENABLED.getBoolean()) return false;
+        if(player.isOp()) return false;
         for(final String group : Config.PERMISSION_PREVENTION_GROUPS_LIST.getConfigurationSection()) {
-            if(!this.hooks.isPlayerInGroup(player, group)) continue;
+            if(!player.hasPermission("group." + group)) continue;
             final String path = Config.PERMISSION_PREVENTION_GROUPS_LIST.getPath() + "." + group;
 
             if(this.isNotPunished(player, path, "GROUP", group)) continue;
@@ -159,13 +155,7 @@ public class PermissionPreventionListener implements Listener {
     private boolean bypass_players(String path, final Player player) {
         path = path + Config.PERMISSION_PREVENTION_BYPASS_PLAYERS.getPath();
         if(!Config.CUSTOM.contains(path)) return false;
-        return Config.CUSTOM.getStringList(path).contains(player.getName());
-    }
-
-    private boolean bypass_uuids(String path, final Player player) {
-        path = path + Config.PERMISSION_PREVENTION_BYPASS_UUIDS.getPath();
-        if(!Config.CUSTOM.contains(path)) return false;
-        return Config.CUSTOM.getStringList(path).contains(player.getUniqueId().toString());
+        return Config.CUSTOM.getStringList(path).contains(player.getName()) || Config.CUSTOM.getStringList(path).contains(player.getUniqueId().toString());
     }
 
 }

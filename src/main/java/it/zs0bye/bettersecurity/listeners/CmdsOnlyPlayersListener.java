@@ -48,13 +48,8 @@ public class CmdsOnlyPlayersListener implements Listener {
     }
 
     private boolean canBlock(final Player player) {
-        final String method = Config.COMMANDS_ONLY_PLAYERS_METHOD.getString();
         final List<String> players = Config.COMMANDS_ONLY_PLAYERS_BYPASS.getStringList();
-        final List<String> uuids = Config.COMMANDS_ONLY_PLAYERS_BYPASS_UUIDS.getStringList();
-        if(method.equals("PLAYERS")) return players.contains(player.getName());
-        if(method.equals("UUIDS")) return uuids.contains(player.getUniqueId().toString());
-        if(method.equals("BOTH")) return players.contains(player.getName()) || uuids.contains(player.getUniqueId().toString());
-        return true;
+        return players.contains(player.getName()) || players.contains(player.getUniqueId().toString());
     }
 
 }

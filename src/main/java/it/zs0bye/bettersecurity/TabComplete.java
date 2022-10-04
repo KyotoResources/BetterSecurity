@@ -16,7 +16,6 @@ public class TabComplete {
 
     private final String bypass_method;
     private final List<String> bypass_players;
-    private final List<String> bypass_uuids;
     private final List<String> whitelisted_cmds_global;
     private final boolean required_enabled;
 
@@ -28,7 +27,6 @@ public class TabComplete {
         this.player = player;
         this.bypass_method = Config.BLOCK_TAB_COMPLETE_BYPASS_METHOD.getString();
         this.bypass_players = Config.BLOCK_TAB_COMPLETE_BYPASS_PLAYERS.getStringList();
-        this.bypass_uuids = Config.BLOCK_TAB_COMPLETE_BYPASS_UUIDS.getStringList();
         this.whitelisted_cmds_global = Config.BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_GLOBAL.getStringList();
         this.required_enabled = Config.BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_REQUIRED_ENABLED.getBoolean();
     }
@@ -37,7 +35,6 @@ public class TabComplete {
         this.player = player;
         this.bypass_method = Config.BLOCK_TAB_COMPLETE_BYPASS_METHOD.getString();
         this.bypass_players = Config.BLOCK_TAB_COMPLETE_BYPASS_PLAYERS.getStringList();
-        this.bypass_uuids = Config.BLOCK_TAB_COMPLETE_BYPASS_UUIDS.getStringList();
         this.whitelisted_cmds_global = Config.BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_GLOBAL.getStringList();
         this.required_enabled = Config.BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_REQUIRED_ENABLED.getBoolean();
 
@@ -51,9 +48,8 @@ public class TabComplete {
 
     public boolean bypass() {
         if(this.bypass_method.equals("PERMISSION")) return player.hasPermission("bettersecurity.bypass.antitab");
-        if(this.bypass_method.equals("PLAYERS")) return this.bypass_players.contains(player.getName());
-        if(this.bypass_method.equals("UUIDS")) return this.bypass_uuids.contains(player.getUniqueId().toString());
-        if(this.bypass_method.equals("BOTH")) return this.bypass_players.contains(player.getName()) || this.bypass_uuids.contains(player.getUniqueId().toString());
+        if(this.bypass_method.equals("PLAYERS")) return this.bypass_players.contains(player.getName())
+                || this.bypass_players.contains(player.getUniqueId().toString());
         return false;
     }
 

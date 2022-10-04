@@ -26,7 +26,6 @@ public class BlockCustomCmdsListener implements Listener {
     private Permission permission;
     private String permission_required;
     private List<String> required_players;
-    private List<String> required_uuids;
 
     public BlockCustomCmdsListener(final BetterSecurity plugin, final String command) {
         this.plugin = plugin;
@@ -38,7 +37,6 @@ public class BlockCustomCmdsListener implements Listener {
         final String warning_path = path + Config.BLOCK_CUSTOM_COMMANDS_WARNING.getPath();
         final String permission_path = path + Config.BLOCK_CUSTOM_COMMANDS_PERMISSION_REQUIRED.getPath();
         final String required_players_path = path + Config.BLOCK_CUSTOM_COMMANDS_REQUIRED_PLAYERS.getPath();
-        final String required_uuids_path = path + Config.BLOCK_CUSTOM_COMMANDS_REQUIRED_UUIDS.getPath();
 
         this.regCommand = Config.CUSTOM.getString(path + Config.BLOCK_CUSTOM_COMMANDS_COMMAND.getPath());
         this.executors = Config.CUSTOM.getStringList(path + Config.BLOCK_CUSTOM_COMMANDS_EXECUTORS.getPath());
@@ -52,7 +50,6 @@ public class BlockCustomCmdsListener implements Listener {
         }
 
         if(this.contains(required_players_path)) this.required_players = Config.CUSTOM.getStringList(required_players_path);
-        if(this.contains(required_uuids_path)) this.required_uuids = Config.CUSTOM.getStringList(required_uuids_path);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -67,8 +64,7 @@ public class BlockCustomCmdsListener implements Listener {
                 .replaceFirst("/", "");
 
         if(this.permission_required != null && player.hasPermission(this.permission)) return;
-        if(this.required_players != null && this.required_players.contains(player.getName())) return;
-        if(this.required_uuids != null && this.required_uuids.contains(player.getUniqueId().toString())) return;
+        if(this.required_players != null && (this.required_players.contains(player.getName()) || this.required_players.contains(player.getUniqueId().toString()))) return;
         if(!this.regCommand.equalsIgnoreCase(command)) return;
 
         this.placeholders.put("%player%", player.getName());

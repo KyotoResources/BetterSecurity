@@ -23,7 +23,6 @@ public class HooksManager {
     public void load() {
         Hooks.PLACEHOLDERAPI.load();
         Hooks.PROTOCOLLIB.load();
-        Hooks.VAULT.load();
     }
 
     public String getPlaceholders(final Player player, final String message) {
@@ -44,11 +43,6 @@ public class HooksManager {
     public void unregisterAllProtocols() {
         if(!Hooks.PROTOCOLLIB.isCheck()) return;
         new HProtocolLib(this.plugin).unregisterAll();
-    }
-
-    public boolean isPlayerInGroup(final Player player, final String group) {
-        if(!Hooks.VAULT.isCheck()) return false;
-        return new HVaultAPI(player).isPlayerInGroup(group);
     }
 
 

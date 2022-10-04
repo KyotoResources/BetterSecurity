@@ -16,12 +16,10 @@ public enum Config implements IFiles {
     SETTINGS_CHECK_UPDATE_TYPE("Settings.check_update.type"),
     SETTINGS_HOOKS_PLACEHOLDERAPI("Settings.hooks.PlaceholderAPI"),
     SETTINGS_HOOKS_PROTOCOLLIB("Settings.hooks.ProtocolLib"),
-    SETTINGS_HOOKS_VAULT("Settings.hooks.Vault"),
     BLOCK_TAB_COMPLETE_ENABLED("Block_Tab_Complete.enabled"),
     BLOCK_TAB_COMPLETE_COMMANDS("Block_Tab_Complete.commands"),
     BLOCK_TAB_COMPLETE_BYPASS_METHOD("Block_Tab_Complete.bypass.method"),
     BLOCK_TAB_COMPLETE_BYPASS_PLAYERS("Block_Tab_Complete.bypass.players"),
-    BLOCK_TAB_COMPLETE_BYPASS_UUIDS("Block_Tab_Complete.bypass.uuids"),
     BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_ENABLED("Block_Tab_Complete.whitelisted_commands.enabled"),
     BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_GLOBAL("Block_Tab_Complete.whitelisted_commands.global"),
     BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_REQUIRED_ENABLED("Block_Tab_Complete.whitelisted_commands.required.enabled"),
@@ -45,10 +43,8 @@ public enum Config implements IFiles {
     COMMANDS_ONLY_CONSOLE("Commands_Only_Console.commands"),
     COMMANDS_ONLY_PLAYERS_ENABLED("Commands_Only_Players.enabled"),
     COMMANDS_ONLY_PLAYERS_WARNING("Commands_Only_Players.warning"),
-    COMMANDS_ONLY_PLAYERS_METHOD("Commands_Only_Players.method"),
     COMMANDS_ONLY_PLAYERS_EXECUTORS("Commands_Only_Players.executors"),
     COMMANDS_ONLY_PLAYERS_BYPASS("Commands_Only_Players.bypass_players"),
-    COMMANDS_ONLY_PLAYERS_BYPASS_UUIDS("Commands_Only_Players.bypass_uuids"),
     COMMANDS_ONLY_PLAYERS("Commands_Only_Players.commands"),
     BLOCK_CUSTOM_COMMANDS_ENABLED("Block_Custom_Commands.enabled"),
     BLOCK_CUSTOM_COMMANDS("Block_Custom_Commands.commands"),
@@ -57,7 +53,6 @@ public enum Config implements IFiles {
     BLOCK_CUSTOM_COMMANDS_WARNING(".warning"),
     BLOCK_CUSTOM_COMMANDS_PERMISSION_REQUIRED(".permission_required"),
     BLOCK_CUSTOM_COMMANDS_REQUIRED_PLAYERS(".required_players"),
-    BLOCK_CUSTOM_COMMANDS_REQUIRED_UUIDS(".required_uuids"),
     REPLACE_CUSTOM_MESSAGES_ENABLED("Replace_Custom_Messages.enabled"),
     REPLACE_CUSTOM_MESSAGES("Replace_Custom_Messages.messages"),
     REPLACE_CUSTOM_MESSAGES_TARGET(".target"),
@@ -81,8 +76,7 @@ public enum Config implements IFiles {
     PERMISSION_PREVENTION_GROUPS_LIST("Permission_Prevention.groups.list"),
     PERMISSION_PREVENTION_PERMISSIONS_ENABLED("Permission_Prevention.permissions.enabled"),
     PERMISSION_PREVENTION_PERMISSIONS_LIST("Permission_Prevention.permissions.list"),
-    PERMISSION_PREVENTION_BYPASS_PLAYERS(".bypass_players"),
-    PERMISSION_PREVENTION_BYPASS_UUIDS(".bypass_uuids");
+    PERMISSION_PREVENTION_BYPASS_PLAYERS(".bypass_players");
 
     private final String path;
     private final BetterSecurity plugin;

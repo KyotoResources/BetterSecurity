@@ -7,8 +7,7 @@ import org.bukkit.Bukkit;
 
 public enum Hooks {
     PLACEHOLDERAPI("PlaceholderAPI"),
-    PROTOCOLLIB("ProtocolLib"),
-    VAULT("Vault");
+    PROTOCOLLIB("ProtocolLib");
 
     private final BetterSecurity plugin;
     private final String path;

@@ -10,6 +10,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 @Getter
 public class FileManager {
@@ -18,8 +19,7 @@ public class FileManager {
     private final String fileName;
 
     private FileConfiguration config;
-    private final File file;
-
+    private File file;
     private String pattern;
     private File directory;
 
@@ -32,6 +32,8 @@ public class FileManager {
         this.pattern = this.fileName + ".yml";
 
         if(directory != null) {
+            if(directory.length() > 16) return;
+            if(!Pattern.compile("^[a-zA-Z _]*").matcher(directory).matches()) return;
             this.pattern = directory + "/" + this.fileName + ".yml";
             this.directory = new File(this.plugin.getDataFolder(), directory);
             this.file = new File(this.directory, this.fileName + ".yml");

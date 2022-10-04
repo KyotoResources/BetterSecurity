@@ -10,7 +10,7 @@
 #   ░         ░  ░                    ░  ░   ░              ░     ░  ░░ ░         ░        ░      ░            ░ ░
 #        ░                                                            ░                                        ░ ░
 #
-#   Version: 1.1 | Free Version
+#   Version: 1.1.1 | Free Version
 #   Configuration
 #
 # Function of the executors:
@@ -45,6 +45,7 @@
 # - %command% | (The command that was blocked)
 # - %unknown_command% | (The spigot.yml unknown command message will be displayed)
 
+
 # ------------------
 # General Settings
 Settings:
@@ -57,7 +58,7 @@ Settings:
   hooks:
     PlaceholderAPI: false
     ProtocolLib: false
-    Vault: false
+
 
 # ------------------
 # Block Tab Complete Settings
@@ -93,16 +94,12 @@ Block_Tab_Complete:
     # Here you can enter what kind of bypass you prefer
     # to be able to perform the complete tab:
     # - PERMISSION | (Bypass via permission: bettersecurity.bypass.antitab)
-    # - PLAYERS | (Bypass by player name)
-    # - UUIDS | (Bypass via uuid)
-    # - BOTH | (Bypass by player name and uuid. Permission excluded)
+    # - PLAYERS | (Bypass by player name and uuid. Permission excluded)
     method: 'PERMISSION'
+    # Tip. You can put both the player's name and his UUID.
     players:
       - 'playerName1'
-      - 'playerName2'
-    uuids:
       - '8667ba71-b85a-4004-af54-457a9734eed7'
-      - '069a79f4-44e9-4726-a5be-fca90e38aaf5'
 
   whitelisted_commands:
 
@@ -182,6 +179,7 @@ Warnings:
     # - %command% | (The command that was blocked)
     format: '%player% attempted to execute the command: %command%'
 
+
 # ------------------
 # Block Syntax Settings
 Block_Syntax:
@@ -198,6 +196,7 @@ Block_Syntax:
   executors:
     - '[MESSAGE] %prefix%&cYou can''t do /<plugin>:<command>'
     - '[TITLE] &e&lBETTER SECURITY;&c&l┃ &cYou can''t do /<plugin>:<command>;20;40;20'
+
 
 # ------------------
 # Blocks Commands Settings
@@ -229,6 +228,7 @@ Blocks_Commands:
     - 'help'
     - 'icanhasbukkit'
 
+
 # ------------------
 # Commands Only Console Settings
 Commands_Only_Console:
@@ -256,6 +256,7 @@ Commands_Only_Console:
     - 'execute'
     - 'minecraft:execute'
 
+
 # ------------------
 # Commands Only Players Settings
 Commands_Only_Players:
@@ -265,26 +266,16 @@ Commands_Only_Players:
   # If it is on "true" the execution attempt warning will be sent to chat.
   warning: true
 
-  # Here you can enter the type of method you want to use
-  # to enable commands to the players on the list.
-  # - PLAYERS | (It checks based on the player's name)
-  # - UUIDS | (It checks based on the player's uuid)
-  # - BOTH | (It checks based on the player's name and uuid)
-  method: 'PLAYERS'
-
   # This message will be shown as soon as the command is blocked.
   # < ? > You can find more information about the executors in the header.
   executors:
     - '[MESSAGE] %prefix%&cYou cannot execute this command!'
 
   # List of players authorized to execute the commands below.
+  # Tip. You can put both the player's name and his UUID.
   bypass_players:
     - 'playerName1'
-    - 'playerName2'
-
-  bypass_uuids:
     - '8667ba71-b85a-4004-af54-457a9734eed7'
-    - '069a79f4-44e9-4726-a5be-fca90e38aaf5'
 
   # List of commands that players in the list above can perform.
   commands:
@@ -292,6 +283,7 @@ Commands_Only_Players:
     - 'plugins'
     - 'bukkit:pl'
     - 'bukkit:plugins'
+
 
 # ------------------
 # Block Custom Commands Settings
@@ -319,19 +311,13 @@ Block_Custom_Commands:
     # In this other example, only the players on the list will be able to perform it.
     example_Command3:
       command: 'exampleCommand3'
+      # Tip. You can put both the player's name and his UUID.
       required_players:
         - 'playerName1'
-        - 'playerName2'
-      executors:
-        - '[MESSAGE] %prefix%&cYou cannot execute this command!'
-    # As a last example you can decide whether to execute the command via uuid.
-    example_Command4:
-      command: 'exampleCommand4'
-      required_uuids:
         - '8667ba71-b85a-4004-af54-457a9734eed7'
-        - '069a79f4-44e9-4726-a5be-fca90e38aaf5'
       executors:
         - '[MESSAGE] %prefix%&cYou cannot execute this command!'
+
 
 # ------------------
 # Replace Custom Messages Settings
@@ -358,12 +344,10 @@ Replace_Custom_Messages:
       target: 'Unknown command. Type "/help" for help.'
       replace: '&7Unknown command.'
 
+
 # ------------------
 # Permission Prevention Settings
 Permission_Prevention:
-
-  # --------- < ⚠ > ---------
-  # For group control, use of Vault is required.
 
   enabled: false
 
@@ -394,44 +378,25 @@ Permission_Prevention:
   punishment:
     - '[CONSOLE] ban %player% You are not authorized to receive certain permissions. Contact the administrators for more information.'
 
-  # In all types of checks that are performed below,
-  # you will be able to use the following bypasses:
-  # * bypass_players:
-  #     - 'playerName1'
-  #     - 'playerName2'
-  # * bypass_uuids:
-  #     - '8667ba71-b85a-4004-af54-457a9734eed7'
-  #     - '069a79f4-44e9-4726-a5be-fca90e38aaf5'
-
   # Players on this list will bypass the permissions, groups, and operator controls.
   global_bypass:
 
     enabled: true
 
-    # (Optional, but there must be at least one or both)
+    # Tip. You can put both the player's name and his UUID.
     bypass_players:
       - 'playerName1'
-      - 'playerName2'
-
-    # (Optional, but there must be at least one or both)
-    bypass_uuids:
       - '8667ba71-b85a-4004-af54-457a9734eed7'
-      - '069a79f4-44e9-4726-a5be-fca90e38aaf5'
 
   # Here you can make sure that only enabled players can be operators.
   operators:
 
     enabled: true
 
-    # (Optional, but there must be at least one or both)
+    # Tip. You can put both the player's name and his UUID.
     bypass_players:
       - 'playerName1'
-      - 'playerName2'
-
-    # (Optional, but there must be at least one or both)
-    bypass_uuids:
       - '8667ba71-b85a-4004-af54-457a9734eed7'
-      - '069a79f4-44e9-4726-a5be-fca90e38aaf5'
 
   # Here you can make sure that a group can only have the players enabled below.
   groups:
@@ -441,22 +406,15 @@ Permission_Prevention:
     list:
       # Example group with players.
       owner:
+        # Tip. You can put both the player's name and his UUID.
         bypass_players:
           - 'playerName1'
           - 'playerName2'
-      # Second example group with uuids.
+      # Second example group with player's name and uuids.
       admin:
-        bypass_uuids:
-          - '8667ba71-b85a-4004-af54-457a9734eed7'
-          - '069a79f4-44e9-4726-a5be-fca90e38aaf5'
-      # Third example group with players and uuids.
-      mod:
         bypass_players:
           - 'playerName1'
-          - 'playerName2'
-        bypass_uuids:
           - '8667ba71-b85a-4004-af54-457a9734eed7'
-          - '069a79f4-44e9-4726-a5be-fca90e38aaf5'
 
   # Here you can make sure that only enabled players can have the permissions on the list.
   permissions:
@@ -466,10 +424,11 @@ Permission_Prevention:
     # For permissions, instead of the dot, you must enter '_'. If not, it won't work!
     list:
       '*':
+        # Tip. You can put both the player's name and his UUID.
         bypass_players:
           - 'playerName1'
-          - 'playerName2'
+          - '8667ba71-b85a-4004-af54-457a9734eed7'
       'plugin_*':
         bypass_players:
           - 'playerName1'
-          - 'playerName2'
+          - '8667ba71-b85a-4004-af54-457a9734eed7'
