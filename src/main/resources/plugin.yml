@@ -1,5 +1,5 @@
 name: BetterSecurity
-version: '1.1.2'
+version: '1.2'
 main: it.zs0bye.bettersecurity.BetterSecurity
 softdepend: [PlaceholderAPI, ProtocolLib, Vault]
 api-version: 1.13

@@ -10,8 +10,10 @@
 #   ░         ░  ░                    ░  ░   ░              ░     ░  ░░ ░         ░        ░      ░            ░ ░
 #        ░                                                            ░                                        ░ ░
 #
-#   Version: 1.1.2 | Free Version
+#   Version: 1.2 | Free Version
 #   Configuration
+#
+#   Wiki: https://zs0bye.gitbook.io/bettersecurity/plugins/bettersecurity-free
 #
 # Function of the executors:
 #
@@ -354,13 +356,13 @@ Permission_Prevention:
 
   # The checks that are made to see if the player has unwanted permissions.
   checks:
-    chat: true
-    commands: true
-    inventory: true
-    interact: true
-    movement: true
-    join: true
-    left: true
+    chat: true # When he writes in chat.
+    commands: true # When writing a command.
+    inventory: true # When he clicks the inventory.
+    interact: true # When it interacts with a block.
+    movement: true # When the player moves.
+    join: true # When the player joins.
+    left: true # When the player lefts.
 
   # Removes all permissions the player cannot own.
   # You can use the following placeholders:
@@ -433,3 +435,42 @@ Permission_Prevention:
         bypass_players:
           - 'playerName1'
           - '8667ba71-b85a-4004-af54-457a9734eed7'
+
+
+# ------------------
+# Port Bypass Prevention Settings
+Port_Bypass_Prevention:
+
+  # --------- < ? > ---------
+  # If your spigot is on the same machine as the proxy, this feature will not be needed!
+  # This is because you can set the IP of the spigot to 127.0.0.1,
+  # and change it also in the proxy (only the target of the spigot server, if you put this ip in the proxy it will not allow any user to enter).
+  # The ip 127.0.0.1 is a private ip, it means that it will be read only by the machine.
+  # In this way it will be impossible for everyone to be able to enter through the port,
+  # only the proxy will be able to connect, and let users in.
+  #
+  # If you use the proxy on a machine other than the spigot, the use of this features is recommended to increase your security!
+  # I also recommend that you block the port and make it accessible only through the proxy, see this guide:
+  # --> https://www.spigotmc.org/wiki/firewall-guide/
+
+  enabled: false
+
+  # --------- < ⚠ > ---------
+  # You must enter the IP that you find in the config of your proxy.
+  # If you have set "0.0.0.0" or "127.0.0.1" you have to change them by entering the exact IP of your machine.
+  #
+  # If in the proxy you have set the IP of the machine, you will have to enter it in this list!
+  # If you set 0.0.0.0 or 127.0.0.1 it could be bypassable. So this feature would be useless!
+
+  # Here you have to enter the proxy IP.
+  # This will prevent malicious users from being able to enter via your server port,
+  # but only via the proxy IP.
+  # The default ip in the "10.1.0.5" list is just an example, you have to put the IP of your proxy in it.
+  whitelisted_ips:
+    - '10.1.0.5'
+
+  # This is the message that will be shown when a user tries to join via the server port.
+  kick_message: '&6&lBETTER SECURITY\n\n&7You &ccannot &7connect directly via this port.\n&7You have to enter through the ip &bmc.example.net&7.'
+
+  # Additional security system that kicks the player trying to connect if they are already online.
+  already_connected: '&6&lBETTER SECURITY\n\n&7You are already inside the server,\n&7you have been &ckicked&7 out!'

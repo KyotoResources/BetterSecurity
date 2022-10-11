@@ -6,7 +6,7 @@
 
     <groupId>it.zS0bye</groupId>
     <artifactId>BetterSecurity</artifactId>
-    <version>1.1.2</version>
+    <version>1.2</version>
     <packaging>jar</packaging>
 
     <name>BetterSecurity</name>
@@ -18,7 +18,7 @@
     </properties>
 
     <build>
-        <finalName>BetterSecurity_Free-v1.1.2</finalName>
+        <finalName>BetterSecurity_Free-v1.2</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

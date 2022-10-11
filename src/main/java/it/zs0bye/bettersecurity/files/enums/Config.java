@@ -76,7 +76,11 @@ public enum Config implements IFiles {
     PERMISSION_PREVENTION_GROUPS_LIST("Permission_Prevention.groups.list"),
     PERMISSION_PREVENTION_PERMISSIONS_ENABLED("Permission_Prevention.permissions.enabled"),
     PERMISSION_PREVENTION_PERMISSIONS_LIST("Permission_Prevention.permissions.list"),
-    PERMISSION_PREVENTION_BYPASS_PLAYERS(".bypass_players");
+    PERMISSION_PREVENTION_BYPASS_PLAYERS(".bypass_players"),
+    PORT_BYPASS_PREVENTION_ENABLED("Port_Bypass_Prevention.enabled"),
+    PORT_BYPASS_PREVENTION_WHITELISTED_IPS("Port_Bypass_Prevention.whitelisted_ips"),
+    PORT_BYPASS_PREVENTION_KICK_MESSAGE("Port_Bypass_Prevention.kick_message"),
+    PORT_BYPASS_PREVENTION_ALREADY_CONNECTED("Port_Bypass_Prevention.already_connected");
 
     private final String path;
     private final BetterSecurity plugin;

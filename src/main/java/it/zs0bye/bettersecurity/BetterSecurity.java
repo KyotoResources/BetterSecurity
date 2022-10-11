@@ -119,6 +119,7 @@ public final class BetterSecurity extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new CmdsOnlyConsoleListener(this), this);
         Bukkit.getPluginManager().registerEvents(new CmdsOnlyPlayersListener(this), this);
         Bukkit.getPluginManager().registerEvents(new PermissionPreventionListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new PortBypassPreventionListener(), this);
 
         Config.BLOCK_CUSTOM_COMMANDS.getConfigurationSection().forEach(command ->
                 Bukkit.getPluginManager().registerEvents(new BlockCustomCmdsListener(this, command), this));
