@@ -1,7 +1,7 @@
 name: BetterSecurity
 version: '1.2.1'
 main: it.zs0bye.bettersecurity.BetterSecurity
-softdepend: [PlaceholderAPI, ProtocolLib, Vault]
+softdepend: [PlaceholderAPI, ProtocolLib]
 api-version: 1.13
 author: zS0bye
 description: Your safety is the priority of everything!
