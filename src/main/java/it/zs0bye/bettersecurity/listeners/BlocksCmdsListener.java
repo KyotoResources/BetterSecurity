@@ -1,9 +1,10 @@
 package it.zs0bye.bettersecurity.listeners;
 
 import it.zs0bye.bettersecurity.BetterSecurity;
-import it.zs0bye.bettersecurity.Warnings;
+import it.zs0bye.bettersecurity.warnings.Warnings;
 import it.zs0bye.bettersecurity.executors.SendExecutors;
 import it.zs0bye.bettersecurity.files.enums.Config;
+import it.zs0bye.bettersecurity.warnings.enums.TypeWarning;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -44,7 +45,7 @@ public class BlocksCmdsListener implements Listener {
         event.setCancelled(true);
 
         if(!Config.BLOCKS_COMMANDS_WARNING.getBoolean()) return;
-        new Warnings(this.plugin, player, command).warn();
+        new Warnings(this.plugin, player, TypeWarning.COMMANDS, command);
     }
 
     private boolean canBlock(final String command) {

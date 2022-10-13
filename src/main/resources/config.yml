@@ -10,7 +10,7 @@
 #   ░         ░  ░                    ░  ░   ░              ░     ░  ░░ ░         ░        ░      ░            ░ ░
 #        ░                                                            ░                                        ░ ░
 #
-#   Version: 1.2 | Free Version
+#   Version: 1.2.1 | Free Version
 #   Configuration
 #
 #   Wiki: https://zs0bye.gitbook.io/bettersecurity/plugins/bettersecurity-free
@@ -165,22 +165,26 @@ Block_Tab_Complete:
 # Warnings Settings
 Warnings:
 
-  # This message will be sent to those with permission: bettersecurity.broadcast.warnings
-  # You can use the following placeholders:
-  # - %player% | (Name of the player who attempted to execute the command)
-  # - %command% | (The command that was blocked)
-  format: '&e&l⚠ ┃ &b%player% &7attempted to execute the command: &c%command%'
-
   # In this field you can decide whether to activate the logs also via the console.
-  console:
+  log_console: true
 
-    enabled: true
-
-    # This is the message that will be sent to the console.
-    # You can use the following placeholders:
-    # - %player% | (Name of the player who attempted to execute the command)
-    # - %command% | (The command that was blocked)
-    format: '%player% attempted to execute the command: %command%'
+  # This message will be sent to those with permission: bettersecurity.broadcast.warnings
+  # < ? > You can find more information about the executors in the header.
+  # ATTENTION! Do not use the "@" in front for the broadcast, there is already the automatic one via the above permission.
+  formats:
+    commands:
+      # You can use the following placeholders:
+      # - %command% | (The command that was blocked)
+      format:
+        - '[MESSAGE] &e&l⚠ ┃ &b%player% &7attempted to execute the command: &c%command%'
+      console: '%player% attempted to execute the command: %command%'
+    port_bypass_prevention:
+      # You can use the following placeholders:
+      # - %port% | (Port where it is trying to login)
+      # - %ip% | (IP where you are trying to login)
+      format:
+        - '[MESSAGE] &e&l⚠ ┃ &b%player% &7tried to enter via port &a%port%&7 with the IP: &c%ip%'
+      console: '%player% tried to enter via port %port% with the IP: %ip%'
 
 
 # ------------------
@@ -455,6 +459,9 @@ Port_Bypass_Prevention:
 
   enabled: false
 
+  # If it is "true", the login attempt through the port will be sent to the chat.
+  warning: true
+
   # --------- < ⚠ > ---------
   # You must enter the IP that you find in the config of your proxy.
   # If you have set "0.0.0.0" or "127.0.0.1" you have to change them by entering the exact IP of your machine.
@@ -469,8 +476,17 @@ Port_Bypass_Prevention:
   whitelisted_ips:
     - '10.1.0.5'
 
+  # If it is active you will not be able to put as IP: 0.0.0.0, or 127.0.0.1.
+  # You will be hunted at the attempt! If you are aware of what you are doing you can turn it off.
+  safety_kicks: true
+
   # This is the message that will be shown when a user tries to join via the server port.
   kick_message: '&6&lBETTER SECURITY\n\n&7You &ccannot &7connect directly via this port.\n&7You have to enter through the ip &bmc.example.net&7.'
 
   # Additional security system that kicks the player trying to connect if they are already online.
-  already_connected: '&6&lBETTER SECURITY\n\n&7You are already inside the server,\n&7you have been &ckicked&7 out!'
+  already_connected:
+
+    enabled: true
+
+    # Message that will be shown during the kick.
+    message: '&6&lBETTER SECURITY\n\n&7You are already inside the server,\n&7you have been &ckicked&7 out!'

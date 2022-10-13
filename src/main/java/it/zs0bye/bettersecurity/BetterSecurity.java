@@ -3,6 +3,7 @@ package it.zs0bye.bettersecurity;
 import it.zs0bye.bettersecurity.checks.VersionCheck;
 import it.zs0bye.bettersecurity.commands.MainCommand;
 import it.zs0bye.bettersecurity.files.FileManager;
+import it.zs0bye.bettersecurity.files.SpigotFile;
 import it.zs0bye.bettersecurity.files.enums.Config;
 import it.zs0bye.bettersecurity.files.enums.Lang;
 import it.zs0bye.bettersecurity.hooks.HooksManager;
@@ -119,7 +120,7 @@ public final class BetterSecurity extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new CmdsOnlyConsoleListener(this), this);
         Bukkit.getPluginManager().registerEvents(new CmdsOnlyPlayersListener(this), this);
         Bukkit.getPluginManager().registerEvents(new PermissionPreventionListener(this), this);
-        Bukkit.getPluginManager().registerEvents(new PortBypassPreventionListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PortBypassPreventionListener(this), this);
 
         Config.BLOCK_CUSTOM_COMMANDS.getConfigurationSection().forEach(command ->
                 Bukkit.getPluginManager().registerEvents(new BlockCustomCmdsListener(this, command), this));
@@ -143,7 +144,7 @@ public final class BetterSecurity extends JavaPlugin {
     }
 
     private void registerPlaceholders() {
-        this.cmdsPlaceholders.put("%unknown_command%", this.getServer().spigot().getConfig().getString("messages.unknown-command"));
+        this.cmdsPlaceholders.put("%unknown_command%", new SpigotFile(this).getConfig().getString("messages.unknown-command"));
     }
 
 }

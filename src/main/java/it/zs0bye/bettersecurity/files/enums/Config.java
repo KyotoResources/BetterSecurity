@@ -26,9 +26,11 @@ public enum Config implements IFiles {
     BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_REQUIRED_PERMISSIONS("Block_Tab_Complete.whitelisted_commands.required.permissions"),
     BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_REQUIRED_PERMISSION(".permission"),
     BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_REQUIRED_COMMANDS(".commands"),
-    WARNINGS_FORMAT("Warnings.format"),
-    WARNINGS_CONSOLE_ENABLED("Warnings.console.enabled"),
-    WARNINGS_CONSOLE_FORMAT("Warnings.console.format"),
+    WARNINGS_FORMATS_CMDS_FORMAT("Warnings.formats.commands.format"),
+    WARNINGS_FORMATS_CMDS_CONSOLE("Warnings.formats.commands.console"),
+    WARNINGS_FORMATS_PBP_FORMAT("Warnings.formats.port_bypass_prevention.format"),
+    WARNINGS_FORMATS_PBP_CONSOLE("Warnings.formats.port_bypass_prevention.console"),
+    WARNINGS_LOG_CONSOLE("Warnings.log_console"),
     BLOCK_SYNTAX_ENABLED("Block_Syntax.enabled"),
     BLOCK_SYNTAX_WARNING("Block_Syntax.warning"),
     BLOCK_SYNTAX_EXECUTORS("Block_Syntax.executors"),
@@ -78,9 +80,12 @@ public enum Config implements IFiles {
     PERMISSION_PREVENTION_PERMISSIONS_LIST("Permission_Prevention.permissions.list"),
     PERMISSION_PREVENTION_BYPASS_PLAYERS(".bypass_players"),
     PORT_BYPASS_PREVENTION_ENABLED("Port_Bypass_Prevention.enabled"),
+    PORT_BYPASS_PREVENTION_WARNING("Port_Bypass_Prevention.warning"),
     PORT_BYPASS_PREVENTION_WHITELISTED_IPS("Port_Bypass_Prevention.whitelisted_ips"),
+    PORT_BYPASS_PREVENTION_SAFETY_KICKS("Port_Bypass_Prevention.safety_kicks"),
     PORT_BYPASS_PREVENTION_KICK_MESSAGE("Port_Bypass_Prevention.kick_message"),
-    PORT_BYPASS_PREVENTION_ALREADY_CONNECTED("Port_Bypass_Prevention.already_connected");
+    PORT_BYPASS_PREVENTION_ALREADY_CONNECTED_ENABLED("Port_Bypass_Prevention.already_connected.enabled"),
+    PORT_BYPASS_PREVENTION_ALREADY_CONNECTED_MSG("Port_Bypass_Prevention.already_connected.message");
 
     private final String path;
     private final BetterSecurity plugin;
