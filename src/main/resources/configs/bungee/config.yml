@@ -1,0 +1,248 @@
+#
+#   ▄▄▄▄   ▓█████▄▄▄█████▓▄▄▄█████▓▓█████  ██▀███       ██████ ▓█████  ▄████▄   █    ██  ██▀███   ██▓▄▄▄█████▓▓██   ██▓
+#  ▓█████▄ ▓█   ▀▓  ██▒ ▓▒▓  ██▒ ▓▒▓█   ▀ ▓██ ▒ ██▒   ▒██    ▒ ▓█   ▀ ▒██▀ ▀█   ██  ▓██▒▓██ ▒ ██▒▓██▒▓  ██▒ ▓▒ ▒██  ██▒
+#  ▒██▒ ▄██▒███  ▒ ▓██░ ▒░▒ ▓██░ ▒░▒███   ▓██ ░▄█ ▒   ░ ▓██▄   ▒███   ▒▓█    ▄ ▓██  ▒██░▓██ ░▄█ ▒▒██▒▒ ▓██░ ▒░  ▒██ ██░
+#  ▒██░█▀  ▒▓█  ▄░ ▓██▓ ░ ░ ▓██▓ ░ ▒▓█  ▄ ▒██▀▀█▄       ▒   ██▒▒▓█  ▄ ▒▓▓▄ ▄██▒▓▓█  ░██░▒██▀▀█▄  ░██░░ ▓██▓ ░   ░ ▐██▓░
+#  ░▓█  ▀█▓░▒████▒ ▒██▒ ░   ▒██▒ ░ ░▒████▒░██▓ ▒██▒   ▒██████▒▒░▒████▒▒ ▓███▀ ░▒▒█████▓ ░██▓ ▒██▒░██░  ▒██▒ ░   ░ ██▒▓░
+#  ░▒▓███▀▒░░ ▒░ ░ ▒ ░░     ▒ ░░   ░░ ▒░ ░░ ▒▓ ░▒▓░   ▒ ▒▓▒ ▒ ░░░ ▒░ ░░ ░▒ ▒  ░░▒▓▒ ▒ ▒ ░ ▒▓ ░▒▓░░▓    ▒ ░░      ██▒▒▒
+#  ▒░▒   ░  ░ ░  ░   ░        ░     ░ ░  ░  ░▒ ░ ▒░   ░ ░▒  ░ ░ ░ ░  ░  ░  ▒   ░░▒░ ░ ░   ░▒ ░ ▒░ ▒ ░    ░     ▓██ ░▒░
+#   ░    ░    ░    ░        ░         ░     ░░   ░    ░  ░  ░     ░   ░         ░░░ ░ ░   ░░   ░  ▒ ░  ░       ▒ ▒ ░░
+#   ░         ░  ░                    ░  ░   ░              ░     ░  ░░ ░         ░        ░      ░            ░ ░
+#        ░                                                            ░                                        ░ ░
+#
+#   Version: 1.3 | BungeeCord Version
+#   Configuration
+#
+#   Wiki: https://zs0bye.gitbook.io/bettersecurity/plugins/bettersecurity
+#
+
+
+# ------------------
+# General Settings
+Settings:
+  prefix: '&eBetterSecurity ┃ &7'
+  # Available languages: en_US, it_IT
+  locale: en_US
+  check_update: true
+
+
+# ------------------
+# Block Tab Complete Settings
+Block_Tab_Complete:
+
+  # --------- < ⚠ > ---------
+  # If you have BungeeCord, the use of Waterfall (https://papermc.io/) is recommended.
+  # This is because you can also block the commands in tab 1.13+ of the proxy.
+
+  enabled: true
+
+  # Prevents tabbing of these commands, so as not to conflict with other plugins.
+  commands:
+    - 'pl'
+    - 'plugins'
+    - 'ver'
+    - 'version'
+    - 'about'
+    - '?'
+    - 'help'
+    - 'bukkit:pl'
+    - 'bukkit:plugins'
+    - 'bukkit:ver'
+    - 'bukkit:version'
+    - 'bukkit:about'
+    - 'bukkit:?'
+    - 'bukkit:help'
+    - 'minecraft:?'
+    - 'minecraft:help'
+
+  bypass:
+    # Here you can enter what kind of bypass you prefer
+    # to be able to perform the complete tab:
+    # - PERMISSION | (Bypass via permission: bettersecuritybungee.bypass.antitab)
+    # - PLAYERS | (Bypass by player name)
+    method: 'PERMISSION'
+    # Tip. You can put both the player's name and his UUID.
+    players:
+      - 'playerName1'
+      - '8667ba71-b85a-4004-af54-457a9734eed7'
+
+  whitelisted_commands:
+
+    enabled: true
+
+    # If it is on "true", you will be able to tab the command much more conveniently!
+    # BUT, in order to function correctly, the use of BetterSecurity is also recommended in the spigot.
+    # This is because by activating this method, blocking the tab only from the bungeecord, it may not work correctly.
+    partial_matches: false
+
+    # This is the global list of tab commands that will be whitelisted.
+    # To disable global commands, just put "global: []".
+    global:
+      - 'spawn'
+      - 'tell'
+      - 'msg'
+      - 'w'
+      - 'whisper'
+      - 't'
+      - 'r'
+      - 'reply'
+
+    # Here you can request requirements to be able to show whitelisted commands.
+    # (Can be very useful for not showing staff commands to players)
+    required:
+
+      enabled: false
+
+      # Here you can set up global groups, for all servers connected to BungeeCord.
+      # If you want to deactivate it, just put "groups: []"
+      global:
+        groups:
+          - 'helper'
+          - 'admin'
+
+      # Here you can add all the various groups to be able to whitelist commands by permission.
+      groups:
+        # This is the first example group.
+        helper:
+          # Here you will need to enter the required permission.
+          permission: 'bettersecuritybungee.tab.helper'
+          # While here you will have to put the list of commands that will have to be shown.
+          commands:
+            - 'tempban'
+            - 'tempmute'
+            - 'unban'
+            - 'pardon'
+            - 'kick'
+            - 'unmute'
+            - 'warn'
+            - 'warnings'
+            - 'history'
+            - 'dupeip'
+            - 'ss'
+            - 'freeze'
+            - 'unfreeze'
+        admin:
+          permission: 'bettersecuritybungee.tab.admin'
+          commands:
+            - 'fly'
+            - 'gamemode'
+            - 'gm'
+            - 'god'
+            - 'mute'
+            - 'ban'
+            - 'ipban'
+            - 'ipmute'
+            - 'clearchat'
+
+    # The server mode is for enabling the above groups, based on the server.
+    server_mode:
+
+      enabled: false
+
+      # Below you will have to put the servers with the various groups.
+      servers:
+        # This is an example server.
+        lobby:
+          # These are the sample groups that will be shown on this server.
+          groups:
+            - 'groupexample1'
+            - 'groupexample2'
+        # This is another example server.
+        survival:
+          # These are the sample groups that will be shown on this server.
+          groups:
+            - 'groupexample1'
+            - 'groupexample2'
+
+
+# ------------------
+# Warnings Settings
+Warnings:
+
+  # This message will be sent to those with permission: bettersecuritybungee.broadcast.warnings
+  # You can use the following placeholders:
+  # - %player% | (Name of the player who attempted to execute the command)
+  # - %command% | (The command that was blocked)
+  # - %server% | (Server name)
+  format: '&e&l⚠ &e%server% ┃ &b%player% &7attempted to execute the command: &c%command%'
+
+  # In this field you can decide whether to activate the logs also via the console.
+  console:
+
+    enabled: true
+
+    # This is the message that will be sent to the console.
+    # You can use the following placeholders:
+    # - %player% | (Name of the player who attempted to execute the command)
+    # - %command% | (The command that was blocked)
+    format: '%player% attempted to execute the command: %command%'
+
+
+# ------------------
+# Blocks Commands Settings
+Blocks_Commands:
+
+  enabled: true
+
+  # If it is on "true" the execution attempt warning will be sent to chat.
+  warning: true
+
+  # Here you can enter the type of method you want to use to block commands:
+  # - BLACKLIST | (The commands in the list will be blocked)
+  # - WHITELIST | (The commands in the list will be able to execute)
+  method: 'BLACKLIST'
+
+  # Forced checking if enabled can cause problems with other plugins.
+  # For example AuthMeBungee (If you execute a blocked command before login, the plugin will overwrite it)
+  force_check: false
+
+  # This message will be shown as soon as the command is blocked.
+  message: '%prefix%&cYou cannot execute this command!'
+
+  # List of blocked or enabled commands according to the selected method.
+  # If you want to block commands only through "server mode", just put "commands: []"
+  commands:
+    - 'bungee'
+    - 'waterfall'
+    - 'pl'
+    - 'plugins'
+    - 'ver'
+    - 'version'
+    - 'about'
+    - '?'
+    - 'help'
+    - 'bukkit:pl'
+    - 'bukkit:plugins'
+    - 'bukkit:ver'
+    - 'bukkit:version'
+    - 'bukkit:about'
+    - 'bukkit:?'
+    - 'bukkit:help'
+    - 'minecraft:?'
+    - 'minecraft:help'
+
+  # Server mode allows you to block commands based on the server the player is on.
+  server_mode:
+
+    enabled: false
+
+    # This is the list of servers where commands are blocked.
+    servers:
+      # This is an example server.
+      lobby:
+        # < ? > The methods are the same that are located above.
+        method: 'BLACKLIST'
+        # Instead these are the commands blocked on that server.
+        commands:
+          - 'examplecommand1'
+          - 'examplecommand2'
+      # In this example you can use another message.
+      survival:
+        # < ? > The methods are the same that are located above.
+        method: 'BLACKLIST'
+        # Here you can enter the message that will only be shown on this server.
+        message: '&a&lSURVIVAL ┃ &cYou cannot execute this command!'
+        # Instead these are the commands blocked on that server.
+        commands:
+          - 'examplecommand1'
+          - 'examplecommand2'
