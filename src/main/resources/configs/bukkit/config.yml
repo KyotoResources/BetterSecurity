@@ -10,7 +10,7 @@
 #   ░         ░  ░                    ░  ░   ░              ░     ░  ░░ ░         ░        ░      ░            ░ ░
 #        ░                                                            ░                                        ░ ░
 #
-#   Version: 1.3 | Bukkit Version
+#   Version: 1.3.1 | Bukkit Version
 #   Configuration
 #
 #   Wiki: https://zs0bye.gitbook.io/bettersecurity/plugins/bettersecurity
@@ -107,6 +107,11 @@ Block_Tab_Complete:
   whitelisted_commands:
 
     enabled: true
+
+    # If it is on "true", you will be able to tab the command much more conveniently!
+    # For greater safety, it is not recommended to use it because it could cause problems.
+    # (If the player access is from 1.13+ you can ignore this section)
+    partial_matches: false
 
     # This is the global list of tab commands that will be whitelisted.
     # To disable global commands, just put "global: []".

@@ -22,6 +22,7 @@ public enum Config implements IFiles {
     BLOCK_TAB_COMPLETE_BYPASS_METHOD("Block_Tab_Complete.bypass.method"),
     BLOCK_TAB_COMPLETE_BYPASS_PLAYERS("Block_Tab_Complete.bypass.players"),
     BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_ENABLED("Block_Tab_Complete.whitelisted_commands.enabled"),
+    BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_PARTIAL_MATCHES("Block_Tab_Complete.whitelisted_commands.partial_matches"),
     BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_GLOBAL("Block_Tab_Complete.whitelisted_commands.global"),
     BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_REQUIRED_ENABLED("Block_Tab_Complete.whitelisted_commands.required.enabled"),
     BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_REQUIRED_PERMISSIONS("Block_Tab_Complete.whitelisted_commands.required.permissions"),

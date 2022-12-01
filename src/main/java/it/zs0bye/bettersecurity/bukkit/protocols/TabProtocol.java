@@ -49,11 +49,12 @@ public class TabProtocol extends PacketAdapter {
 
         final PacketContainer serverPacket = new PacketContainer(PacketType.Play.Server.TAB_COMPLETE);
 
-        final List<String> completions = new ArrayList<>(TabComplete.getCompletions(player, true));
-        final String[] matches = StringUtil.copyPartialMatches(completion, completions, new ArrayList<>())
-                .toArray(new String[0]);
+        List<String> completions = new ArrayList<>(TabComplete.getCompletions(player, true));
 
-        serverPacket.getStringArrays().write(0, matches);
+        if(Config.BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_PARTIAL_MATCHES.getBoolean())
+            completions = StringUtil.copyPartialMatches(completion, completions, new ArrayList<>());
+
+        serverPacket.getStringArrays().write(0, completions.toArray(new String[0]));
 
         if(!completion.contains(" ")) ProtocolLibrary.getProtocolManager().sendServerPacket(player, serverPacket);
 
