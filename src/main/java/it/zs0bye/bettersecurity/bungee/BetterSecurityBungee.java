@@ -93,7 +93,6 @@ public class BetterSecurityBungee extends Plugin {
         this.getProxy().getPluginManager().registerListener(this, new PluginMessageListener(this));
         this.getProxy().getPluginManager().registerListener(this, new BlockTabCompleteListener());
         this.getProxy().getPluginManager().registerListener(this, new WaterTabCompleteListener(this));
-        this.getProxy().getPluginManager().registerListener(this, new UpdaterListener(this));
 
         this.getLogger().info(ConsoleUtils.YELLOW + "┃ Events registered successfully!" + ConsoleUtils.RESET);
     }
@@ -103,8 +102,11 @@ public class BetterSecurityBungee extends Plugin {
         final String resourceId = "105608";
         final VandalUpdater vandalUpdater = new VandalUpdater(resourceId, UpdateType.NORMAL);
         vandalUpdater.setUpdateMessage(Lang.UPDATE_NOTIFICATION.getCustomString());
-        this.getProxy().getScheduler().schedule(this, () -> this.updateMsg = vandalUpdater.message(this.getLogger(), this.getDescription().getName(),
-                this.getDescription().getVersion(), null, null), 20L, 30 * 60, TimeUnit.SECONDS);
+        this.getProxy().getScheduler().schedule(this, () -> {
+            this.updateMsg = vandalUpdater.message(this.getLogger(), this.getDescription().getName(),
+                    this.getDescription().getVersion(), null, null);
+            this.getProxy().getPluginManager().registerListener(this, new UpdaterListener(this));
+        }, 20L, 30 * 60, TimeUnit.SECONDS);
     }
 
 

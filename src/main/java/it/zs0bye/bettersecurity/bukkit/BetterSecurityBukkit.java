@@ -134,7 +134,6 @@ public final class BetterSecurityBukkit extends JavaPlugin implements PluginMess
         this.getServer().getPluginManager().registerEvents(new CmdsOnlyPlayersListener(this), this);
         this.getServer().getPluginManager().registerEvents(new PermissionPreventionListener(this), this);
         this.getServer().getPluginManager().registerEvents(new PortBypassPreventionListener(this), this);
-        this.getServer().getPluginManager().registerEvents(new UpdaterListener(this), this);
 
         Config.BLOCK_CUSTOM_COMMANDS.getConfigurationSection().forEach(command ->
                 this.getServer().getPluginManager().registerEvents(new BlockCustomCmdsListener(this, command), this));
@@ -149,8 +148,11 @@ public final class BetterSecurityBukkit extends JavaPlugin implements PluginMess
         final UpdateType updateType = UpdateType.valueOf(Config.SETTINGS_CHECK_UPDATE_TYPE.getString());
         final VandalUpdater vandalUpdater = new VandalUpdater(resourceId, updateType);
         vandalUpdater.setUpdateMessage(Lang.UPDATE_NOTIFICATION.getCustomString());
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> this.updateMsg = vandalUpdater.message(this.getLogger(), this.getName(),
-                this.getDescription().getVersion(), this.getServer().getUpdateFolderFile(), this.getDataFolder()), 20L, 30 * 60 * 20L);
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
+            this.updateMsg = vandalUpdater.message(this.getLogger(), this.getName(),
+                    this.getDescription().getVersion(), this.getServer().getUpdateFolderFile(), this.getDataFolder());
+            this.getServer().getPluginManager().registerEvents(new UpdaterListener(this), this);
+        }, 20L, 30 * 60 * 20L);
     }
 
     public void registerProtocols() {
