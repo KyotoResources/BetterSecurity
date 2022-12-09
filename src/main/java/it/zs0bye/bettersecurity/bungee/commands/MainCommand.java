@@ -49,15 +49,6 @@ public class MainCommand extends Command implements TabExecutor {
             return;
         }
 
-        if(args.length == 2) {
-            new HelpSubCMD(this.getName(), args, sender, this.plugin);
-
-            if(checkArgs(args[0], "help"))
-                new HelpSubCMD(this.getName(), sender, this.plugin);
-
-            return;
-        }
-
         new HelpSubCMD(this.getName(), sender, this.plugin);
     }
 
@@ -73,8 +64,6 @@ public class MainCommand extends Command implements TabExecutor {
             new ReloadSubCMD(this.getName(), completions, sender);
             new AboutSubCMD(this.getName(), completions, sender);
         }
-
-        if(args.length == 2) new HelpSubCMD(this.getName(), completions, args, sender, this.plugin);
 
         return completions;
     }

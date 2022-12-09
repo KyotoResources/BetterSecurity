@@ -10,11 +10,12 @@
 #   ░         ░  ░                    ░  ░   ░              ░     ░  ░░ ░         ░        ░      ░            ░ ░
 #        ░                                                            ░                                        ░ ░
 #
-#   Version: 1.3.2 | BungeeCord Version
+#   Version: 1.3.3 | BungeeCord Version
 #   Messages - it_IT [Italiano]
 #
 #   Wiki: https://zs0bye.gitbook.io/bettersecurity/plugins/bettersecurity
 #
+
 
 # ------------------
 # General Messages
@@ -22,30 +23,24 @@ is_not_number: '%prefix%&cPer favore, inserisci un numero valido!'
 insufficient_permissions: '%prefix%&cNon hai abbastanza permessi!'
 update_notification: '%prefix%È disponibile un nuovo aggiornamento! (Attualmente hai: &c%old%&7), Scarica la nuova versione &e%new%&7 da &ahttps://www.spigotmc.org/resources/bettersecurity-%E2%9C%A8-the-best-security-for-your-server.105608/'
 
+
 # ------------------
 # Help Command Messages
 Help_Command:
-  categories:
-    bettersecurity:
-      pages:
-        1:
-          - ''
-          - '&6 ┃ &e%version% ‑ %proxy%'
-          - ''
-          - '&6 ┃ &d[] &7⁼ &7Opzionale'
-          - '&6 ┃ &c‹› &7⁼ &7Richiesto'
-          - ''
-          - '&6 ┃ &f/%command% help &7‑ &eApri questa pagina.'
-          - '&6 ┃ &f/%command% about &7‑ &eMostra le info del plug-in.'
-          - '&6 ┃ &f/%command% reload &7‑ &eRicarica le configurazioni.'
-          - ''
-          - '&6 ┃ &7Pagina &e%page%&7/&e%maxpage%'
-          - '&6 ┃ &e%author%'
-          - ''
-  placeholders:
-    max_page: 'Massimo'
-  errors:
-    page_not_found: '%prefix%&cQuesta pagina non è stata trovata!'
+  texts:
+    - ''
+    - '&6 ┃ &e%version% ‑ %proxy%'
+    - ''
+    - '&6 ┃ &d[] &7⁼ &7Opzionale'
+    - '&6 ┃ &c‹› &7⁼ &7Richiesto'
+    - ''
+    - '&6 ┃ &f/%command% help &7‑ &eApri questa pagina.'
+    - '&6 ┃ &f/%command% about &7‑ &eMostra le info del plug-in.'
+    - '&6 ┃ &f/%command% reload &7‑ &eRicarica le configurazioni.'
+    - ''
+    - '&6 ┃ &e%author%'
+    - ''
+
 
 # ------------------
 # Reload Command Messages

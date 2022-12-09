@@ -10,17 +10,19 @@
 #   ░         ░  ░                    ░  ░   ░              ░     ░  ░░ ░         ░        ░      ░            ░ ░
 #        ░                                                            ░                                        ░ ░
 #
-#   Version: 1.3.2 | Bukkit Version
+#   Version: 1.3.3 | Bukkit Version
 #   Messages - en_US [English]
 #
 #   Wiki: https://zs0bye.gitbook.io/bettersecurity/plugins/bettersecurity
 #
+
 
 # ------------------
 # General Messages
 is_not_number: '%prefix%&cPlease enter a valid number!'
 insufficient_permissions: '%prefix%&cYou don''t have enough permissions!'
 update_notification: '%prefix%A new update is available! (You currently have: &c%old%&7), Download the new version &e%new%&7 from &ahttps://www.spigotmc.org/resources/bettersecurity-%E2%9C%A8-the-best-security-for-your-server.105608/'
+
 
 # ------------------
 # Help Command Messages
@@ -44,6 +46,7 @@ Help_Command:
     max_page: 'Max'
   errors:
     page_not_found: '%prefix%&cThis page was not found!'
+
 
 # ------------------
 # Reload Command Messages

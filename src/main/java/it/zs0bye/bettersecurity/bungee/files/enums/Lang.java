@@ -16,10 +16,7 @@ public enum Lang implements IFiles {
     IS_NOT_NUMBER("is_not_number"),
     INSUFFICIENT_PERMISSIONS("insufficient_permissions"),
     UPDATE_NOTIFICATION("update_notification"),
-    HELP_CATEGORIES("Help_Command.categories."),
-    HELP_PAGES(".pages"),
-    HELP_PLACEHOLDERS_MAX_PAGE("Help_Command.placeholders.max_page"),
-    HELP_ERRORS_PAGE_NOT_FOUND("Help_Command.errors.page_not_found"),
+    HELP_TEXTS("Help_Command.texts"),
     RELOAD_CONFIGURATIONS("Reload_Command.configurations");
 
     private final BetterSecurityBungee plugin;
