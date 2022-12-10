@@ -73,7 +73,7 @@ public class AboutSubCMD extends BaseCommand {
     private TextComponent getClickableLink() {
         final TextComponent text = new TextComponent(CStringUtils.center("§7‹ §e● §7› §f§l§nCLICK TO OPEN DISCORD SUPPORT§r §7‹ §e● §7›"));
         text.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§6§nClick Me!").create()));
-        text.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/EJYJ6pTj95"));
+        text.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/FctDctBWEm"));
         return text;
     }
 
