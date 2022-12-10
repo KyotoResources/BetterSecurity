@@ -3,3 +3,4 @@ Resource Link: https://www.spigotmc.org/resources/bettersecurity-%E2%9C%A8-the-b
 
 Wiki: https://zs0bye.gitbook.io/bettersecurity/plugins/bettersecurity
 Discord: https://discord.gg/FctDctBWEm
+ 
