@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +23,7 @@ public class BlockCustomCmdsListener implements Listener {
     private final Map<String, String> placeholders;
 
     private String regCommand;
+    private List<String> regCommands;
     private List<String> executors;
     private boolean warning;
     private Permission permission;
@@ -38,8 +40,11 @@ public class BlockCustomCmdsListener implements Listener {
         final String warning_path = path + Config.BLOCK_CUSTOM_COMMANDS_WARNING.getPath();
         final String permission_path = path + Config.BLOCK_CUSTOM_COMMANDS_PERMISSION_REQUIRED.getPath();
         final String required_players_path = path + Config.BLOCK_CUSTOM_COMMANDS_REQUIRED_PLAYERS.getPath();
+        final String regCommand = path + Config.BLOCK_CUSTOM_COMMANDS_COMMAND.getPath();
+        final String regCommands = path + Config.BLOCK_CUSTOM_COMMANDS_COMMANDS.getPath();
 
-        this.regCommand = Config.CUSTOM.getString(path + Config.BLOCK_CUSTOM_COMMANDS_COMMAND.getPath());
+        this.regCommand = Config.CUSTOM.contains(regCommand) ? Config.CUSTOM.getString(regCommand) : "";
+        this.regCommands = Config.CUSTOM.contains(regCommands) ? Config.CUSTOM.getStringList(regCommands) : new ArrayList<>();
         this.executors = Config.CUSTOM.getStringList(path + Config.BLOCK_CUSTOM_COMMANDS_EXECUTORS.getPath());
 
         if(this.contains(warning_path)) this.warning = Config.CUSTOM.getBoolean(warning_path);
@@ -66,7 +71,8 @@ public class BlockCustomCmdsListener implements Listener {
 
         if(this.permission_required != null && player.hasPermission(this.permission)) return;
         if(this.required_players != null && (this.required_players.contains(player.getName()) || this.required_players.contains(player.getUniqueId().toString()))) return;
-        if(!this.regCommand.equalsIgnoreCase(command)) return;
+        if(this.regCommand != null && !this.regCommand.isEmpty() && !this.regCommand.equalsIgnoreCase(command)) return;
+        if(this.regCommands != null && !this.regCommands.isEmpty() && !this.regCommands.contains(command)) return;
 
         this.placeholders.put("%player%", player.getName());
         this.placeholders.put("%command%", "/" + command);

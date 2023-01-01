@@ -34,6 +34,7 @@ public final class BetterSecurityBukkit extends JavaPlugin implements PluginMess
 
     private FileManager configFile;
     private FileManager languagesFile;
+    private SpigotFile spigotFile;
 
     private HooksManager hooks;
 
@@ -90,6 +91,7 @@ public final class BetterSecurityBukkit extends JavaPlugin implements PluginMess
         this.getLogger().info("");
         this.getLogger().info(ConsoleUtils.YELLOW + "┃ Loading resources.." + ConsoleUtils.RESET);
 
+        this.spigotFile = new SpigotFile(this);
         this.configFile = new FileManager(this, "config", null).saveDefaultConfig();
         this.languagesFile = new FileManager(this, Config.SETTINGS_LOCALE.getString(), "languages")
                 .saveDefaultConfig();
@@ -134,6 +136,7 @@ public final class BetterSecurityBukkit extends JavaPlugin implements PluginMess
         this.getServer().getPluginManager().registerEvents(new CmdsOnlyPlayersListener(this), this);
         this.getServer().getPluginManager().registerEvents(new PermissionPreventionListener(this), this);
         this.getServer().getPluginManager().registerEvents(new PortBypassPreventionListener(this), this);
+        this.getServer().getPluginManager().registerEvents(new UnknownCommandListener(this), this);
 
         Config.BLOCK_CUSTOM_COMMANDS.getConfigurationSection().forEach(command ->
                 this.getServer().getPluginManager().registerEvents(new BlockCustomCmdsListener(this, command), this));
@@ -161,7 +164,7 @@ public final class BetterSecurityBukkit extends JavaPlugin implements PluginMess
     }
 
     private void registerPlaceholders() {
-        this.cmdsPlaceholders.put("%unknown_command%", new SpigotFile(this).getConfig().getString("messages.unknown-command"));
+        this.cmdsPlaceholders.put("%unknown_command%", this.spigotFile.getConfig().getString("messages.unknown-command"));
     }
 
     @SneakyThrows

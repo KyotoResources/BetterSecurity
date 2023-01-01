@@ -6,7 +6,7 @@
 
     <groupId>it.zS0bye</groupId>
     <artifactId>BetterSecurity</artifactId>
-    <version>1.3.3</version>
+    <version>1.4</version>
     <packaging>jar</packaging>
 
     <name>BetterSecurity</name>
@@ -18,7 +18,7 @@
     </properties>
 
     <build>
-        <finalName>BetterSecurity-v1.3.3</finalName>
+        <finalName>BetterSecurity-v1.4</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -109,7 +109,7 @@
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>23.0.0</version>
+            <version>23.1.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

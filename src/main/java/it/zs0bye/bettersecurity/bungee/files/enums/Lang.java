@@ -30,13 +30,11 @@ public enum Lang implements IFiles {
     }
 
     @Override
-    public StringBuilder variables(final String... var) {
+    public String variables(final String... var) {
         StringBuilder builder = new StringBuilder();
-        for(String texts : var) {
-            builder.append(texts);
-        }
+        for(String texts : var) builder.append(texts);
         builder.append(path);
-        return builder;
+        return builder.toString();
     }
 
     @Override
@@ -51,13 +49,13 @@ public enum Lang implements IFiles {
 
     @Override
     public String getString(final String... var) {
-        return StringUtils.colorize(this.lang.getString(variables(var).toString()));
+        return StringUtils.colorize(this.lang.getString(this.variables(var)));
     }
 
     @Override
     public List<String> getStringList(final String... var) {
         List<String> list = new ArrayList<>();
-        for (String setList : this.lang.getStringList(variables(var).toString())) {
+        for (String setList : this.lang.getStringList(this.variables(var))) {
             list.add(StringUtils.colorize(setList));
         }
         return list;
@@ -65,17 +63,17 @@ public enum Lang implements IFiles {
 
     @Override
     public boolean getBoolean(final String... var) {
-        return this.lang.getBoolean(variables(var).toString());
+        return this.lang.getBoolean(this.variables(var));
     }
 
     @Override
     public boolean contains(final String... var) {
-        return this.lang.contains(variables(var).toString());
+        return this.lang.contains(this.variables(var));
     }
 
     @Override
     public int getInt(final String... var) {
-        return this.lang.getInt(variables(var).toString());
+        return this.lang.getInt(this.variables(var));
     }
 
     @Override
@@ -107,6 +105,6 @@ public enum Lang implements IFiles {
     @SuppressWarnings("all")
     @Override
     public Collection<String> getSection(final String... var) {
-        return this.lang.getSection(variables(var).toString()).getKeys();
+        return this.lang.getSection(this.variables(var)).getKeys();
     }
 }

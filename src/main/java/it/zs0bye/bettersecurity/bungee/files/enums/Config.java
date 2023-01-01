@@ -57,13 +57,11 @@ public enum Config implements IFiles {
     }
 
     @Override
-    public StringBuilder variables(final String... var) {
+    public String variables(final String... var) {
         StringBuilder builder = new StringBuilder();
-        for(String texts : var) {
-            builder.append(texts);
-        }
+        for(String texts : var) builder.append(texts);
         builder.append(path);
-        return builder;
+        return builder.toString();
     }
 
     @Override
@@ -78,13 +76,13 @@ public enum Config implements IFiles {
 
     @Override
     public String getString(final String... var) {
-        return StringUtils.colorize(this.config.getString(variables(var).toString()));
+        return StringUtils.colorize(this.config.getString(this.variables(var)));
     }
 
     @Override
     public List<String> getStringList(final String... var) {
         List<String> list = new ArrayList<>();
-        for (String setList : this.config.getStringList(variables(var).toString())) {
+        for (String setList : this.config.getStringList(this.variables(var))) {
             list.add(StringUtils.colorize(setList));
         }
         return list;
@@ -92,17 +90,17 @@ public enum Config implements IFiles {
 
     @Override
     public boolean getBoolean(final String... var) {
-        return this.config.getBoolean(variables(var).toString());
+        return this.config.getBoolean(this.variables(var));
     }
 
     @Override
     public boolean contains(final String... var) {
-        return this.config.contains(variables(var).toString());
+        return this.config.contains(this.variables(var));
     }
 
     @Override
     public int getInt(final String... var) {
-        return this.config.getInt(variables(var).toString());
+        return this.config.getInt(this.variables(var));
     }
 
     @Override
@@ -133,7 +131,7 @@ public enum Config implements IFiles {
 
     @Override
     public Collection<String> getSection(final String... var) {
-        return this.config.getSection(variables(var).toString()).getKeys();
+        return this.config.getSection(this.variables(var)).getKeys();
     }
 
 }

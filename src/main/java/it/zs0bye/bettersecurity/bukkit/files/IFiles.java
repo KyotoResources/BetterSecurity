@@ -25,7 +25,7 @@ public interface IFiles {
 
     void send(final CommandSender sender, final String... var);
 
-    StringBuilder variables(final String... var);
+    String variables(final String... var);
 
     Set<String> getConfigurationSection(final String... var);
 

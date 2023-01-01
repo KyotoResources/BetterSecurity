@@ -34,6 +34,9 @@ public enum Config implements IFiles {
     WARNINGS_FORMATS_PBP_FORMAT("Warnings.formats.port_bypass_prevention.format"),
     WARNINGS_FORMATS_PBP_CONSOLE("Warnings.formats.port_bypass_prevention.console"),
     WARNINGS_LOG_CONSOLE("Warnings.log_console"),
+    UNKNOWN_COMMAND_ENABLED("Unknown_Command.enabled"),
+    UNKNOWN_COMMAND_USE_SPIGOT_MESSAGE("Unknown_Command.use_spigot_message"),
+    UNKNOWN_COMMAND_EXECUTORS("Unknown_Command.executors"),
     BLOCK_SYNTAX_ENABLED("Block_Syntax.enabled"),
     BLOCK_SYNTAX_WARNING("Block_Syntax.warning"),
     BLOCK_SYNTAX_EXECUTORS("Block_Syntax.executors"),
@@ -54,6 +57,7 @@ public enum Config implements IFiles {
     BLOCK_CUSTOM_COMMANDS_ENABLED("Block_Custom_Commands.enabled"),
     BLOCK_CUSTOM_COMMANDS("Block_Custom_Commands.commands"),
     BLOCK_CUSTOM_COMMANDS_COMMAND(".command"),
+    BLOCK_CUSTOM_COMMANDS_COMMANDS(".commands"),
     BLOCK_CUSTOM_COMMANDS_EXECUTORS(".executors"),
     BLOCK_CUSTOM_COMMANDS_WARNING(".warning"),
     BLOCK_CUSTOM_COMMANDS_PERMISSION_REQUIRED(".permission_required"),
@@ -101,13 +105,11 @@ public enum Config implements IFiles {
     }
 
     @Override
-    public StringBuilder variables(final String... var) {
-        StringBuilder builder = new StringBuilder();
-        for(String texts : var) {
-            builder.append(texts);
-        }
+    public String variables(final String... var) {
+        final StringBuilder builder = new StringBuilder();
+        for(String texts : var) builder.append(texts);
         builder.append(path);
-        return builder;
+        return builder.toString();
     }
 
     @Override
@@ -122,13 +124,13 @@ public enum Config implements IFiles {
 
     @Override
     public String getString(final String... var) {
-        return StringUtils.colorize(this.config.getString(variables(var).toString()));
+        return StringUtils.colorize(this.config.getString(this.variables(var)));
     }
 
     @Override
     public List<String> getStringList(final String... var) {
         List<String> list = new ArrayList<>();
-        for (String setList : this.config.getStringList(variables(var).toString())) {
+        for (String setList : this.config.getStringList(this.variables(var))) {
             list.add(StringUtils.colorize(setList));
         }
         return list;
@@ -136,17 +138,17 @@ public enum Config implements IFiles {
 
     @Override
     public boolean getBoolean(final String... var) {
-        return this.config.getBoolean(variables(var).toString());
+        return this.config.getBoolean(this.variables(var));
     }
 
     @Override
     public boolean contains(final String... var) {
-        return this.config.contains(variables(var).toString());
+        return this.config.contains(this.variables(var));
     }
 
     @Override
     public int getInt(final String... var) {
-        return this.config.getInt(variables(var).toString());
+        return this.config.getInt(this.variables(var));
     }
 
     @Override
@@ -178,7 +180,7 @@ public enum Config implements IFiles {
     @SuppressWarnings("all")
     @Override
     public Set<String> getConfigurationSection(final String... var) {
-        return this.config.getConfigurationSection(variables(var).toString()).getKeys( false);
+        return this.config.getConfigurationSection(this.variables(var)).getKeys( false);
     }
 
 }
