@@ -10,7 +10,7 @@
 #   ░         ░  ░                    ░  ░   ░              ░     ░  ░░ ░         ░        ░      ░            ░ ░
 #        ░                                                            ░                                        ░ ░
 #
-#   Version: 1.4 | Bukkit Version
+#   Version: 1.4.1 | Bukkit Version
 #   Configuration
 #
 #   Wiki: https://zs0bye.gitbook.io/bettersecurity/plugins/bettersecurity
@@ -221,6 +221,14 @@ Unknown_Command:
   # but remains the default one. If you have a version lower than 1.19, you can leave it to false.
   # If you use PlugMan, it can cause problems if the plugin it loads registers commands for the first time.
   enabled: false
+
+  # To ignore this section put "exempt_commands: []"
+  # This function allows you, in case of problems, to be able to insert a
+  # list of commands that the plugin will ignore.
+  # The command set by default was put as an example for those who use ChatControl-Red,
+  # who when running /tell also execute a command that is not registered on Bukkit.
+  exempt_commands:
+    - '#flp'
 
   # If set to "true", it will fetch the unknown message directly from spigot.yml.
   # If it's false, then it will use the executor below.

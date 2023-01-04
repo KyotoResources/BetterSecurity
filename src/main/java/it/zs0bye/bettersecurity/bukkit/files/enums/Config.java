@@ -35,6 +35,7 @@ public enum Config implements IFiles {
     WARNINGS_FORMATS_PBP_CONSOLE("Warnings.formats.port_bypass_prevention.console"),
     WARNINGS_LOG_CONSOLE("Warnings.log_console"),
     UNKNOWN_COMMAND_ENABLED("Unknown_Command.enabled"),
+    UNKNOWN_COMMAND_EXEMPT_COMMANDS("Unknown_Command.exempt_commands"),
     UNKNOWN_COMMAND_USE_SPIGOT_MESSAGE("Unknown_Command.use_spigot_message"),
     UNKNOWN_COMMAND_EXECUTORS("Unknown_Command.executors"),
     BLOCK_SYNTAX_ENABLED("Block_Syntax.enabled"),

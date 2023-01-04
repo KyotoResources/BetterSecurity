@@ -4,7 +4,6 @@ import it.zs0bye.bettersecurity.bukkit.BetterSecurityBukkit;
 import it.zs0bye.bettersecurity.bukkit.executors.SendExecutors;
 import it.zs0bye.bettersecurity.bukkit.files.enums.Config;
 import it.zs0bye.bettersecurity.bukkit.utils.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -32,7 +31,10 @@ public class UnknownCommandListener implements Listener {
                 .split(" ")[0]
                 .toLowerCase();
 
-        if (Bukkit.getHelpMap().getHelpTopic(command) != null) return;
+        if(Config.UNKNOWN_COMMAND_EXEMPT_COMMANDS.getStringList().contains(command
+                .replaceFirst("/", ""))) return;
+
+        if (this.plugin.getServer().getHelpMap().getHelpTopic(command) != null) return;
         event.setCancelled(true);
 
         this.placeholders.put("%player%", player.getName());
