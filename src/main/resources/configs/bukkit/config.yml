@@ -10,7 +10,7 @@
 #   ░         ░  ░                    ░  ░   ░              ░     ░  ░░ ░         ░        ░      ░            ░ ░
 #        ░                                                            ░                                        ░ ░
 #
-#   Version: 1.4.1 | Bukkit Version
+#   Version: 1.5 | Bukkit Version
 #   Configuration
 #
 #   Wiki: https://zs0bye.gitbook.io/bettersecurity/plugins/bettersecurity
@@ -63,7 +63,9 @@ Settings:
     # Types Available: NORMAL, DOWNLOAD
     type: NORMAL
   hooks:
+    # Adds support for all executors.
     PlaceholderAPI: false
+    # < ⚠ > Absolutely recommended for complete tab protection!
     ProtocolLib: false
 
 
@@ -76,7 +78,10 @@ Settings:
 Block_Tab_Complete:
 
   # --------- < ⚠ > ---------
-  # If your server version is 1.8.x-1.12.x, you need to enable ProtocolLib to use this feature.
+  # WARNING: It is absolutely recommended to use ProtocolLib for all versions of spigot.
+  # This way you will be able to 100% block any attempts to steal plugins.
+  # If you have set ProtocolLib, make sure that "Settings -> Hooks -> ProtocolLib" is true
+  # (It is not enough to reload the plugin, you have to restart the server)
 
   # < ? > Does your server have version 1.13+? So if you reload the plugin,
   # you will have to join the server again to see the changes.

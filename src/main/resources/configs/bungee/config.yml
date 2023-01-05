@@ -10,7 +10,7 @@
 #   ░         ░  ░                    ░  ░   ░              ░     ░  ░░ ░         ░        ░      ░            ░ ░
 #        ░                                                            ░                                        ░ ░
 #
-#   Version: 1.4.1 | BungeeCord Version
+#   Version: 1.5 | BungeeCord Version
 #   Configuration
 #
 #   Wiki: https://zs0bye.gitbook.io/bettersecurity/plugins/bettersecurity
@@ -41,8 +41,12 @@ Block_Tab_Complete:
   # --------- < ⚠ > ---------
   # If you have BungeeCord, the use of Waterfall (https://papermc.io/) is recommended.
   # This is because you can also block the commands in tab 1.13+ of the proxy.
-
   enabled: true
+
+  # Do you have waterfall or forks using it? (Types: Aegis, FlameCord, etc..).
+  # ⚠ If the answer is yes then you definitely need to activate this option!
+  # Because it allows you to block the proxy command tablist.
+  waterfall_prevention: false
 
   # Prevents tabbing of these commands, so as not to conflict with other plugins.
   commands:

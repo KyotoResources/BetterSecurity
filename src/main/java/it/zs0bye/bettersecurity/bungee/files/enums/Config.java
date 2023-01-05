@@ -17,6 +17,7 @@ public enum Config implements IFiles {
     SETTINGS_PREFIX("Settings.prefix"),
     SETTINGS_CHECK_UPDATE("Settings.check_update"),
     BLOCK_TAB_COMPLETE_ENABLED("Block_Tab_Complete.enabled"),
+    BLOCK_TAB_COMPLETE_WATERFALL_PREVENTION("Block_Tab_Complete.waterfall_prevention"),
     BLOCK_TAB_COMPLETE_COMMANDS("Block_Tab_Complete.commands"),
     BLOCK_TAB_COMPLETE_BYPASS_METHOD("Block_Tab_Complete.bypass.method"),
     BLOCK_TAB_COMPLETE_BYPASS_PLAYERS("Block_Tab_Complete.bypass.players"),

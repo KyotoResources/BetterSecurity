@@ -21,12 +21,8 @@ public class TabProtocol extends PacketAdapter {
 
     public TabProtocol(final BetterSecurityBukkit plugin) {
         super(plugin, ListenerPriority.NORMAL, PacketType.Play.Client.TAB_COMPLETE);
-
         if(!Config.BLOCK_TAB_COMPLETE_ENABLED.getBoolean()) return;
-
-        if (!VersionCheck.legacy()) return;
         ProtocolLibrary.getProtocolManager().addPacketListener(this);
-
     }
 
     @SneakyThrows
@@ -46,7 +42,25 @@ public class TabProtocol extends PacketAdapter {
 
         final TabComplete tabComplete = new TabComplete(player);
         if(tabComplete.bypass()) return;
+        this.replaceSuggestions(completion, player);
 
+        if((completion.contains(":") || completion.length() <= 1)
+                || (completion.startsWith("/") && !completion.contains(" "))
+                ||(completion.startsWith("/") && completion.contains(":"))) {
+            event.setCancelled(true);
+            return;
+        }
+
+        commands.forEach(command -> {
+            if (!completion.startsWith("/" + command)) return;
+            event.setCancelled(true);
+        });
+
+    }
+
+    @SneakyThrows
+    private void replaceSuggestions(final String completion, final Player player) {
+        if (!VersionCheck.legacy()) return;
         final PacketContainer serverPacket = new PacketContainer(PacketType.Play.Server.TAB_COMPLETE);
 
         List<String> completions = new ArrayList<>(TabComplete.getCompletions(player, true));
@@ -57,15 +71,6 @@ public class TabProtocol extends PacketAdapter {
         serverPacket.getStringArrays().write(0, completions.toArray(new String[0]));
 
         if(!completion.contains(" ")) ProtocolLibrary.getProtocolManager().sendServerPacket(player, serverPacket);
-
-        commands.forEach(command -> {
-            if ((completion.startsWith("/") && !completion.contains(" "))
-                    || (completion.startsWith("/" + command))
-                    || (completion.startsWith("/") && completion.contains(":"))) {
-                event.setCancelled(true);
-            }
-        });
-
     }
 
 }

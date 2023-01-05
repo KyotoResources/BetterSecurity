@@ -92,7 +92,9 @@ public class BetterSecurityBungee extends Plugin {
         this.getProxy().getPluginManager().registerListener(this, new BlocksCmdsListener(this));
         this.getProxy().getPluginManager().registerListener(this, new PluginMessageListener(this));
         this.getProxy().getPluginManager().registerListener(this, new BlockTabCompleteListener());
-        this.getProxy().getPluginManager().registerListener(this, new WaterTabCompleteListener(this));
+
+        if(Config.BLOCK_TAB_COMPLETE_WATERFALL_PREVENTION.getBoolean())
+            this.getProxy().getPluginManager().registerListener(this, new WaterTabCompleteListener());
 
         this.getLogger().info(ConsoleUtils.YELLOW + "┃ Events registered successfully!" + ConsoleUtils.RESET);
     }
