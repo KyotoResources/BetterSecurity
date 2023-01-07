@@ -30,6 +30,23 @@ public class BlockCustomCmdsListener implements Listener {
     private String permission_required;
     private List<String> required_players;
 
+    public BlockCustomCmdsListener(final BetterSecurityBukkit plugin) {
+        this.plugin = plugin;
+        this.placeholders = this.plugin.getCmdsPlaceholders();
+        if(!Config.BLOCK_CUSTOM_COMMANDS_ENABLED.getBoolean()) return;
+        Config.BLOCK_CUSTOM_COMMANDS.getConfigurationSection().forEach(command -> {
+            final String path = Config.BLOCK_CUSTOM_COMMANDS.getPath() + "." + command;
+            final String priority = Config.BLOCK_CUSTOM_COMMANDS_PRIORITY.getString(path).toUpperCase();
+            final BlockCustomCmdsListener cmdsListener = new BlockCustomCmdsListener(this.plugin, command);
+            this.plugin.getServer().getPluginManager().registerEvent(
+                    PlayerCommandPreprocessEvent.class,
+                    cmdsListener,
+                    EventPriority.valueOf(priority),
+                    (listener, event) -> cmdsListener.onCommandPreprocess((PlayerCommandPreprocessEvent) event),
+                    this.plugin);
+        });
+    }
+
     public BlockCustomCmdsListener(final BetterSecurityBukkit plugin, final String command) {
         this.plugin = plugin;
         this.placeholders = this.plugin.getCmdsPlaceholders();
@@ -58,7 +75,7 @@ public class BlockCustomCmdsListener implements Listener {
         if(this.contains(required_players_path)) this.required_players = Config.CUSTOM.getStringList(required_players_path);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onCommandPreprocess(final PlayerCommandPreprocessEvent event) {
 
         if(!Config.BLOCK_CUSTOM_COMMANDS_ENABLED.getBoolean()) return;

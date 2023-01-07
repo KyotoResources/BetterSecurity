@@ -17,6 +17,12 @@ import lombok.SneakyThrows;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.EventExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.jetbrains.annotations.NotNull;
@@ -130,16 +136,15 @@ public final class BetterSecurityBukkit extends JavaPlugin implements PluginMess
     }
 
     public void registerListeners() {
-        this.getServer().getPluginManager().registerEvents(new BlockSyntaxListener(this), this);
-        this.getServer().getPluginManager().registerEvents(new BlocksCmdsListener(this), this);
-        this.getServer().getPluginManager().registerEvents(new CmdsOnlyConsoleListener(this), this);
-        this.getServer().getPluginManager().registerEvents(new CmdsOnlyPlayersListener(this), this);
+        new BlocksCmdsListener(this);
+        new BlockSyntaxListener(this);
+        new CmdsOnlyConsoleListener(this);
+        new CmdsOnlyPlayersListener(this);
+        new UnknownCommandListener(this);
+        new BlockCustomCmdsListener(this);
+
         this.getServer().getPluginManager().registerEvents(new PermissionPreventionListener(this), this);
         this.getServer().getPluginManager().registerEvents(new PortBypassPreventionListener(this), this);
-        this.getServer().getPluginManager().registerEvents(new UnknownCommandListener(this), this);
-
-        Config.BLOCK_CUSTOM_COMMANDS.getConfigurationSection().forEach(command ->
-                this.getServer().getPluginManager().registerEvents(new BlockCustomCmdsListener(this, command), this));
 
         if(VersionCheck.legacy()) return;
         this.getServer().getPluginManager().registerEvents(new BlockTabCompleteListener(), this);

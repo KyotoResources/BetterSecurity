@@ -10,7 +10,7 @@
 #   ░         ░  ░                    ░  ░   ░              ░     ░  ░░ ░         ░        ░      ░            ░ ░
 #        ░                                                            ░                                        ░ ░
 #
-#   Version: 1.5 | Bukkit Version
+#   Version: 1.6 | Bukkit Version
 #   Configuration
 #
 #   Wiki: https://zs0bye.gitbook.io/bettersecurity/plugins/bettersecurity
@@ -46,6 +46,7 @@
 # - %player% | (Name of the player who attempted to execute the command)
 # - %command% | (The command that was blocked)
 # - %unknown_command% | (The spigot.yml unknown command message will be displayed)
+# - %center% | (You can center text, only works with messages)
 
 
 #  _________                              ______
@@ -227,6 +228,10 @@ Unknown_Command:
   # If you use PlugMan, it can cause problems if the plugin it loads registers commands for the first time.
   enabled: false
 
+  # Here you can set the priority of the event. You can find the priority list with this link
+  # --> https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/EventPriority.html
+  priority: HIGHEST
+
   # To ignore this section put "exempt_commands: []"
   # This function allows you, in case of problems, to be able to insert a
   # list of commands that the plugin will ignore.
@@ -255,6 +260,10 @@ Block_Syntax:
 
   enabled: true
 
+  # Here you can set the priority of the event. You can find the priority list with this link
+  # --> https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/EventPriority.html
+  priority: HIGHEST
+
   # If it is on "true" the execution attempt warning will be sent to chat.
   warning: true
 
@@ -276,6 +285,10 @@ Block_Syntax:
 Blocks_Commands:
 
   enabled: true
+
+  # Here you can set the priority of the event. You can find the priority list with this link
+  # --> https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/EventPriority.html
+  priority: HIGHEST
 
   # If it is on "true" the execution attempt warning will be sent to chat.
   warning: true
@@ -312,6 +325,10 @@ Commands_Only_Console:
 
   enabled: true
 
+  # Here you can set the priority of the event. You can find the priority list with this link
+  # --> https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/EventPriority.html
+  priority: HIGHEST
+
   # If it is on "true" the execution attempt warning will be sent to chat.
   warning: true
 
@@ -343,6 +360,10 @@ Commands_Only_Console:
 Commands_Only_Players:
 
   enabled: true
+
+  # Here you can set the priority of the event. You can find the priority list with this link
+  # --> https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/EventPriority.html
+  priority: HIGHEST
 
   # If it is on "true" the execution attempt warning will be sent to chat.
   warning: true
@@ -381,21 +402,24 @@ Block_Custom_Commands:
   commands:
     # In this example the command will be blocked for everyone.
     example_Command1:
-      command: 'exampleCommand1'
+      command: 'examplecommand1'
+      priority: HIGHEST
       warning: true
       executors:
         - '[MESSAGE] %prefix%&cYou cannot execute this command!'
         - '[ACTION] &c&l⚠ &7You tried to run the command: &c%command%'
     # In this example, however, it requires permission to execute the command.
     example_Command2:
-      command: 'exampleCommand2'
+      command: 'examplecommand2'
+      priority: HIGHEST
       warning: true
       permission_required: 'bettersecurity.bypass.exampleCommand2'
       executors:
         - '[MESSAGE] %prefix%&cYou cannot execute this command!'
     # In this other example, only the players on the list will be able to perform it.
     example_Command3:
-      command: 'exampleCommand3'
+      command: 'examplecommand3'
+      priority: HIGHEST
       # Tip. You can put both the player's name and his UUID.
       required_players:
         - 'playerName1'
@@ -405,8 +429,9 @@ Block_Custom_Commands:
     # In this example, he shows you how you can block multiple commands with the same executor.
     example_Command4:
       commands:
-        - 'exampleCommand4'
-        - 'exampleCommand5'
+        - 'examplecommand4'
+        - 'examplecommand5'
+      priority: HIGHEST
       warning: true
       permission_required: 'bettersecurity.bypass.exampleCommands'
       executors:

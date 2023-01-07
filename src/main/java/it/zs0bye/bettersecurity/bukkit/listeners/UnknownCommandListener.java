@@ -6,6 +6,7 @@ import it.zs0bye.bettersecurity.bukkit.files.enums.Config;
 import it.zs0bye.bettersecurity.bukkit.utils.StringUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
@@ -19,6 +20,14 @@ public class UnknownCommandListener implements Listener {
     public UnknownCommandListener(final BetterSecurityBukkit plugin) {
         this.plugin = plugin;
         this.placeholders = this.plugin.getCmdsPlaceholders();
+        if(!Config.UNKNOWN_COMMAND_ENABLED.getBoolean()) return;
+
+        this.plugin.getServer().getPluginManager().registerEvent(
+                PlayerCommandPreprocessEvent.class,
+                this,
+                EventPriority.valueOf(Config.UNKNOWN_COMMAND_PRIORITY.getString().toUpperCase()),
+                ((listener, event) -> this.onCommandPreProcess((PlayerCommandPreprocessEvent) event)),
+                this.plugin, true);
     }
 
     @EventHandler

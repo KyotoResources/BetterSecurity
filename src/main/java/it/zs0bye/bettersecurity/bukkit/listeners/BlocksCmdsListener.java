@@ -22,9 +22,16 @@ public class BlocksCmdsListener implements Listener {
     public BlocksCmdsListener(final BetterSecurityBukkit plugin) {
         this.plugin = plugin;
         this.placeholders = this.plugin.getCmdsPlaceholders();
+        if(!Config.BLOCKS_COMMANDS_ENABLED.getBoolean()) return;
+        this.plugin.getServer().getPluginManager().registerEvent(
+                PlayerCommandPreprocessEvent.class,
+                this,
+                EventPriority.valueOf(Config.BLOCKS_COMMANDS_PRIORITY.getString().toUpperCase()),
+                ((listener, event) -> this.onCommandPreprocess((PlayerCommandPreprocessEvent) event)),
+                this.plugin);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onCommandPreprocess(final PlayerCommandPreprocessEvent event) {
 
         if(!Config.BLOCKS_COMMANDS_ENABLED.getBoolean()) return;

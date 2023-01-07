@@ -21,9 +21,16 @@ public class CmdsOnlyConsoleListener implements Listener {
     public CmdsOnlyConsoleListener(final BetterSecurityBukkit plugin) {
         this.plugin = plugin;
         this.placeholders = this.plugin.getCmdsPlaceholders();
+        if(!Config.COMMANDS_ONLY_CONSOLE_ENABLED.getBoolean()) return;
+        this.plugin.getServer().getPluginManager().registerEvent(
+                PlayerCommandPreprocessEvent.class,
+                this,
+                EventPriority.valueOf(Config.COMMANDS_ONLY_CONSOLE_PRIORITY.getString().toUpperCase()),
+                ((listener, event) -> this.onCommandPreprocess((PlayerCommandPreprocessEvent) event)),
+                this.plugin);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onCommandPreprocess(final PlayerCommandPreprocessEvent event) {
 
         if(!Config.COMMANDS_ONLY_CONSOLE_ENABLED.getBoolean()) return;

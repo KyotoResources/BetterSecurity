@@ -6,7 +6,7 @@
 
     <groupId>it.zS0bye</groupId>
     <artifactId>BetterSecurity</artifactId>
-    <version>1.5</version>
+    <version>1.6</version>
     <packaging>jar</packaging>
 
     <name>BetterSecurity</name>
@@ -18,7 +18,7 @@
     </properties>
 
     <build>
-        <finalName>BetterSecurity-v1.5</finalName>
+        <finalName>BetterSecurity-v1.6</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -57,6 +57,10 @@
                                 <relocation>
                                     <pattern>org.json</pattern>
                                     <shadedPattern>it.zs0bye.bettersecurity.external.json</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>net.kyori</pattern>
+                                    <shadedPattern>it.zs0bye.bettersecurity.external.kyori</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -158,6 +162,12 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20220924</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-platform-bungeecord</artifactId>
+            <version>4.2.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

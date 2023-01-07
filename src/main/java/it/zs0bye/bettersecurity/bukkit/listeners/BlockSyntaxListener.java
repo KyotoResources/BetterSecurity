@@ -21,9 +21,16 @@ public class BlockSyntaxListener implements Listener {
     public BlockSyntaxListener(final BetterSecurityBukkit plugin) {
         this.plugin = plugin;
         this.placeholders = this.plugin.getCmdsPlaceholders();
+        if(!Config.BLOCK_SYNTAX_ENABLED.getBoolean()) return;
+        this.plugin.getServer().getPluginManager().registerEvent(
+                PlayerCommandPreprocessEvent.class,
+                this,
+                EventPriority.valueOf(Config.BLOCK_SYNTAX_PRIORITY.getString().toUpperCase()),
+                ((listener, event) -> this.onCommandPreprocess((PlayerCommandPreprocessEvent) event)),
+                this.plugin);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onCommandPreprocess(final PlayerCommandPreprocessEvent event) {
 
         if(!Config.BLOCK_SYNTAX_ENABLED.getBoolean()) return;

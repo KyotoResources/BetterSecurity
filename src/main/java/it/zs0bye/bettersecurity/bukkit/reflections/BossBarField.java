@@ -56,7 +56,7 @@ public class BossBarField {
                 this.cancel();
                 task.remove(player);
             }
-        }.runTaskLater(this.plugin, this.seconds * 20L));
+        }.runTaskLaterAsynchronously(this.plugin, this.seconds * 20L));
     }
 
 }

@@ -3,6 +3,7 @@ package it.zs0bye.bettersecurity.bukkit.executors;
 import it.zs0bye.bettersecurity.bukkit.BetterSecurityBukkit;
 import it.zs0bye.bettersecurity.bukkit.files.enums.Config;
 import it.zs0bye.bettersecurity.bukkit.hooks.HooksManager;
+import it.zs0bye.bettersecurity.common.utils.CStringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -26,12 +27,14 @@ public class MessageExecutor extends Executors {
 
     protected void apply() {
 
-        final String msg = this.hooks.getPlaceholders(this.player, this.execute
+        String msg = this.hooks.getPlaceholders(this.player, this.execute
                 .replace(this.getType(), "")
                 .replace("%prefix%", Config.SETTINGS_PREFIX.getString()));
+        if(msg.contains("%center%")) msg = CStringUtils.center(msg.replace("%center%", ""));
 
         if(msg.startsWith("@")) {
-            Bukkit.getOnlinePlayers().forEach(players -> this.run(players, msg));
+            final String finalMsg = msg;
+            Bukkit.getOnlinePlayers().forEach(players -> this.run(players, finalMsg));
             return;
         }
 
@@ -42,4 +45,5 @@ public class MessageExecutor extends Executors {
         player.sendMessage(msg
                 .replaceFirst("@", ""));
     }
+
 }

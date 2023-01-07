@@ -10,11 +10,40 @@
 #   ░         ░  ░                    ░  ░   ░              ░     ░  ░░ ░         ░        ░      ░            ░ ░
 #        ░                                                            ░                                        ░ ░
 #
-#   Version: 1.5 | BungeeCord Version
+#   Version: 1.6 | BungeeCord Version
 #   Configuration
 #
 #   Wiki: https://zs0bye.gitbook.io/bettersecurity/plugins/bettersecurity
 #
+# Function of the executors:
+#
+# - [MESSAGE] text                                         | (Func. Send a chat message) | (Example: [MESSAGE] &aHello World!)
+#
+# - [TITLE] title;subtitle;fade-in;stay;fade-out           | (Func. Submit a title)
+#                                                          | (Tip. If you enter "none" in the title or subtitle, it will not be displayed)
+#                                                          | (Example: [TITLE] &a&lHELLO WORLD;&a&l┃ &aThis is a fantastic world!;1;2;1)
+#
+# - [ACTION] text                                          | (Func. Send a message in the action bar) | (Example: [ACTION] &aHello World!)
+#
+# - [PLAYER] command without '/'                           | (Func. Send a command as a player) | (Example: [PLAYER] spawn)
+#
+# - [CONSOLE] command without '/'                          | (Func. Send a command from the console) | (Example: [CONSOLE] give %player% DIAMOND 1)
+#
+# - [KICK] reason                                          | (Func. Kick the player for a reason) | (Example: [KICK] &cYou got kicked, because you don't have cookies.)
+#
+# If you put an "@" in front of the text, it will broadcast the execution.
+# Works for the following performers: [MESSAGE], [TITLE], [ACTION], [BOSSBAR], [SOUND]
+# Examples: [MESSAGE] @&aHello World! | [TITLE] @&a&lHELLO WORLD;&a&l┃ &aThis is a fantastic world!;20;40;20
+# | [ACTION] @&aHello World! | [BOSSBAR] @&aHello World!;GREEN;SEGMENTED_20;1.0;5 | [SOUND] @BLOCK_LAVA_POP;0;1
+#
+# If you don't want to do anything, just put "[]" after "executors:"
+# Example: executors: []
+#
+# You can use the following placeholders in all executors:
+# - %player% | (Name of the player who attempted to execute the command)
+# - %server% | (Server name)
+# - %command% | (The command that was blocked)
+# - %center% | (You can center text, only works with messages)
 
 
 #  _________                              ______
@@ -175,23 +204,25 @@ Block_Tab_Complete:
 #                                              /____/
 Warnings:
 
-  # This message will be sent to those with permission: bettersecuritybungee.broadcast.warnings
-  # You can use the following placeholders:
-  # - %player% | (Name of the player who attempted to execute the command)
-  # - %command% | (The command that was blocked)
-  # - %server% | (Server name)
-  format: '&e&l⚠ &e%server% ┃ &b%player% &7attempted to execute the command: &c%command%'
-
   # In this field you can decide whether to activate the logs also via the console.
-  console:
+  log_console: true
 
-    enabled: true
-
-    # This is the message that will be sent to the console.
-    # You can use the following placeholders:
-    # - %player% | (Name of the player who attempted to execute the command)
-    # - %command% | (The command that was blocked)
-    format: '%player% attempted to execute the command: %command%'
+  # This message will be sent to those with permission: bettersecuritybungee.broadcast.warnings
+  # < ? > You can find more information about the executors in the header.
+  # ATTENTION! Do not use the "@" in front of the broadcast, there is already the automatic one via the above permission.
+  formats:
+    commands:
+      # You can use the following placeholders:
+      # - %command% | (The command that was blocked)
+      format:
+        - '[MESSAGE] &e&l⚠ &e%server% ┃ &b%player% &7attempted to execute the command: &c%command%'
+      console: '%player% attempted to execute the command: %command%'
+    prevent_command_spam:
+      # You can use the following placeholders:
+      # - %command% | (The command executed too many times)
+      format:
+        - '[MESSAGE] &e&l⚠ ┃ &b%player% &7has executed the command too many times: &c%command%'
+      console: '%player% has executed the command too many times: %command%'
 
 
 #  ______________           ______             _________                                         _________
@@ -217,7 +248,9 @@ Blocks_Commands:
   force_check: false
 
   # This message will be shown as soon as the command is blocked.
-  message: '%prefix%&cYou cannot execute this command!'
+  # < ? > You can find more information about the executors in the header.
+  executors:
+    - '[MESSAGE] %prefix%&cYou cannot execute this command!'
 
   # List of blocked or enabled commands according to the selected method.
   # If you want to block commands only through "server mode", just put "commands: []"
@@ -260,13 +293,71 @@ Blocks_Commands:
       survival:
         # < ? > The methods are the same that are located above.
         method: 'BLACKLIST'
-        # Here you can enter the message that will only be shown on this server.
-        message: '&a&lSURVIVAL ┃ &cYou cannot execute this command!'
+        # This executor will only be sent to this server.
+        # < ? > You can find more information about the executors in the header.
+        executors:
+          - '[MESSAGE] &a&lSURVIVAL ┃ &cYou cannot execute this command!'
         # Instead these are the commands blocked on that server.
         commands:
           - 'examplecommand1'
           - 'examplecommand2'
 
+
+#  ________                               _____     _________                                         _________   ________
+#  ___  __ \______________   _______________  /_    __  ____/____________ __________ _________ _____________  /   __  ___/_____________ _______ ___
+#  __  /_/ /_  ___/  _ \_ | / /  _ \_  __ \  __/    _  /    _  __ \_  __ `__ \_  __ `__ \  __ `/_  __ \  __  /    _____ \___  __ \  __ `/_  __ `__ \
+#  _  ____/_  /   /  __/_ |/ //  __/  / / / /_      / /___  / /_/ /  / / / / /  / / / / / /_/ /_  / / / /_/ /     ____/ /__  /_/ / /_/ /_  / / / / /
+#  /_/     /_/    \___/_____/ \___//_/ /_/\__/      \____/  \____//_/ /_/ /_//_/ /_/ /_/\__,_/ /_/ /_/\__,_/      /____/ _  .___/\__,_/ /_/ /_/ /_/
+#                                                                                                                      /_/
+Prevent_Command_Spam:
+
+  # This feature allows you to fix an exploit that crashes your proxy!
+  # You can customize it as you like according to your needs.
+  enabled: true
+
+  # If it is on "true" the execution attempt warning will be sent to chat.
+  warning: true
+
+  # This option determines how often you can run the command (In seconds)
+  delay: 3
+
+  # This function determines how many commands based on the delay, the player is punished.
+  # (If set to 0, this function will be ignored)
+  command_limit: 10
+
+  # If this is set to "true", you will not be able to execute the command during the cooldown.
+  block_command: false
+
+  # (If you have set the command limit, along with the kick, this section will be ignored.
+  # You can also ignore it by simply putting -> message: '')
+  # This message will be shown during a cooldown.
+  #
+  # You can use the following placeholders:
+  # - %seconds% | (Seconds left)
+  # - %commands% | (Number of commands executed)
+  # < ? > You can find more information about the executors in the header.
+  executors:
+    - '[KICK] &cYou performed %commands% commands in 3 seconds!\n&cPlease rejoin and don''t make commands too fast.'
+
+  # Here you can enter the type of method you want to use to set the command cooldown:
+  # - BLACKLIST | (The commands in the list will have the cooldown)
+  # - WHITELIST | (Commands in the list will have no cooldowns)
+  method: 'BLACKLIST'
+
+  commands:
+    - 'alert'
+    - 'alertraw'
+    - 'bungee'
+    - 'end'
+    - 'find'
+    - 'glist'
+    - 'greload'
+    - 'ip'
+    - 'perms'
+    - 'send'
+    - 'server'
+    - 'lpb'
+    - 'luckpermsbungee'
 
 #    ____                                _   _             _  __           _        ____
 #   |  _ \ _____      _____ _ __ ___  __| | | |__  _   _  | |/ /   _  ___ | |_ ___ |  _ \ ___  ___  ___  _   _ _ __ ___ ___  ___

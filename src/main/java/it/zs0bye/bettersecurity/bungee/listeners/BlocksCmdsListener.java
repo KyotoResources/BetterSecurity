@@ -1,9 +1,10 @@
 package it.zs0bye.bettersecurity.bungee.listeners;
 
 import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
-import it.zs0bye.bettersecurity.bungee.Warnings;
+import it.zs0bye.bettersecurity.bungee.executors.SendExecutors;
 import it.zs0bye.bettersecurity.bungee.files.enums.Config;
-import it.zs0bye.bettersecurity.bungee.utils.StringUtils;
+import it.zs0bye.bettersecurity.bungee.warnings.Warnings;
+import it.zs0bye.bettersecurity.bungee.warnings.enums.TypeWarning;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -11,11 +12,14 @@ import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BlocksCmdsListener implements Listener {
 
     private final BetterSecurityBungee plugin;
+    private final Map<String, String> placeholders = new HashMap<>();
 
     public BlocksCmdsListener(final BetterSecurityBungee plugin) {
         this.plugin = plugin;
@@ -39,16 +43,20 @@ public class BlocksCmdsListener implements Listener {
 
         final ProxiedPlayer player = (ProxiedPlayer) event.getSender();
 
+        this.placeholders.put("%player%", player.getName());
+        this.placeholders.put("%server%", player.getServer().getInfo().getName());
+        this.placeholders.put("%command%", "/" + command);
+
         if(!Config.BLOCKS_COMMANDS_FORCE_CHECK.getBoolean() && event.isCancelled()) return;
 
         if(player.hasPermission("bettersecuritybungee.bypass.blockscmds")) return;
         if(this.canBlock(command, player)) return;
 
-        StringUtils.send(player, this.getMessage(command, player));
+        this.sendExecutors(command, player);
         event.setCancelled(true);
 
         if(!Config.BLOCKS_COMMANDS_WARNING.getBoolean()) return;
-        new Warnings(this.plugin, player, command).warn();
+        new Warnings(this.plugin, player, TypeWarning.COMMANDS, command);
     }
 
     private boolean canBlock(final String command, final ProxiedPlayer player) {
@@ -80,16 +88,28 @@ public class BlocksCmdsListener implements Listener {
         return Config.CUSTOM.getString(path + Config.BLOCKS_COMMANDS_SERVER_MODE_METHOD.getPath());
     }
 
-    private String getMessage(final String command, final ProxiedPlayer player) {
-        final String message = Config.BLOCKS_COMMANDS_MESSAGE.getCustomString();
+    private void sendExecutors(final String command, final ProxiedPlayer player) {
 
-        if(!Config.BLOCKS_COMMANDS_SERVER_MODE_ENABLED.getBoolean()) return message;
+        if(!Config.BLOCKS_COMMANDS_SERVER_MODE_ENABLED.getBoolean()) {
+            this.sendDefaultExecutor(player);
+            return;
+        }
+
         final String path = this.getPath(player);
         final List<String> commands = Config.CUSTOM.getStringList(path + Config.BLOCKS_COMMANDS_SERVER_MODE_COMMANDS.getPath());
-        if(!commands.contains(command)) return message;
+        if(!commands.contains(command)) return;
 
-        if(!Config.CUSTOM.contains(path + Config.BLOCKS_COMMANDS_SERVER_MODE_MESSAGE.getPath())) return message;
-        return Config.CUSTOM.getCustomString(path + Config.BLOCKS_COMMANDS_SERVER_MODE_MESSAGE.getPath());
+        if(!Config.CUSTOM.contains(path + Config.BLOCKS_COMMANDS_SERVER_MODE_EXECUTORS.getPath())) {
+            this.sendDefaultExecutor(player);
+            return;
+        }
+        SendExecutors.send(this.plugin, Config.CUSTOM.getStringList(path + Config.BLOCKS_COMMANDS_SERVER_MODE_EXECUTORS.getPath()),
+                player,
+                this.placeholders);
+    }
+
+    private void sendDefaultExecutor(final ProxiedPlayer player) {
+        SendExecutors.send(this.plugin, Config.BLOCKS_COMMANDS_EXECUTORS.getStringList(), player, this.placeholders);
     }
 
     private String getPath(final ProxiedPlayer player) {

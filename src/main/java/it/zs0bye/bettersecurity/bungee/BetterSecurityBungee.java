@@ -9,6 +9,7 @@ import it.zs0bye.bettersecurity.common.updater.UpdateType;
 import it.zs0bye.bettersecurity.common.updater.VandalUpdater;
 import it.zs0bye.bettersecurity.common.utils.enums.ConsoleUtils;
 import lombok.Getter;
+import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
 import net.md_5.bungee.api.plugin.Plugin;
 import org.bstats.bungeecord.Metrics;
 
@@ -22,6 +23,7 @@ public class BetterSecurityBungee extends Plugin {
 
     private FileManager configFile;
     private FileManager languagesFile;
+    private BungeeAudiences adventure;
 
     private String updateMsg;
 
@@ -54,6 +56,8 @@ public class BetterSecurityBungee extends Plugin {
         this.loadCommands();
         this.loadListeners();
 
+        this.adventure = BungeeAudiences.create(this);
+
         this.getProxy().registerChannel("bsecurity:sender");
 
         this.loadUpdater();
@@ -63,6 +67,12 @@ public class BetterSecurityBungee extends Plugin {
         this.getLogger().info(ConsoleUtils.YELLOW + "┃ The Plug-in was started successfully ;)" + ConsoleUtils.RESET);
         this.getLogger().info("");
 
+    }
+
+    @Override
+    public void onDisable() {
+        if(this.adventure == null) return;
+        this.adventure.close();
     }
 
     private void loadFiles() {
@@ -92,6 +102,7 @@ public class BetterSecurityBungee extends Plugin {
         this.getProxy().getPluginManager().registerListener(this, new BlocksCmdsListener(this));
         this.getProxy().getPluginManager().registerListener(this, new PluginMessageListener(this));
         this.getProxy().getPluginManager().registerListener(this, new BlockTabCompleteListener());
+        this.getProxy().getPluginManager().registerListener(this, new PreventCmdSpamListener(this));
 
         if(Config.BLOCK_TAB_COMPLETE_WATERFALL_PREVENTION.getBoolean())
             this.getProxy().getPluginManager().registerListener(this, new WaterTabCompleteListener());
