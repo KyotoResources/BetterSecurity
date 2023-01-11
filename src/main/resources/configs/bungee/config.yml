@@ -10,7 +10,7 @@
 #   ░         ░  ░                    ░  ░   ░              ░     ░  ░░ ░         ░        ░      ░            ░ ░
 #        ░                                                            ░                                        ░ ░
 #
-#   Version: 1.6.1 | BungeeCord Version
+#   Version: 1.6.2 | BungeeCord Version
 #   Configuration
 #
 #   Wiki: https://zs0bye.gitbook.io/bettersecurity/plugins/bettersecurity
@@ -127,12 +127,13 @@ Block_Tab_Complete:
     # - required_permission: <permission> | (If you set this requirement, the group will go only for those who have the specified permission)
     # - required_players: ['playername1', 'playername2'] | (If you put this requirement, the group will go only for the players in the list)
     # If you want to put multiple requirements in one group you can do it safely.
+    # You can also ignore one or more servers in a group, by putting:
+    # - ignore_servers: ['server1', 'server2'] | (Servers that are in this list will not see group suggestions)
     groups:
       # This is an example of a group with no requirements, suggestions inside this group will be seen by everyone.
       global:
         # List of whitelisted suggestions in complete tabs.
         suggestions:
-          - 'spawn'
           - 'tell'
           - 'msg'
           - 'w'
@@ -140,6 +141,13 @@ Block_Tab_Complete:
           - 't'
           - 'r'
           - 'reply'
+      # In this example group, the hints will be shown on all servers, except the servers that have been skipped.
+      spawn:
+        ignore_servers:
+          - 'bedwars'
+          - 'skywars'
+        suggestions:
+          - 'spawn'
       # This is an example of a group that only requires one server.
       # The suggestions in this list will only be displayed by the requested server.
       lobby:

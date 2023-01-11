@@ -29,6 +29,7 @@ public enum Config implements IFiles {
     BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_GROUPS_REQUIRED_SERVER(".required_server"),
     BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_GROUPS_REQUIRED_PERMISSION(".required_permission"),
     BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_GROUPS_REQUIRED_PLAYERS(".required_players"),
+    BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_GROUPS_IGNORE_SERVERS(".ignore_servers"),
     WARNINGS_PROXY("Warnings.proxy"),
     WARNINGS_FORMATS_CMDS_FORMAT("Warnings.formats.commands.format"),
     WARNINGS_FORMATS_CMDS_CONSOLE("Warnings.formats.commands.console"),

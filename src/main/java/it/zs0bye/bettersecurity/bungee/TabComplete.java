@@ -47,10 +47,12 @@ public class TabComplete {
             final String serverPath = path + Config.BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_GROUPS_REQUIRED_SERVER.getPath();
             final String permissionPath = path + Config.BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_GROUPS_REQUIRED_PERMISSION.getPath();
             final String playersPath = path + Config.BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_GROUPS_REQUIRED_PLAYERS.getPath();
+            final String ignoreServersPath = path + Config.BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_GROUPS_IGNORE_SERVERS.getPath();
 
             if(Config.CUSTOM.contains(serverPath) && !Config.CUSTOM.getString(serverPath).equalsIgnoreCase(server)) continue;
             if(Config.CUSTOM.contains(permissionPath) && !player.hasPermission(Config.CUSTOM.getString(permissionPath))) continue;
             if(Config.CUSTOM.contains(playersPath) && !Config.CUSTOM.getStringList(playersPath).contains(player.getName())) continue;
+            if(Config.CUSTOM.contains(ignoreServersPath) && Config.CUSTOM.getStringList(ignoreServersPath).contains(server.toLowerCase())) continue;
 
             completions.addAll(Config.CUSTOM.getStringList(path + Config.BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_GROUPS_SUGGESTIONS.getPath()));
         }
