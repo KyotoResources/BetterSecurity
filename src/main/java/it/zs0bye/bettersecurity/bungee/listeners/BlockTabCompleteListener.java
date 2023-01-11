@@ -35,7 +35,7 @@ public class BlockTabCompleteListener implements Listener {
             event.setCancelled(true);
         });
 
-        if(completion.contains(" ")) return;
+        if(!completion.startsWith("/") || completion.contains(" ")) return;
         if(completions.isEmpty()) {
             event.setCancelled(true);
             return;
