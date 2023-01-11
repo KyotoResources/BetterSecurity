@@ -10,7 +10,7 @@
 #   ░         ░  ░                    ░  ░   ░              ░     ░  ░░ ░         ░        ░      ░            ░ ░
 #        ░                                                            ░                                        ░ ░
 #
-#   Version: 1.6 | BungeeCord Version
+#   Version: 1.6.1 | BungeeCord Version
 #   Configuration
 #
 #   Wiki: https://zs0bye.gitbook.io/bettersecurity/plugins/bettersecurity
@@ -116,84 +116,73 @@ Block_Tab_Complete:
     # This is because by activating this method, blocking the tab only from the bungeecord, it may not work correctly.
     partial_matches: false
 
-    # This is the global list of tab commands that will be whitelisted.
-    # To disable global commands, just put "global: []".
-    global:
-      - 'spawn'
-      - 'tell'
-      - 'msg'
-      - 'w'
-      - 'whisper'
-      - 't'
-      - 'r'
-      - 'reply'
+    # Here you can put the groups under the "groups" list, which are enabled in the proxy.
+    # If you enter "*", you will enable all groups.
+    enabled_groups:
+      - '*'
 
-    # Here you can request requirements to be able to show whitelisted commands.
-    # (Can be very useful for not showing staff commands to players)
-    required:
-
-      enabled: false
-
-      # Here you can set up global groups, for all servers connected to BungeeCord.
-      # If you want to deactivate it, just put "groups: []"
+    # This is the list of suggestions groups whitelisted in the complete tab.
+    # In these groups you can put the following requirements:
+    # - required_server: <serverName> | (If you put this requirement, the group will go only for the specified server)
+    # - required_permission: <permission> | (If you set this requirement, the group will go only for those who have the specified permission)
+    # - required_players: ['playername1', 'playername2'] | (If you put this requirement, the group will go only for the players in the list)
+    # If you want to put multiple requirements in one group you can do it safely.
+    groups:
+      # This is an example of a group with no requirements, suggestions inside this group will be seen by everyone.
       global:
-        groups:
-          - 'helper'
-          - 'admin'
-
-      # Here you can add all the various groups to be able to whitelist commands by permission.
-      groups:
-        # This is the first example group.
-        helper:
-          # Here you will need to enter the required permission.
-          permission: 'bettersecuritybungee.tab.helper'
-          # While here you will have to put the list of commands that will have to be shown.
-          commands:
-            - 'tempban'
-            - 'tempmute'
-            - 'unban'
-            - 'pardon'
-            - 'kick'
-            - 'unmute'
-            - 'warn'
-            - 'warnings'
-            - 'history'
-            - 'dupeip'
-            - 'ss'
-            - 'freeze'
-            - 'unfreeze'
-        admin:
-          permission: 'bettersecuritybungee.tab.admin'
-          commands:
-            - 'fly'
-            - 'gamemode'
-            - 'gm'
-            - 'god'
-            - 'mute'
-            - 'ban'
-            - 'ipban'
-            - 'ipmute'
-            - 'clearchat'
-
-    # The server mode is for enabling the above groups, based on the server.
-    server_mode:
-
-      enabled: false
-
-      # Below you will have to put the servers with the various groups.
-      servers:
-        # This is an example server.
-        lobby:
-          # These are the sample groups that will be shown on this server.
-          groups:
-            - 'groupexample1'
-            - 'groupexample2'
-        # This is another example server.
-        survival:
-          # These are the sample groups that will be shown on this server.
-          groups:
-            - 'groupexample1'
-            - 'groupexample2'
+        # List of whitelisted suggestions in complete tabs.
+        suggestions:
+          - 'spawn'
+          - 'tell'
+          - 'msg'
+          - 'w'
+          - 'whisper'
+          - 't'
+          - 'r'
+          - 'reply'
+      # This is an example of a group that only requires one server.
+      # The suggestions in this list will only be displayed by the requested server.
+      lobby:
+        required_server: lobby
+        suggestions:
+          - 'login'
+          - 'l'
+          - 'reg'
+          - 'register'
+      # This is an example of a group that only requires one server and one permission.
+      # The player who is inside that server, and has that permission, will see the suggestions listed.
+      faction_vip:
+        required_server: faction
+        required_permission: 'bettersecuritybungee.tab.faction_vip'
+        suggestions:
+          - 'fly'
+      # This is an example of a group that only requires a permit.
+      # The player who has that permission will see this list of suggestions.
+      staff:
+        required_permission: 'bettersecuritybungee.tab.staff'
+        suggestions:
+          - 'tempban'
+          - 'tempmute'
+          - 'unban'
+          - 'pardon'
+          - 'kick'
+          - 'unmute'
+          - 'warn'
+          - 'warnings'
+          - 'history'
+          - 'dupeip'
+          - 'ss'
+          - 'freeze'
+          - 'unfreeze'
+      # This is an example of a group that only requires a list of players.
+      # Players in this list will see these suggestions.
+      owner:
+        required_players:
+          - 'playername1'
+          - 'playername2'
+        suggestions:
+          - 'op'
+          - 'deop'
 
 
 #  ___       __                    _____

@@ -2,4 +2,5 @@ name: BetterSecurity
 main: it.zs0bye.bettersecurity.bungee.BetterSecurityBungee
 version: '${project.version}'
 author: zS0bye
+softDepends: [Protocolize]
 description: Your safety is the priority of everything!

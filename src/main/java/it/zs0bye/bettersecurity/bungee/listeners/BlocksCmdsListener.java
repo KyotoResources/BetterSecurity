@@ -52,64 +52,60 @@ public class BlocksCmdsListener implements Listener {
         if(player.hasPermission("bettersecuritybungee.bypass.blockscmds")) return;
         if(this.canBlock(command, player)) return;
 
-        this.sendExecutors(command, player);
+        SendExecutors.send(this.plugin, this.getExecutors(command, player), player, this.placeholders);
         event.setCancelled(true);
 
         if(!Config.BLOCKS_COMMANDS_WARNING.getBoolean()) return;
         new Warnings(this.plugin, player, TypeWarning.COMMANDS, command);
     }
 
-    private boolean canBlock(final String command, final ProxiedPlayer player) {
+    private boolean canBlock(final String command, final ProxiedPlayer player, final List<String> commands) {
         final String method = this.getMethod(command, player);
-        final List<String> commands = this.getWhitelistedCommands(player);
         if(commands.isEmpty()) return true;
         if(method.equals("BLACKLIST")) return !commands.contains(command);
         if(method.equals("WHITELIST")) return commands.contains(command);
         return true;
     }
 
-    private List<String> getWhitelistedCommands(final ProxiedPlayer player) {
-        final List<String> commands = new ArrayList<>(Config.BLOCKS_COMMANDS.getStringList());
+    private boolean canBlock(final String command, final ProxiedPlayer player) {
+        return this.canBlock(command, player, this.getWhitelistedCommands(command, player));
+    }
 
+    private boolean checkDefaultBlock(final String command) {
+        final String method = Config.BLOCKS_COMMANDS_METHOD.getString();
+        final List<String> commands = Config.BLOCKS_COMMANDS.getStringList();
+        if(commands.isEmpty()) return false;
+        if(method.equals("BLACKLIST")) return commands.contains(command);
+        if(method.equals("WHITELIST")) return !commands.contains(command);
+        return false;
+    }
+
+    private List<String> getWhitelistedCommands(final String command, final ProxiedPlayer player) {
+        final List<String> commands = new ArrayList<>(Config.BLOCKS_COMMANDS.getStringList());
+        if(this.checkDefaultBlock(command)) return commands;
         if(!Config.BLOCKS_COMMANDS_SERVER_MODE_ENABLED.getBoolean()) return commands;
-        final String path = this.getPath(player);
-        commands.addAll(Config.CUSTOM.getStringList(path + Config.BLOCKS_COMMANDS_SERVER_MODE_COMMANDS.getPath()));
+        final String path = this.getPath(player) + Config.BLOCKS_COMMANDS_SERVER_MODE_COMMANDS.getPath();
+        if(!Config.CUSTOM.contains(path)) return commands;
+        commands.addAll(Config.CUSTOM.getStringList(path));
         return commands;
     }
 
     private String getMethod(final String command, final ProxiedPlayer player) {
         final String method = Config.BLOCKS_COMMANDS_METHOD.getString();
-
+        if(this.checkDefaultBlock(command)) return method;
         if(!Config.BLOCKS_COMMANDS_SERVER_MODE_ENABLED.getBoolean()) return method;
-        final String path = this.getPath(player);
-        final List<String> commands = Config.CUSTOM.getStringList(path + Config.BLOCKS_COMMANDS_SERVER_MODE_COMMANDS.getPath());
-        if(!commands.contains(command)) return method;
-
-        return Config.CUSTOM.getString(path + Config.BLOCKS_COMMANDS_SERVER_MODE_METHOD.getPath());
+        final String path = this.getPath(player) + Config.BLOCKS_COMMANDS_SERVER_MODE_METHOD.getPath();
+        if(!Config.CUSTOM.contains(path)) return method;
+        return Config.CUSTOM.getString(path);
     }
 
-    private void sendExecutors(final String command, final ProxiedPlayer player) {
-
-        if(!Config.BLOCKS_COMMANDS_SERVER_MODE_ENABLED.getBoolean()) {
-            this.sendDefaultExecutor(player);
-            return;
-        }
-
-        final String path = this.getPath(player);
-        final List<String> commands = Config.CUSTOM.getStringList(path + Config.BLOCKS_COMMANDS_SERVER_MODE_COMMANDS.getPath());
-        if(!commands.contains(command)) return;
-
-        if(!Config.CUSTOM.contains(path + Config.BLOCKS_COMMANDS_SERVER_MODE_EXECUTORS.getPath())) {
-            this.sendDefaultExecutor(player);
-            return;
-        }
-        SendExecutors.send(this.plugin, Config.CUSTOM.getStringList(path + Config.BLOCKS_COMMANDS_SERVER_MODE_EXECUTORS.getPath()),
-                player,
-                this.placeholders);
-    }
-
-    private void sendDefaultExecutor(final ProxiedPlayer player) {
-        SendExecutors.send(this.plugin, Config.BLOCKS_COMMANDS_EXECUTORS.getStringList(), player, this.placeholders);
+    private List<String> getExecutors(final String command, final ProxiedPlayer player) {
+        final List<String> defaultCmds = Config.BLOCKS_COMMANDS_EXECUTORS.getStringList();
+        if(this.checkDefaultBlock(command)) return defaultCmds;
+        if(!Config.BLOCKS_COMMANDS_SERVER_MODE_ENABLED.getBoolean()) return defaultCmds;
+        final String path = this.getPath(player) + Config.BLOCKS_COMMANDS_SERVER_MODE_EXECUTORS.getPath();
+        if(!Config.CUSTOM.contains(path)) return defaultCmds;
+        return Config.CUSTOM.getStringList(path);
     }
 
     private String getPath(final ProxiedPlayer player) {

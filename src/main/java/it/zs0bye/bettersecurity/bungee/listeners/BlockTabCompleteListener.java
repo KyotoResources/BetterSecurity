@@ -21,7 +21,6 @@ public class BlockTabCompleteListener implements Listener {
 
         final String completion = event.getCursor();
         final List<String> commands = event.getSuggestions();
-
         final List<String> blockCmds = Config.BLOCK_TAB_COMPLETE_COMMANDS.getStringList();
 
         final List<String> completions = TabComplete.getCompletions(player, true);
@@ -37,6 +36,11 @@ public class BlockTabCompleteListener implements Listener {
         });
 
         if(completion.contains(" ")) return;
+        if(completions.isEmpty()) {
+            event.setCancelled(true);
+            return;
+        }
+
         if(Config.BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_PARTIAL_MATCHES.getBoolean()) {
             commands.addAll(matches);
             return;
