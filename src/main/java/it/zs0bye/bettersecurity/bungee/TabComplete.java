@@ -43,18 +43,18 @@ public class TabComplete {
 
         if(TabComplete.enabledGroups().isEmpty()) return completions;
         for(final String group : TabComplete.enabledGroups()) {
-            final String path = Config.BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_GROUPS.getPath() + "." + group;
-            final String serverPath = path + Config.BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_GROUPS_REQUIRED_SERVER.getPath();
-            final String permissionPath = path + Config.BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_GROUPS_REQUIRED_PERMISSION.getPath();
-            final String playersPath = path + Config.BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_GROUPS_REQUIRED_PLAYERS.getPath();
-            final String ignoreServersPath = path + Config.BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_GROUPS_IGNORE_SERVERS.getPath();
+            final String path = Config.BLOCK_TAB_COMPLETE_WHITELISTED_SUGGESTIONS_GROUPS.getPath() + "." + group;
+            final String serverPath = path + Config.BLOCK_TAB_COMPLETE_WHITELISTED_SUGGESTIONS_GROUPS_REQUIRED_SERVER.getPath();
+            final String permissionPath = path + Config.BLOCK_TAB_COMPLETE_WHITELISTED_SUGGESTIONS_GROUPS_REQUIRED_PERMISSION.getPath();
+            final String playersPath = path + Config.BLOCK_TAB_COMPLETE_WHITELISTED_SUGGESTIONS_GROUPS_REQUIRED_PLAYERS.getPath();
+            final String ignoreServersPath = path + Config.BLOCK_TAB_COMPLETE_WHITELISTED_SUGGESTIONS_GROUPS_IGNORE_SERVERS.getPath();
 
             if(Config.CUSTOM.contains(serverPath) && !Config.CUSTOM.getString(serverPath).equalsIgnoreCase(server)) continue;
             if(Config.CUSTOM.contains(permissionPath) && !player.hasPermission(Config.CUSTOM.getString(permissionPath))) continue;
             if(Config.CUSTOM.contains(playersPath) && !Config.CUSTOM.getStringList(playersPath).contains(player.getName())) continue;
             if(Config.CUSTOM.contains(ignoreServersPath) && Config.CUSTOM.getStringList(ignoreServersPath).contains(server.toLowerCase())) continue;
 
-            completions.addAll(Config.CUSTOM.getStringList(path + Config.BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_GROUPS_SUGGESTIONS.getPath()));
+            completions.addAll(Config.CUSTOM.getStringList(path + Config.BLOCK_TAB_COMPLETE_WHITELISTED_SUGGESTIONS_GROUPS_SUGGESTIONS.getPath()));
         }
 
         return completions;
@@ -62,9 +62,9 @@ public class TabComplete {
 
     private static Collection<String> enabledGroups() {
         final Collection<String> groups = new ArrayList<>();
-        final List<String> enabled_groups = Config.BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_ENABLED_GROUPS.getStringList();
+        final List<String> enabled_groups = Config.BLOCK_TAB_COMPLETE_WHITELISTED_SUGGESTIONS_ENABLED_GROUPS.getStringList();
         if(enabled_groups.contains("*")) {
-            groups.addAll(Config.BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_GROUPS.getSection());
+            groups.addAll(Config.BLOCK_TAB_COMPLETE_WHITELISTED_SUGGESTIONS_GROUPS.getSection());
             return groups;
         }
         groups.addAll(enabled_groups);
@@ -73,7 +73,7 @@ public class TabComplete {
 
     public static List<String> getCompletions(final ProxiedPlayer player, final boolean legacy) {
         final List<String> completions = new ArrayList<>();
-        if(!Config.BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_ENABLED.getBoolean()) return completions;
+        if(!Config.BLOCK_TAB_COMPLETE_WHITELISTED_SUGGESTIONS_ENABLED.getBoolean()) return completions;
         completions.addAll(TabComplete.initCompletions(TabComplete.groupsCompletions(player), legacy));
         return completions;
     }

@@ -41,7 +41,7 @@ public class BlockTabCompleteListener implements Listener {
             return;
         }
 
-        if(Config.BLOCK_TAB_COMPLETE_WHITELISTED_COMMANDS_PARTIAL_MATCHES.getBoolean()) {
+        if(Config.BLOCK_TAB_COMPLETE_WHITELISTED_SUGGESTIONS_PARTIAL_MATCHES.getBoolean()) {
             commands.addAll(matches);
             return;
         }

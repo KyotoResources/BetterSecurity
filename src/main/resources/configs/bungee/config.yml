@@ -107,7 +107,7 @@ Block_Tab_Complete:
       - 'playerName1'
       - '8667ba71-b85a-4004-af54-457a9734eed7'
 
-  whitelisted_commands:
+  whitelisted_suggestions:
 
     enabled: true
 
