@@ -28,18 +28,23 @@ public class BlockTabCompleteListener implements Listener {
 
         if(new TabComplete(player).bypass()) return;
 
-        commands.clear();
-
         blockCmds.forEach(blockCmd -> {
             if(!completion.startsWith("/" + blockCmd)) return;
+            commands.clear();
             event.setCancelled(true);
         });
 
         if(!completion.startsWith("/") || completion.contains(" ")) return;
         if(completions.isEmpty()) {
+            commands.clear();
             event.setCancelled(true);
             return;
         }
+
+        completions.forEach(command -> {
+            if(completion.startsWith("/" + command)) return;
+            commands.clear();
+        });
 
         if(Config.BLOCK_TAB_COMPLETE_WHITELISTED_SUGGESTIONS_PARTIAL_MATCHES.getBoolean()) {
             commands.addAll(matches);
