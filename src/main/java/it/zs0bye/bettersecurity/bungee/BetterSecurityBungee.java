@@ -31,6 +31,7 @@ public class BetterSecurityBungee extends Plugin {
     public void onEnable() {
 
         instance = this;
+        this.adventure = BungeeAudiences.create(this);
 
         this.getLogger().info(ConsoleUtils.RESET + "");
         this.getLogger().info(ConsoleUtils.YELLOW + "   ▄▄▄▄   ▓█████▄▄▄█████▓▄▄▄█████▓▓█████  ██▀███" + ConsoleUtils.RESET);
@@ -56,12 +57,10 @@ public class BetterSecurityBungee extends Plugin {
         this.loadCommands();
         this.loadListeners();
 
-        this.adventure = BungeeAudiences.create(this);
-
         this.getProxy().registerChannel("bsecurity:sender");
 
         this.loadUpdater();
-        new Metrics(this, 16569);
+        new Metrics(this, 17435);
 
         this.getLogger().info("");
         this.getLogger().info(ConsoleUtils.YELLOW + "┃ The Plug-in was started successfully ;)" + ConsoleUtils.RESET);

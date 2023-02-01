@@ -25,6 +25,7 @@ public class SendExecutors {
             new PlayerExecutor(plugin, executor, player);
             new SoundExecutor(plugin, executor, player);
             new TitleExecutor(plugin, executor, player);
+            new MiniMessageExecutor(plugin, executor, player);
         });
     }
 

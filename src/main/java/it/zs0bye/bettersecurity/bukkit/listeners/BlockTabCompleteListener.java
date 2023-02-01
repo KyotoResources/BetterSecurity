@@ -24,9 +24,9 @@ public class BlockTabCompleteListener implements Listener {
 
         final String completion = event.getBuffer();
         final List<String> suggestions = event.getCompletions();
-        final List<String> completions = TabComplete.getCompletions(player, true);
+        final List<String> completions = new TabComplete(player).getCompletions(true);
 
-        final List<String> blockCmds = Config.BLOCK_TAB_COMPLETE_COMMANDS.getStringList();
+        final List<String> blockCmds = Config.BLOCK_TAB_COMPLETE_BLACKLISTED_SUGGESTIONS.getStringList();
 
         if(new TabComplete(player).bypass()) return;
 
@@ -46,7 +46,7 @@ public class BlockTabCompleteListener implements Listener {
 
         final Player player = event.getPlayer();
         final List<String> commands = new ArrayList<>(event.getCommands());
-        final List<String> completions = TabComplete.getCompletions(player, false);
+        final List<String> completions = new TabComplete(player).getCompletions(false);
 
         final TabComplete tabComplete = new TabComplete(player);
         if(tabComplete.bypass()) return;

@@ -4,25 +4,29 @@ import it.zs0bye.bettersecurity.bukkit.BetterSecurityBukkit;
 import it.zs0bye.bettersecurity.bukkit.files.enums.Config;
 import it.zs0bye.bettersecurity.bukkit.hooks.HooksManager;
 import it.zs0bye.bettersecurity.common.utils.CStringUtils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class MessageExecutor extends Executors {
+public class MiniMessageExecutor extends Executors {
 
-    private final HooksManager hooks;
+    private final BetterSecurityBukkit plugin;
     private final String execute;
     private final Player player;
+    private final HooksManager hooks;
 
-    public MessageExecutor(final BetterSecurityBukkit plugin, final String execute, final Player player) {
-        this.hooks = plugin.getHooks();
+    public MiniMessageExecutor(final BetterSecurityBukkit plugin, final String execute, final Player player) {
+        this.plugin = plugin;
         this.execute = execute;
         this.player = player;
+        this.hooks = this.plugin.getHooks();
         if (!this.execute.startsWith(this.getType())) return;
         this.apply();
     }
 
     protected String getType() {
-        return "[MESSAGE] ";
+        return "[MINI_MESSAGE] ";
     }
 
     protected void apply() {
@@ -42,8 +46,8 @@ public class MessageExecutor extends Executors {
     }
 
     private void run(final Player player, final String msg) {
-        player.sendMessage(msg
-                .replaceFirst("@", ""));
+        final Component parsed = MiniMessage.miniMessage().deserialize(msg.replaceFirst("@", ""));
+        this.plugin.getAdventure().player(player).sendMessage(parsed);
     }
 
 }

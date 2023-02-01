@@ -24,6 +24,7 @@ public class SendExecutors {
             new MessageExecutor(plugin, executor, player);
             new PlayerExecutor(plugin, executor, player);
             new TitleExecutor(plugin, executor, player);
+            new MiniMessageExecutor(plugin, executor, player);
         });
     }
 

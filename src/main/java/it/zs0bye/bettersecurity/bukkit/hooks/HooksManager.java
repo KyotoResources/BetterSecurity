@@ -25,7 +25,7 @@ public class HooksManager {
         Hooks.PROTOCOLLIB.load();
     }
 
-    public String getPlaceholders(final Player player, final String message) {
+    public String replacePlaceholders(final Player player, final String message) {
         if(!Hooks.PLACEHOLDERAPI.isCheck()) return StringUtils.colorize(message);
         return new HPlaceholderAPI(player).getPlaceholders(message);
     }

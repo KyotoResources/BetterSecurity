@@ -10,7 +10,7 @@
 #   ░         ░  ░                    ░  ░   ░              ░     ░  ░░ ░         ░        ░      ░            ░ ░
 #        ░                                                            ░                                        ░ ░
 #
-#   Version: 1.6.2 | BungeeCord Version
+#   Version: 1.6.3 | BungeeCord Version
 #   Configuration
 #
 #   Wiki: https://zs0bye.gitbook.io/bettersecurity/plugins/bettersecurity
@@ -18,6 +18,10 @@
 # Function of the executors:
 #
 # - [MESSAGE] text                                         | (Func. Send a chat message) | (Example: [MESSAGE] &aHello World!)
+#
+# - [MINI_MESSAGE] mini format message                     | (Func. Send a chat message with the MiniMessage format)
+#                                                          | (Tip. To use this format read this page: https://docs.adventure.kyori.net/minimessage/index.html)
+#                                                          | (Example: [MINI_MESSAGE] <green>Hello World!)
 #
 # - [TITLE] title;subtitle;fade-in;stay;fade-out           | (Func. Submit a title)
 #                                                          | (Tip. If you enter "none" in the title or subtitle, it will not be displayed)
@@ -78,7 +82,7 @@ Block_Tab_Complete:
   waterfall_prevention: false
 
   # Prevents tabbing of these commands, so as not to conflict with other plugins.
-  commands:
+  blacklisted_suggestions:
     - 'pl'
     - 'plugins'
     - 'ver'

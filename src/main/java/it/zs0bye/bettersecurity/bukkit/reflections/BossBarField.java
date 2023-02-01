@@ -1,7 +1,7 @@
 package it.zs0bye.bettersecurity.bukkit.reflections;
 
 import it.zs0bye.bettersecurity.bukkit.BetterSecurityBukkit;
-import it.zs0bye.bettersecurity.bukkit.checks.VersionCheck;
+import it.zs0bye.bettersecurity.bukkit.utils.VersionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -38,7 +38,7 @@ public class BossBarField {
 
     private void send() {
 
-        if (VersionCheck.getV1_8()) return;
+        if (VersionUtils.checkVersion(1.8)) return;
         if (task.containsKey(this.player)) return;
 
         final BossBar boss = Bukkit.createBossBar(this.msg, BarColor.valueOf(this.color), BarStyle.valueOf(this.style));

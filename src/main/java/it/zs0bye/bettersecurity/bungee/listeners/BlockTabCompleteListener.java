@@ -21,9 +21,9 @@ public class BlockTabCompleteListener implements Listener {
 
         final String completion = event.getCursor();
         final List<String> commands = event.getSuggestions();
-        final List<String> blockCmds = Config.BLOCK_TAB_COMPLETE_COMMANDS.getStringList();
+        final List<String> blockCmds = Config.BLOCK_TAB_COMPLETE_BLACKLISTED_SUGGESTIONS.getStringList();
 
-        final List<String> completions = TabComplete.getCompletions(player, true);
+        final List<String> completions = new TabComplete(player).getCompletions(true);
         final List<String> matches = CStringUtils.copyPartialMatches(completion, completions);
 
         if(new TabComplete(player).bypass()) return;

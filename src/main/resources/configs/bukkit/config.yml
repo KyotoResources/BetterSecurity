@@ -10,7 +10,7 @@
 #   ░         ░  ░                    ░  ░   ░              ░     ░  ░░ ░         ░        ░      ░            ░ ░
 #        ░                                                            ░                                        ░ ░
 #
-#   Version: 1.6.2 | Bukkit Version
+#   Version: 1.6.3 | Bukkit Version
 #   Configuration
 #
 #   Wiki: https://zs0bye.gitbook.io/bettersecurity/plugins/bettersecurity
@@ -18,6 +18,10 @@
 # Function of the executors:
 #
 # - [MESSAGE] text                                         | (Func. Send a chat message) | (Example: [MESSAGE] &aHello World!)
+#
+# - [MINI_MESSAGE] mini format message                     | (Func. Send a chat message with the MiniMessage format)
+#                                                          | (Tip. To use this format read this page: https://docs.adventure.kyori.net/minimessage/index.html)
+#                                                          | (Example: [MINI_MESSAGE] <green>Hello World!)
 #
 # - [TITLE] title;subtitle;fade-in;stay;fade-out           | (Func. Submit a title)
 #                                                          | (Tip. If you enter "none" in the title or subtitle, it will not be displayed)
@@ -89,7 +93,7 @@ Block_Tab_Complete:
   enabled: true
 
   # Prevents tabbing of these commands, so as not to conflict with other plugins.
-  commands:
+  blacklisted_suggestions:
     - 'pl'
     - 'plugins'
     - 'ver'
@@ -118,7 +122,7 @@ Block_Tab_Complete:
       - 'playerName1'
       - '8667ba71-b85a-4004-af54-457a9734eed7'
 
-  whitelisted_commands:
+  whitelisted_suggestions:
 
     enabled: true
 
@@ -127,57 +131,64 @@ Block_Tab_Complete:
     # (If the player access is from 1.13+ you can ignore this section)
     partial_matches: false
 
-    # This is the global list of tab commands that will be whitelisted.
-    # To disable global commands, just put "global: []".
-    global:
-      - 'spawn'
-      - 'tell'
-      - 'msg'
-      - 'w'
-      - 'whisper'
-      - 't'
-      - 'r'
-      - 'reply'
+    # Here you can enter groups in the "groups" list, which are enabled in the server.
+    # If you enter "*", you will enable all groups.
+    enabled_groups:
+      - '*'
 
-    # Here you can request requirements to be able to show whitelisted commands.
-    # (Can be very useful for not showing staff commands to players)
-    required:
-
-      enabled: false
-
-      # Here you can add all the various groups to be able to whitelist commands by permission.
-      permissions:
-        # This is the first example group.
-        helper:
-          # Here you will need to enter the required permission.
-          permission: 'bettersecurity.tab.helper'
-          # While here you will have to put the list of commands that will have to be shown.
-          commands:
-            - 'tempban'
-            - 'tempmute'
-            - 'unban'
-            - 'pardon'
-            - 'kick'
-            - 'unmute'
-            - 'warn'
-            - 'warnings'
-            - 'history'
-            - 'dupeip'
-            - 'ss'
-            - 'freeze'
-            - 'unfreeze'
-        admin:
-          permission: 'bettersecurity.tab.admin'
-          commands:
-            - 'fly'
-            - 'gamemode'
-            - 'gm'
-            - 'god'
-            - 'mute'
-            - 'ban'
-            - 'ipban'
-            - 'ipmute'
-            - 'clearchat'
+    # This is the list of suggestions groups whitelisted in the complete tab.
+    # In these groups you can put the following requirements:
+    # - required_permission: <permission> | (If you set this requirement, the group will go only for those who have the specified permission)
+    # - required_players: ['playername1', 'playername2'] | (If you put this requirement, the group will go only for the players in the list)
+    # If you want to put multiple requirements in one group you can do it safely.
+    groups:
+      # This is an example of a group with no requirements, suggestions inside this group will be seen by everyone.
+      global:
+        # List of whitelisted suggestions in complete tabs.
+        suggestions:
+          - 'spawn'
+          - 'tell'
+          - 'msg'
+          - 'w'
+          - 'whisper'
+          - 't'
+          - 'r'
+          - 'reply'
+      # This is an example of a group that only requires a permit.
+      # The player who has that permission will see this list of suggestions.
+      helper:
+        required_permission: 'bettersecurity.tab.helper'
+        suggestions:
+          - 'tempban'
+          - 'tempmute'
+          - 'unban'
+          - 'pardon'
+          - 'kick'
+          - 'unmute'
+          - 'warn'
+          - 'warnings'
+          - 'history'
+          - 'dupeip'
+          - 'ss'
+          - 'freeze'
+          - 'unfreeze'
+      # This is an example of a group that only requires a list of players.
+      # Players in this list will see these suggestions.
+      admin:
+        required_permission: 'bettersecurity.tab.admin'
+        required_players:
+          - 'playername1'
+          - 'playername2'
+        suggestions:
+          - 'fly'
+          - 'gamemode'
+          - 'gm'
+          - 'god'
+          - 'mute'
+          - 'ban'
+          - 'ipban'
+          - 'ipmute'
+          - 'clearchat'
 
 
 #  ___       __                    _____

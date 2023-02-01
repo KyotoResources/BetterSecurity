@@ -28,7 +28,7 @@ public class ConsoleExecutor extends Executors {
 
     protected void apply() {
 
-        final String command = this.hooks.getPlaceholders(this.player, this.execute
+        final String command = this.hooks.replacePlaceholders(this.player, this.execute
                 .replace(this.getType(), "")
                 .replace("%player%", this.player.getName()));
 

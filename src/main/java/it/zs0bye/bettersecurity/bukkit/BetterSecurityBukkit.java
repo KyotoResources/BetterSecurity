@@ -1,6 +1,5 @@
 package it.zs0bye.bettersecurity.bukkit;
 
-import it.zs0bye.bettersecurity.bukkit.checks.VersionCheck;
 import it.zs0bye.bettersecurity.bukkit.commands.MainCommand;
 import it.zs0bye.bettersecurity.bukkit.executors.SendExecutors;
 import it.zs0bye.bettersecurity.bukkit.files.FileManager;
@@ -9,20 +8,16 @@ import it.zs0bye.bettersecurity.bukkit.files.enums.Config;
 import it.zs0bye.bettersecurity.bukkit.files.enums.Lang;
 import it.zs0bye.bettersecurity.bukkit.hooks.HooksManager;
 import it.zs0bye.bettersecurity.bukkit.listeners.*;
+import it.zs0bye.bettersecurity.bukkit.utils.VersionUtils;
 import it.zs0bye.bettersecurity.common.updater.UpdateType;
 import it.zs0bye.bettersecurity.common.updater.VandalUpdater;
 import it.zs0bye.bettersecurity.common.utils.enums.ConsoleUtils;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.plugin.EventExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.jetbrains.annotations.NotNull;
@@ -41,6 +36,7 @@ public final class BetterSecurityBukkit extends JavaPlugin implements PluginMess
     private FileManager configFile;
     private FileManager languagesFile;
     private SpigotFile spigotFile;
+    private BukkitAudiences adventure;
 
     private HooksManager hooks;
 
@@ -52,6 +48,7 @@ public final class BetterSecurityBukkit extends JavaPlugin implements PluginMess
     public void onEnable() {
 
         instance = this;
+        this.adventure = BukkitAudiences.create(this);
 
         this.getLogger().info(ConsoleUtils.RESET + "");
         this.getLogger().info(ConsoleUtils.YELLOW + "   ▄▄▄▄   ▓█████▄▄▄█████▓▄▄▄█████▓▓█████  ██▀███" + ConsoleUtils.RESET);
@@ -130,6 +127,7 @@ public final class BetterSecurityBukkit extends JavaPlugin implements PluginMess
         this.getLogger().info("");
         this.getLogger().info(ConsoleUtils.YELLOW + "┃ Registering events.." + ConsoleUtils.RESET);
 
+        new TabComplete();
         this.registerListeners();
 
         this.getLogger().info(ConsoleUtils.YELLOW + "┃ Events registered successfully!" + ConsoleUtils.RESET);
@@ -146,7 +144,7 @@ public final class BetterSecurityBukkit extends JavaPlugin implements PluginMess
         this.getServer().getPluginManager().registerEvents(new PermissionPreventionListener(this), this);
         this.getServer().getPluginManager().registerEvents(new PortBypassPreventionListener(this), this);
 
-        if(VersionCheck.legacy()) return;
+        if(VersionUtils.legacy()) return;
         this.getServer().getPluginManager().registerEvents(new BlockTabCompleteListener(), this);
     }
 

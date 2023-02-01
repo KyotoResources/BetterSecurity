@@ -1,6 +1,7 @@
 package it.zs0bye.bettersecurity.bukkit.commands.subcmds;
 
 import it.zs0bye.bettersecurity.bukkit.BetterSecurityBukkit;
+import it.zs0bye.bettersecurity.bukkit.TabComplete;
 import it.zs0bye.bettersecurity.bukkit.commands.BaseCommand;
 import it.zs0bye.bettersecurity.bukkit.files.enums.Config;
 import it.zs0bye.bettersecurity.bukkit.files.enums.Lang;
@@ -53,6 +54,8 @@ public class ReloadSubCMD extends BaseCommand {
         }
 
         HandlerList.unregisterAll(this.plugin);
+
+        new TabComplete();
         this.plugin.registerListeners();
 
         this.hooks.unregisterAllProtocols();

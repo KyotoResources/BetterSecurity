@@ -20,7 +20,7 @@ public class WaterTabCompleteListener implements Listener {
 
          final ProxiedPlayer player = (ProxiedPlayer) event.getReceiver();
          final Map<String, Command> commands = event.getCommands();
-         final List<String> completions = TabComplete.getCompletions(player, false);
+         final List<String> completions = new TabComplete(player).getCompletions(false);
 
          if(new TabComplete(player).bypass()) return;
 

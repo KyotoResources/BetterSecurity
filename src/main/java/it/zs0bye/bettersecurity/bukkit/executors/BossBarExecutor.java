@@ -29,7 +29,7 @@ public class BossBarExecutor extends Executors {
 
     protected void apply() {
 
-        final String title = this.hooks.getPlaceholders(this.player, execute
+        final String title = this.hooks.replacePlaceholders(this.player, execute
                 .replace(this.getType(), "")
                 .split(";")[0]);
 

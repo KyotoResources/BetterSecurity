@@ -26,11 +26,11 @@ public class TitleExecutor extends Executors {
 
     protected void apply() {
 
-        String title = this.hooks.getPlaceholders(this.player, this.execute
+        String title = this.hooks.replacePlaceholders(this.player, this.execute
                 .replace(this.getType(), "")
                 .split(";")[0]);
 
-        String subtitle = this.hooks.getPlaceholders(this.player, this.execute
+        String subtitle = this.hooks.replacePlaceholders(this.player, this.execute
                 .replace(this.getType(), "")
                 .split(";")[1]);
 

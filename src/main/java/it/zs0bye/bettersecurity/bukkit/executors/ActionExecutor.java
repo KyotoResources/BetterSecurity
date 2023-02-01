@@ -27,7 +27,7 @@ public class ActionExecutor extends Executors {
 
     protected void apply() {
 
-        final String msg = this.hooks.getPlaceholders(this.player, this.execute
+        final String msg = this.hooks.replacePlaceholders(this.player, this.execute
                 .replace(this.getType(), "")
                 .replace("%prefix%", Config.SETTINGS_PREFIX.getString()));
 

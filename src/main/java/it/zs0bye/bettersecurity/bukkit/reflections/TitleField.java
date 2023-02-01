@@ -1,6 +1,7 @@
 package it.zs0bye.bettersecurity.bukkit.reflections;
 
-import it.zs0bye.bettersecurity.bukkit.checks.VersionCheck;
+import it.zs0bye.bettersecurity.bukkit.utils.VersionUtils;
+import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -8,6 +9,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class TitleField {
 
@@ -36,117 +38,94 @@ public class TitleField {
         this.send();
     }
 
+    @SneakyThrows
     private void send() {
 
-        if (!VersionCheck.getV1_8()
-        && !VersionCheck.getV1_9()
-        && !VersionCheck.getV1_10()) {
+        if (!VersionUtils.checkVersion(1.8, 1.9, 1.10)) {
             this.player.sendTitle(this.title, this.subtitle, this.fadein, this.stay, this.fadeout);
             return;
-            }
-
-        if (packetTitle != null) {
-            resetTitle(this.player);
-            try {
-
-                Object handle = getHandle(this.player);
-                Object connection = getField(handle.getClass(),
-                        "playerConnection").get(handle);
-                Object[] actions = packetActions.getEnumConstants();
-                Method sendPacket = getMethod(connection.getClass(),
-                        "sendPacket");
-                Object packet = packetTitle.getConstructor(packetActions,
-                        chatBaseComponent, Integer.TYPE, Integer.TYPE,
-                        Integer.TYPE).newInstance(actions[2], null,
-                        this.fadein,
-                        this.stay,
-                        this.fadeout);
-                if (this.fadein != -1 && this.fadeout != -1 && this.stay != -1)
-                    sendPacket.invoke(connection, packet);
-
-                Object serialized = nmsChatSerializer.getConstructor(
-                        String.class).newInstance(this.title);
-                packet = packetTitle.getConstructor(packetActions,
-                        chatBaseComponent).newInstance(actions[0], serialized);
-                sendPacket.invoke(connection, packet);
-                if (this.subtitle != "") {
-
-                    serialized = nmsChatSerializer.getConstructor(String.class)
-                            .newInstance(
-                                    this.subtitle);
-                    packet = packetTitle.getConstructor(packetActions,
-                            chatBaseComponent).newInstance(actions[1],
-                            serialized);
-                    sendPacket.invoke(connection, packet);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
-    }
 
-    public void resetTitle(Player player) {
-        try {
-            Object handle = getHandle(player);
-            Object connection = getField(handle.getClass(), "playerConnection")
-                    .get(handle);
-            Object[] actions = packetActions.getEnumConstants();
-            Method sendPacket = getMethod(connection.getClass(), "sendPacket");
-            Object packet = packetTitle.getConstructor(packetActions,
-                    chatBaseComponent).newInstance(actions[4], null);
+        if (packetTitle == null) return;
+        this.resetTitle(this.player);
+
+        final Object handle = this.getHandle(this.player);
+        if (handle == null) return;
+
+        final Object connection = getField(handle.getClass()).get(handle);
+        final Object[] actions = packetActions.getEnumConstants();
+        final Method sendPacket = getMethod(connection.getClass());
+        if (sendPacket == null) return;
+
+        Object packet = packetTitle.getConstructor(packetActions,
+                chatBaseComponent, Integer.TYPE, Integer.TYPE,
+                Integer.TYPE).newInstance(actions[2], null,
+                this.fadein,
+                this.stay,
+                this.fadeout);
+        if (this.fadein != -1 && this.fadeout != -1 && this.stay != -1)
             sendPacket.invoke(connection, packet);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        Object serialized = nmsChatSerializer.getConstructor(
+                String.class).newInstance(this.title);
+        packet = packetTitle.getConstructor(packetActions,
+                chatBaseComponent).newInstance(actions[0], serialized);
+        sendPacket.invoke(connection, packet);
+
+        if (this.subtitle.isEmpty()) return;
+        serialized = nmsChatSerializer.getConstructor(String.class)
+                .newInstance(
+                        this.subtitle);
+        packet = packetTitle.getConstructor(packetActions,
+                chatBaseComponent).newInstance(actions[1],
+                serialized);
+        sendPacket.invoke(connection, packet);
     }
 
+    @SneakyThrows
+    public void resetTitle(Player player) {
+        final Object handle = getHandle(player);
+        Object connection = getField(handle.getClass())
+                .get(handle);
+        Object[] actions = packetActions.getEnumConstants();
+        Method sendPacket = getMethod(connection.getClass());
+        Object packet = packetTitle.getConstructor(packetActions,
+                chatBaseComponent).newInstance(actions[4], null);
+
+        if(sendPacket == null) return;
+        sendPacket.invoke(connection, packet);
+    }
+
+    @SneakyThrows
     public  Class<?> getNMSClass(String name) {
-        try {
-            return Class.forName("net.minecraft.server."
-                    + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3] + "." + name);
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
-        }
-        return null;
+        return Class.forName("net.minecraft.server."
+                + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3] + "." + name);
     }
 
     private void loadClasses() {
-        if (!VersionCheck.getV1_8()
-                && !VersionCheck.getV1_9()
-                && !VersionCheck.getV1_10()) {
-            return;
-        }
-        if (packetTitle == null) {
-            packetTitle = getNMSClass("PacketPlayOutTitle");
-            packetActions = getNMSClass("PacketPlayOutTitle$EnumTitleAction");
-            chatBaseComponent = getNMSClass("IChatBaseComponent");
-            nmsChatSerializer = getNMSClass("ChatComponentText");
-        }
+        if (!VersionUtils.checkVersion(1.8, 1.9, 1.10)) return;
+        if (packetTitle != null) return;
+        packetTitle = this.getNMSClass("PacketPlayOutTitle");
+        packetActions = this.getNMSClass("PacketPlayOutTitle$EnumTitleAction");
+        chatBaseComponent = this.getNMSClass("IChatBaseComponent");
+        nmsChatSerializer = this.getNMSClass("ChatComponentText");
     }
 
-    private Object getHandle(Object obj) {
-        try {
-            return getMethod("getHandle", obj.getClass()).invoke(obj);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+    @SneakyThrows
+    private Object getHandle(final Object obj) {
+        return Objects.requireNonNull(this.getMethod("getHandle", obj.getClass())).invoke(obj);
     }
 
-    private Field getField(Class<?> clazz, String name) {
-        try {
-            Field field = clazz.getDeclaredField(name);
-            field.setAccessible(true);
-            return field;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+    @SneakyThrows
+    private Field getField(final Class<?> clazz) {
+        final Field field = clazz.getDeclaredField("playerConnection");
+        field.setAccessible(true);
+        return field;
     }
 
-    private Method getMethod(Class<?> clazz, String name, Class<?>... args) {
-        for (Method m : clazz.getMethods())
-            if (m.getName().equals(name)
+    private Method getMethod(final Class<?> clazz, final Class<?>... args) {
+        for (final Method m : clazz.getMethods())
+            if (m.getName().equals("sendPacket")
                     && (args.length == 0 || ClassListEqual(args,
                     m.getParameterTypes()))) {
                 m.setAccessible(true);
@@ -157,8 +136,8 @@ public class TitleField {
 
 
 
-    private Method getMethod(String name, Class<?> clazz,
-                             Class<?>... paramTypes) {
+    private Method getMethod(final String name, final Class<?> clazz,
+                             final Class<?>... paramTypes) {
         Class<?>[] t = toPrimitiveTypeArray(paramTypes);
         for (Method m : clazz.getMethods()) {
             Class<?>[] types = toPrimitiveTypeArray(m.getParameterTypes());
@@ -168,7 +147,7 @@ public class TitleField {
         return null;
     }
 
-    private Class<?>[] toPrimitiveTypeArray(Class<?>[] classes) {
+    private Class<?>[] toPrimitiveTypeArray(final Class<?>[] classes) {
         int a = classes != null ? classes.length : 0;
         Class<?>[] types = new Class<?>[a];
         for (int i = 0; i < a; i++)
@@ -176,26 +155,21 @@ public class TitleField {
         return types;
     }
 
-    private Class<?> getPrimitiveType(Class<?> clazz) {
-        return CORRESPONDING_TYPES.containsKey(clazz) ? CORRESPONDING_TYPES
-                .get(clazz) : clazz;
+    private Class<?> getPrimitiveType(final Class<?> clazz) {
+        return CORRESPONDING_TYPES.getOrDefault(clazz, clazz);
     }
 
 
-    private static boolean equalsTypeArray(Class<?>[] a, Class<?>[] o) {
-        if (a.length != o.length)
-            return false;
-        for (int i = 0; i < a.length; i++)
-            if (!a[i].equals(o[i]) && !a[i].isAssignableFrom(o[i]))
-                return false;
+    private static boolean equalsTypeArray(final Class<?>[] a, final Class<?>[] o) {
+        if (a.length != o.length) return false;
+        for (int i = 0; i < a.length; i++) if (!a[i].equals(o[i]) && !a[i].isAssignableFrom(o[i])) return false;
         return true;
     }
 
 
-    private boolean ClassListEqual(Class<?>[] l1, Class<?>[] l2) {
+    private boolean ClassListEqual(final Class<?>[] l1, final Class<?>[] l2) {
         boolean equal = true;
-        if (l1.length != l2.length)
-            return false;
+        if (l1.length != l2.length) return false;
         for (int i = 0; i < l1.length; i++)
             if (l1[i] != l2[i]) {
                 equal = false;
