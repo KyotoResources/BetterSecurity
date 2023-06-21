@@ -197,6 +197,6 @@
             <artifactId>adventure-api</artifactId>
             <version>4.14.0</version>
             <scope>compile</scope>
-        </dependency>
+        </dependency> 
     </dependencies>
 </project>
