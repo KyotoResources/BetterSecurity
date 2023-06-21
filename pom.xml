@@ -41,7 +41,6 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <outputFile>dev/${project.artifactId}-${project.version}.jar</outputFile>
                             <relocations>
                                 <relocation>
                                     <pattern>org.apache</pattern>
@@ -69,10 +68,16 @@
                 </executions>
             </plugin>
         </plugins>
+        <finalName>${project.artifactId}-${project.version}</finalName>
+        <defaultGoal>clean package</defaultGoal>
+        <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
         <resources>
             <resource>
-                <directory>src/main/resources</directory>
+                <directory>${basedir}/src/main/resources</directory>
                 <filtering>true</filtering>
+                <includes>
+                    <include>*</include>
+                </includes>
             </resource>
         </resources>
     </build>
