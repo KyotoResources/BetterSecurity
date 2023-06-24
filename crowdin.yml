@@ -12,3 +12,5 @@ targets:
 files:
   - source: src/main/resources/configs/bukkit/languages/locale.yml
     translation: /**/src/main/resources/configs/bukkit/languages/%locale_with_underscore%.yml
+  - source: src/main/resources/configs/bungee/languages/locale.yml
+    translation: /**/src/main/resources/configs/bungee/languages/%locale_with_underscore%.yml
