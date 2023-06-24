@@ -1,0 +1,6 @@
+targets:
+  - name: hhth
+    sources:
+      - f
+    file: yyuku
+    format: yaml-export
