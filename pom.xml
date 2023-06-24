@@ -68,16 +68,10 @@
                 </executions>
             </plugin>
         </plugins>
-        <finalName>${project.artifactId}-${project.version}</finalName>
-        <defaultGoal>clean package</defaultGoal>
-        <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
         <resources>
             <resource>
-                <directory>${basedir}/src/main/resources</directory>
+                <directory>src/main/resources</directory>
                 <filtering>true</filtering>
-                <includes>
-                    <include>*</include>
-                </includes>
             </resource>
         </resources>
     </build>
@@ -197,6 +191,6 @@
             <artifactId>adventure-api</artifactId>
             <version>4.14.0</version>
             <scope>compile</scope>
-        </dependency> 
+        </dependency>
     </dependencies>
 </project>

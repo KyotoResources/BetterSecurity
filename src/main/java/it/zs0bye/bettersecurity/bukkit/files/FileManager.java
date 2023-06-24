@@ -1,11 +1,13 @@
 package it.zs0bye.bettersecurity.bukkit.files;
 
+import com.google.common.io.ByteStreams;
 import it.zs0bye.bettersecurity.bukkit.BetterSecurityBukkit;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -35,6 +37,7 @@ public class FileManager {
             this.pattern = "configs/bukkit/" + directory + "/" + this.fileName + ".yml";
             this.directory = new File(this.plugin.getDataFolder(), directory);
             this.file = new File(this.directory, this.fileName + ".yml");
+            if(!this.directory.exists()) this.directory.mkdirs();
             return;
         }
         
@@ -43,7 +46,17 @@ public class FileManager {
 
     @SneakyThrows
     public FileManager saveDefaultConfig() {
-        if(!this.file.exists()) this.plugin.saveResource(this.pattern, false);
+
+        if (!this.plugin.getDataFolder().exists()) this.plugin.getDataFolder().mkdirs();
+
+        if (!this.file.exists()) {
+            final InputStream is = this.plugin.getResource(this.pattern);
+            final OutputStream os = Files.newOutputStream(this.file.toPath());
+
+            if(is == null) return this;
+            ByteStreams.copy(is, os);
+        }
+
         final CommentedConfiguration cconfig = CommentedConfiguration.loadConfiguration(this.file);
         cconfig.syncWithConfig(this.file, this.plugin.getResource(this.pattern));
         this.config = this.initConfig();

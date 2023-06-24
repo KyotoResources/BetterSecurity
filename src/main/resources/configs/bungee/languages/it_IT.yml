@@ -10,7 +10,7 @@
 #   ░         ░  ░                    ░  ░   ░              ░     ░  ░░ ░         ░        ░      ░            ░ ░
 #        ░                                                            ░                                        ░ ░
 #
-#   Version: 1.7 | BungeeCord Version
+#   Version: ${project.version} | BungeeCord Version
 #   Messages - it_IT [Italiano]
 #
 #   Wiki: https://zs0bye.gitbook.io/bettersecurity/plugins/bettersecurity
@@ -66,3 +66,5 @@ Reload_Command:
 #   |  __/ (_) \ V  V /  __/ | |  __/ (_| | | |_) | |_| | | . \ |_| | (_) | || (_) |  _ <  __/\__ \ (_) | |_| | | | (_|  __/\__ \
 #   |_|   \___/ \_/\_/ \___|_|  \___|\__,_| |_.__/ \__, | |_|\_\__, |\___/ \__\___/|_| \_\___||___/\___/ \__,_|_|  \___\___||___/
 #                                                  |___/       |___/
+# Don't change this section!
+Language_Version: '1.0'
