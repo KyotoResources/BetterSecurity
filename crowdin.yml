@@ -1,14 +1,3 @@
-targets:
-  - name: bukkit
-    sources:
-      - src/main/resources/configs/bukkit/languages /en_US.yml
-    file: src/main/resources/configs/bukkit/languages /%locale_with_underscore%.yml
-    format: yaml-export
-  - name: bungee
-    sources:
-      - src/main/resources/configs/bungee/languages /en_US.yml
-    file: src/main/resources/configs/bungee/languages /%locale_with_underscore%.yml
-    format: yaml-export
 files:
   - source: src/main/resources/configs/bukkit/languages/
     translation: /**/src/main/resources/configs/bukkit/languages/%locale_with_underscore%.yml
