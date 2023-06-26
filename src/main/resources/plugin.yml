@@ -1,7 +1,7 @@
 name: BetterSecurity
 version: '${project.version}'
 main: it.zs0bye.bettersecurity.bukkit.BetterSecurityBukkit
-softdepend: [PlaceholderAPI, ProtocolLib]
+softdepend: [PlaceholderAPI, ProtocolLib, PlugMan, PlugManX]
 api-version: 1.13
 author: zS0bye
 description: Your safety is the priority of everything!

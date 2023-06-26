@@ -107,6 +107,7 @@ public final class BetterSecurityBukkit extends JavaPlugin implements PluginMess
         this.getLogger().info(ConsoleUtils.YELLOW + "┃ Loading Hooks.." + ConsoleUtils.RESET);
 
         this.hooks = new HooksManager(this);
+        this.hooks.regPlugMan();
         this.registerProtocols();
 
         this.getLogger().info(ConsoleUtils.YELLOW + "┃ Hooks loaded successfully!" + ConsoleUtils.RESET);

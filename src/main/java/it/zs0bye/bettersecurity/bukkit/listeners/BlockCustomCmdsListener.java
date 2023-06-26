@@ -26,7 +26,6 @@ public class BlockCustomCmdsListener implements Listener {
     private List<String> regCommands;
     private List<String> executors;
     private boolean warning;
-    private Permission permission;
     private String permission_required;
     private List<String> required_players;
 
@@ -65,13 +64,7 @@ public class BlockCustomCmdsListener implements Listener {
         this.executors = Config.CUSTOM.getStringList(path + Config.BLOCK_CUSTOM_COMMANDS_EXECUTORS.getPath());
 
         if(this.contains(warning_path)) this.warning = Config.CUSTOM.getBoolean(warning_path);
-
-        if(this.contains(permission_path)) {
-            this.permission_required = Config.CUSTOM.getString(permission_path);
-            this.permission = new Permission(this.permission_required, PermissionDefault.OP);
-            this.permission.addParent("bettersecurity.bypass.*", true);
-        }
-
+        if(this.contains(permission_path)) this.permission_required = Config.CUSTOM.getString(permission_path);
         if(this.contains(required_players_path)) this.required_players = Config.CUSTOM.getStringList(required_players_path);
     }
 
@@ -86,7 +79,7 @@ public class BlockCustomCmdsListener implements Listener {
                 .toLowerCase()
                 .replaceFirst("/", "");
 
-        if(this.permission_required != null && player.hasPermission(this.permission)) return;
+        if(this.permission_required != null && player.hasPermission(this.permission_required)) return;
         if(this.required_players != null && (this.required_players.contains(player.getName()) || this.required_players.contains(player.getUniqueId().toString()))) return;
         if(this.regCommand != null && !this.regCommand.isEmpty() && !this.regCommand.equalsIgnoreCase(command)) return;
         if(this.regCommands != null && !this.regCommands.isEmpty() && !this.regCommands.contains(command)) return;

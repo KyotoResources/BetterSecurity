@@ -50,7 +50,14 @@ public class AboutSubCMD extends BaseCommand {
     protected void execute() {
 
         StringUtils.image(this.sender, this.getLegacyText());
-        this.sender.spigot().sendMessage(this.getClickableLink());
+
+        try {
+            Class.forName("org.bukkit.command.CommandSender$Spigot");
+            this.sender.spigot().sendMessage(this.getClickableLink());
+        } catch (final ClassNotFoundException e) {
+            this.sender.sendMessage(CStringUtils.center("§e§nhttps://ds.kyotoresources.space"));
+        }
+
         this.sender.sendMessage("");
 
     }
@@ -60,10 +67,10 @@ public class AboutSubCMD extends BaseCommand {
                 "",
                 "&6&lBETTER SECURITY &8‑ v" + this.plugin.getDescription().getVersion(),
                 "",
-                "&e┃ &7Rate our service by giving us",
-                "&e┃ &7a positive review &e✭✭✭✭✭&7!",
+                "&7Rate our service by giving us",
+                "&7a positive review &e✭✭✭✭✭&7!",
                 "",
-                "&6● &7Developed by &ezS0bye",
+                "&e● &7Developed by &f&nzS0bye&r",
                 "");
         return text.toArray(new String[0]);
     }
@@ -72,7 +79,7 @@ public class AboutSubCMD extends BaseCommand {
     private TextComponent getClickableLink() {
         final TextComponent text = new TextComponent(CStringUtils.center("§7‹ §e● §7› §f§l§nCLICK TO OPEN DISCORD SUPPORT§r §7‹ §e● §7›"));
         text.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§6§nClick Me!").create()));
-        text.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/FctDctBWEm"));
+        text.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://ds.kyotoresources.space"));
         return text;
     }
 

@@ -45,5 +45,9 @@ public class HooksManager {
         new HProtocolLib(this.plugin).unregisterAll();
     }
 
+    public void regPlugMan() {
+        if(this.plugin.getServer().getPluginManager().getPlugin("PlugMan") == null) return;
+        new HPlugMan(this.plugin);
+    }
 
 }
