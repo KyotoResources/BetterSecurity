@@ -14,7 +14,7 @@ public class HPlugMan {
     }
 
     @SneakyThrows
-    public void register() {
+    public void register() { 
         final PlugMan plugman = PlugMan.getInstance();
         if(plugman == null) return;
         if(plugman.getIgnoredPlugins() == null) return;
