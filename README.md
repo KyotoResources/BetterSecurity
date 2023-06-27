@@ -6,6 +6,6 @@ Resources Link:
 
 Wiki: https://zs0bye.gitbook.io/bettersecurity/plugins/bettersecurity
 
-Dev Version: https://dev.kyotoresources.space/job/BetterSecurity/
+Development builds: https://dev.kyotoresources.space/job/BetterSecurity/
 
 Discord: https://discord.gg/FctDctBWEm 
