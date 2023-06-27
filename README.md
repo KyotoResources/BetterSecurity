@@ -5,6 +5,7 @@ Resources Link:
   - https://polymart.org/resource/bettersecurity.3211
 
 Wiki: https://zs0bye.gitbook.io/bettersecurity/plugins/bettersecurity
+
 Dev Version: https://dev.kyotoresources.space/job/BetterSecurity/
 
 Discord: https://discord.gg/FctDctBWEm 
