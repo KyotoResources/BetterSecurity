@@ -118,8 +118,7 @@ public final class BetterSecurityBukkit extends JavaPlugin implements PluginMess
         this.getLogger().info("");
         this.getLogger().info(ConsoleUtils.YELLOW + "┃ Registering commands.." + ConsoleUtils.RESET);
 
-        this.getCommand("bettersecurity").setExecutor(new MainCommand(this));
-        this.getCommand("bettersecurity").setTabCompleter(new MainCommand(this));
+
 
         this.getLogger().info(ConsoleUtils.YELLOW + "┃ Commands registered successfully!" + ConsoleUtils.RESET);
     }

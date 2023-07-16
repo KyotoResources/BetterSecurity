@@ -11,11 +11,14 @@
 #        ░                                                            ░                                        ░ ░
 #
 #   Version: ${project.version} | BungeeCord Version
-#   Messages - it_IT [Italiano]
+#   Messaggi - it_IT [Italiano]
 #
-#   Do you need help?
+#   Hai bisogno di aiuto?
 #   -> https://docs.kyotoresources.space
 #
+#   Puoi usare i seguenti placeholders globali per i messaggi:
+#   - %prefix% | (Prefisso del plugin: config.yml > Settings > Prefix)
+#   - %center% | (Puoi centrare il testo)
 
 
 #  _________                              __________
@@ -37,17 +40,16 @@ update_notification: '%prefix%È disponibile un nuovo aggiornamento! (Attualment
 #
 Help_Command:
   texts:
+    - '  &6&l%plugin% &7[%version%]'
+    - '  &cVersione compatibile con &n%proxy%&r'
     - ''
-    - '&6 ┃ &e%version% ‑ %proxy%'
+    - '  &d[] &7= &7Opzionale &8┃ &c<> &7= &7Richiesto'
     - ''
-    - '&6 ┃ &d[] &7⁼ &7Opzionale'
-    - '&6 ┃ &c‹› &7⁼ &7Richiesto'
+    - '  &6/%command% help &8- &7Apri questa pagina.'
+    - '  &6/%command% about &8- &7Mostra le info del plug-in.'
+    - '  &6/%command% reload &8- &7Ricarica le configurazioni.'
     - ''
-    - '&6 ┃ &f/%command% help &7‑ &eApri questa pagina.'
-    - '&6 ┃ &f/%command% about &7‑ &eMostra le info del plug-in.'
-    - '&6 ┃ &f/%command% reload &7‑ &eRicarica le configurazioni.'
-    - ''
-    - '&6 ┃ &e%author%'
+    - '  &e%author%'
     - ''
 
 

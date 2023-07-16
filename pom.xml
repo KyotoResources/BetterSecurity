@@ -101,6 +101,14 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+        <repository>
+            <id>exceptionflug</id>
+            <url>https://mvn.exceptionflug.de/repository/exceptionflug-public/</url>
+        </repository>
+        <repository>
+            <id>Local repository</id>
+            <url>file://${basedir}\libs</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -153,6 +161,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>net.md-5</groupId>
+            <artifactId>bungeecord-proxy</artifactId>
+            <version>1.20-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>io.github.waterfallmc</groupId>
             <artifactId>waterfall-api</artifactId>
             <version>1.20-R0.1-SNAPSHOT</version>
@@ -192,6 +206,12 @@
             <groupId>com.github.ryan-clancy</groupId>
             <artifactId>PlugMan</artifactId>
             <version>adacfdc8fb</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>dev.simplix</groupId>
+            <artifactId>protocolize-api</artifactId>
+            <version>2.3.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

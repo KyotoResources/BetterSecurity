@@ -6,6 +6,7 @@ import it.zs0bye.bettersecurity.bukkit.files.enums.Lang;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.bukkit.command.CommandSender;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class HelpSubCMD extends BaseCommand {
@@ -79,10 +80,10 @@ public class HelpSubCMD extends BaseCommand {
             if(key > max) max = key;
         }
 
-        String nextPage = (page + 1) + "";
+        String nextPage = String.valueOf(page + 1);
 
-        final String currPage = page + "";
-        final String maxPage = max + "";
+        final String currPage = String.valueOf(page);
+        final String maxPage = String.valueOf(max);
 
         if(page == max) nextPage = Lang.HELP_PLACEHOLDERS_MAX_PAGE.getString();
 
@@ -91,21 +92,20 @@ public class HelpSubCMD extends BaseCommand {
             return;
         }
 
-        for(String msg : Lang.CUSTOM.getStringList(Lang.HELP_TEXTS.getPath(), "." + currPage)) {
-            sender.sendMessage(msg
-                    .replace("%command%", this.alias)
-                    .replace("%server%", this.plugin.getServer().getName())
-                    .replace("%version%", this.version())
-                    .replace("%author%", this.author())
-                    .replace("%page%", currPage)
-                    .replace("%nextpage%", nextPage)
-                    .replace("%maxpage%", maxPage));
-        }
+        String finalNextPage = nextPage;
+        Lang.CUSTOM.sendList(sender,
+                new HashMap<String, String>() {{
+                    put("%command%", alias);
+                    put("%server%", plugin.getServer().getName());
+                    put("%plugin%", plugin.getName());
+                    put("%version%", "v" + plugin.getDescription().getVersion());
+                    put("%author%", author());
+                    put("%page%", currPage);
+                    put("%nextpage%", finalNextPage);
+                    put("%maxpage%", maxPage);
+                }},
+                Lang.HELP_TEXTS.getPath(), "." + currPage);
 
-    }
-
-    private String version() {
-        return "BetterSecurity v" + this.plugin.getDescription().getVersion();
     }
 
     private String author() {

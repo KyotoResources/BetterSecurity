@@ -159,10 +159,9 @@ public enum Config implements IFiles {
     }
 
     @Override
-    public String getCustomString(final String... var) {
-
-        if (this.getString(var).startsWith("%prefix%")) {
-            String replace = this.getString(var).replace("%prefix%", Config.SETTINGS_PREFIX.getString());
+    public String getCustomString(String replace, final String... var) {
+        if (replace.startsWith("%prefix%")) {
+            replace = replace.replace("%prefix%", Config.SETTINGS_PREFIX.getString());
             if (replace.startsWith(Config.SETTINGS_PREFIX.getString() + "%center%")) {
                 replace = replace.replace("%center%", "");
                 return CStringUtils.center(replace);
@@ -170,18 +169,43 @@ public enum Config implements IFiles {
             return replace;
         }
 
-        if(this.getString(var).startsWith("%center%")) {
-            final String replace = this.getString(var).replace("%center%", "");
+        if(replace.startsWith("%center%")) {
+            replace = replace.replace("%center%", "");
             return CStringUtils.center(replace);
         }
+        return replace;
+    }
 
-        return this.getString(var);
+    @Override
+    public String getCustomString(final String... var) {
+        return this.getCustomString(this.getString(var), var);
     }
 
     @Override
     public void send(final CommandSender sender, final String... var) {
-        if (this.getCustomString(var).isEmpty()) return;
-        sender.sendMessage(this.getCustomString(var));
+        this.send(sender, new HashMap<>(), var);
+    }
+
+    @Override
+    public void send(final CommandSender sender, final Map<String, String> placeholders, final String... var) {
+        String message = this.getCustomString(this.getString(var), var);
+        if (message.isEmpty()) return;
+        for (String key : placeholders.keySet()) message = message.replace(key, placeholders.get(key));
+        sender.sendMessage(message);
+    }
+
+    @Override
+    public void sendList(final CommandSender sender, final String... var) {
+        this.sendList(sender, new HashMap<>(), var);
+    }
+
+    @Override
+    public void sendList(final CommandSender sender, final Map<String, String> placeholders, final String... var) {
+        if (this.getStringList(var).isEmpty()) return;
+        this.getStringList(var).forEach(msg -> {
+            for (String key : placeholders.keySet()) msg = msg.replace(key, placeholders.get(key));
+            sender.sendMessage(this.getCustomString(msg, var));
+        });
     }
 
     @SuppressWarnings("all")

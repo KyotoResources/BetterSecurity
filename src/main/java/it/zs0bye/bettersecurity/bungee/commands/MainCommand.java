@@ -9,6 +9,7 @@ import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,8 +22,8 @@ public class MainCommand extends Command implements TabExecutor {
         this.plugin = plugin;
     }
 
-    private boolean checkArgs(final String args, final String check) {
-        return !args.equalsIgnoreCase(check);
+    private boolean checkArgs(final String[] args, final String... commands) {
+        return Arrays.stream(commands).anyMatch(args[0]::equalsIgnoreCase);
     }
 
     @Override
@@ -42,10 +43,8 @@ public class MainCommand extends Command implements TabExecutor {
             new ReloadSubCMD(this.getName(), args, sender, this.plugin);
             new AboutSubCMD(this.getName(), args, sender, this.plugin);
 
-            if(checkArgs(args[0], "reload")
-                    && checkArgs(args[0], "about"))
-                new HelpSubCMD(this.getName(), sender,this.plugin);
-
+            if(checkArgs(args, "reload", "about")) return;
+            new HelpSubCMD(this.getName(), sender,this.plugin);
             return;
         }
 

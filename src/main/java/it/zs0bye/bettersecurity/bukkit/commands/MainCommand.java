@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -26,8 +27,8 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         this.command = "bettersecurity";
     }
 
-    private boolean checkArgs(final String args, final String check) {
-        return !args.equalsIgnoreCase(check);
+    private boolean checkArgs(final String[] args, final String... commands) {
+        return Arrays.stream(commands).anyMatch(args[0]::equalsIgnoreCase);
     }
 
     @Override
@@ -49,19 +50,16 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             new ReloadSubCMD(this.command, args, sender, this.plugin);
             new AboutSubCMD(this.command, args, sender, this.plugin);
 
-            if(checkArgs(args[0], "reload")
-                    && checkArgs(args[0], "about"))
-                new HelpSubCMD(this.command, sender, commandLabel, this.plugin);
-
+            if(checkArgs(args, "reload", "about")) return true;
+            new HelpSubCMD(this.command, sender, commandLabel, this.plugin);
             return true;
         }
 
         if(args.length == 2) {
             new HelpSubCMD(this.command, args, sender, commandLabel, this.plugin);
 
-            if(checkArgs(args[0], "help"))
-                new HelpSubCMD(this.command, sender, commandLabel, this.plugin);
-
+            if(checkArgs(args, "help")) return true;
+            new HelpSubCMD(this.command, sender, commandLabel, this.plugin);
             return true;
         }
 

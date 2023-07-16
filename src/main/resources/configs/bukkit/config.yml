@@ -48,6 +48,7 @@
 # Example: executors: []
 #
 # You can use the following placeholders in all executors:
+# - %prefix% | (Plugin prefix: Settings > Prefix)
 # - %player% | (Name of the player who attempted to execute the command)
 # - %command% | (The command that was blocked)
 # - %unknown_command% | (The spigot.yml unknown command message will be displayed)
@@ -61,7 +62,7 @@
 #  \____/  \___//_/ /_/\___//_/    \__,_/ /_/
 #
 Settings:
-  prefix: '&eBetterSecurity ┃ &7'
+  prefix: '&6BetterSecurity &8┃ &7'
   # Available languages: en_US, it_IT
   locale: en_US
   check_update:
@@ -214,14 +215,14 @@ Warnings:
       # You can use the following placeholders:
       # - %command% | (The command that was blocked)
       format:
-        - '[MESSAGE] &e&l⚠ ┃ &b%player% &7attempted to execute the command: &c%command%'
+        - '[MESSAGE] &e[%server_name%] &f%player% &7attempted to execute the command > &c%command%'
       console: '%player% attempted to execute the command: %command%'
     port_bypass_prevention:
       # You can use the following placeholders:
       # - %port% | (Port where it is trying to login)
       # - %ip% | (IP where you are trying to login)
       format:
-        - '[MESSAGE] &e&l⚠ ┃ &b%player% &7tried to enter via port &a%port%&7 with the IP: &c%ip%'
+        - '[MESSAGE] &e[%server_name%] &f%player% &7tried to enter via port > &b%port% &7(&d%ip%&7)'
       console: '%player% tried to enter via port %port% with the IP: %ip%'
 
 

@@ -5,31 +5,34 @@ import it.zs0bye.bettersecurity.bungee.files.IFiles;
 import it.zs0bye.bettersecurity.bungee.utils.StringUtils;
 import it.zs0bye.bettersecurity.common.utils.CStringUtils;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.config.Configuration;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public enum Config implements IFiles {
     CUSTOM(""),
     SETTINGS_LOCALE("Settings.locale"),
     SETTINGS_PREFIX("Settings.prefix"),
     SETTINGS_CHECK_UPDATE("Settings.check_update"),
-    BLOCK_TAB_COMPLETE_ENABLED("Block_Tab_Complete.enabled"),
-    BLOCK_TAB_COMPLETE_WATERFALL_PREVENTION("Block_Tab_Complete.waterfall_prevention"),
-    BLOCK_TAB_COMPLETE_BLACKLISTED_SUGGESTIONS("Block_Tab_Complete.blacklisted_suggestions"),
-    BLOCK_TAB_COMPLETE_BYPASS_METHOD("Block_Tab_Complete.bypass.method"),
-    BLOCK_TAB_COMPLETE_BYPASS_PLAYERS("Block_Tab_Complete.bypass.players"),
-    BLOCK_TAB_COMPLETE_WHITELISTED_SUGGESTIONS_ENABLED("Block_Tab_Complete.whitelisted_suggestions.enabled"),
-    BLOCK_TAB_COMPLETE_WHITELISTED_SUGGESTIONS_PARTIAL_MATCHES("Block_Tab_Complete.whitelisted_suggestions.partial_matches"),
-    BLOCK_TAB_COMPLETE_WHITELISTED_SUGGESTIONS_ENABLED_GROUPS("Block_Tab_Complete.whitelisted_suggestions.enabled_groups"),
-    BLOCK_TAB_COMPLETE_WHITELISTED_SUGGESTIONS_GROUPS("Block_Tab_Complete.whitelisted_suggestions.groups"),
-    BLOCK_TAB_COMPLETE_WHITELISTED_SUGGESTIONS_GROUPS_SUGGESTIONS(".suggestions"),
-    BLOCK_TAB_COMPLETE_WHITELISTED_SUGGESTIONS_GROUPS_REQUIRED_SERVER(".required_server"),
-    BLOCK_TAB_COMPLETE_WHITELISTED_SUGGESTIONS_GROUPS_REQUIRED_PERMISSION(".required_permission"),
-    BLOCK_TAB_COMPLETE_WHITELISTED_SUGGESTIONS_GROUPS_REQUIRED_PLAYERS(".required_players"),
-    BLOCK_TAB_COMPLETE_WHITELISTED_SUGGESTIONS_GROUPS_IGNORE_SERVERS(".ignore_servers"),
+    MANAGE_TAB_COMPLETE_ENABLED("Manage_Tab_Complete.enabled"),
+    MANAGE_TAB_COMPLETE_WATERFALL_PREVENTION("Manage_Tab_Complete.waterfall_prevention"),
+    MANAGE_TAB_COMPLETE_PARTIAL_MATCHES("Manage_Tab_Complete.partial_matches"),
+    MANAGE_TAB_COMPLETE_SUGGESTIONS("Manage_Tab_Complete.suggestions"),
+    MANAGE_TAB_COMPLETE_METHOD("Manage_Tab_Complete.method"),
+    MANAGE_TAB_COMPLETE_BYPASS_METHOD("Manage_Tab_Complete.bypass.method"),
+    MANAGE_TAB_COMPLETE_BYPASS_PLAYERS("Manage_Tab_Complete.bypass.players"),
+    MANAGE_TAB_COMPLETE_GROUPS_MODE_ENABLED("Manage_Tab_Complete.groups_mode.enabled"),
+    MANAGE_TAB_COMPLETE_GROUPS_FORCED_BYPASS("Manage_Tab_Complete.groups_mode.forced_bypass"),
+    MANAGE_TAB_COMPLETE_GROUPS_MODE_ENABLED_GROUPS("Manage_Tab_Complete.groups_mode.enabled_groups"),
+    MANAGE_TAB_COMPLETE_GROUPS_MODE_GROUPS("Manage_Tab_Complete.groups_mode.groups"),
+    MANAGE_TAB_COMPLETE_GROUPS_MODE_GROUPS_PRIORITY(".priority"),
+    MANAGE_TAB_COMPLETE_GROUPS_MODE_GROUPS_METHOD(".method"),
+    MANAGE_TAB_COMPLETE_GROUPS_MODE_GROUPS_SUGGESTIONS(".suggestions"),
+    MANAGE_TAB_COMPLETE_GROUPS_MODE_GROUPS_REQUIRED_SERVERS(".required_servers"),
+    MANAGE_TAB_COMPLETE_GROUPS_MODE_GROUPS_REQUIRED_PERMISSION(".required_permission"),
+    MANAGE_TAB_COMPLETE_GROUPS_MODE_GROUPS_REQUIRED_PLAYERS(".required_players"),
+    MANAGE_TAB_COMPLETE_GROUPS_MODE_GROUPS_IGNORE_SERVERS(".ignore_servers"),
     WARNINGS_PROXY("Warnings.proxy"),
     WARNINGS_FORMATS_CMDS_FORMAT("Warnings.formats.commands.format"),
     WARNINGS_FORMATS_CMDS_CONSOLE("Warnings.formats.commands.console"),
@@ -89,6 +92,10 @@ public enum Config implements IFiles {
         return StringUtils.colorize(this.config.getString(this.variables(var)));
     }
 
+    public Object getObject(final String... var) {
+        return this.config.get(this.variables(var));
+    }
+
     @Override
     public List<String> getStringList(final String... var) {
         List<String> list = new ArrayList<>();
@@ -114,10 +121,9 @@ public enum Config implements IFiles {
     }
 
     @Override
-    public String getCustomString(final String... var) {
-
-        if (this.getString(var).startsWith("%prefix%")) {
-            String replace = this.getString(var).replace("%prefix%", Config.SETTINGS_PREFIX.getString());
+    public String getCustomString(String replace, final String... var) {
+        if (replace.startsWith("%prefix%")) {
+            replace = replace.replace("%prefix%", Config.SETTINGS_PREFIX.getString());
             if (replace.startsWith(Config.SETTINGS_PREFIX.getString() + "%center%")) {
                 replace = replace.replace("%center%", "");
                 return CStringUtils.center(replace);
@@ -125,18 +131,43 @@ public enum Config implements IFiles {
             return replace;
         }
 
-        if(this.getString(var).startsWith("%center%")) {
-            final String replace = this.getString(var).replace("%center%", "");
+        if(replace.startsWith("%center%")) {
+            replace = replace.replace("%center%", "");
             return CStringUtils.center(replace);
         }
+        return replace;
+    }
 
-        return this.getString(var);
+    @Override
+    public String getCustomString(final String... var) {
+        return this.getCustomString(this.getString(var), var);
     }
 
     @Override
     public void send(final CommandSender sender, final String... var) {
-        if (this.getCustomString(var).isEmpty()) return;
-        StringUtils.send(sender, this.getCustomString(var));
+        this.send(sender, new HashMap<>(), var);
+    }
+
+    @Override
+    public void send(final CommandSender sender, final Map<String, String> placeholders, final String... var) {
+        String message = this.getCustomString(this.getString(var), var);
+        if (message.isEmpty()) return;
+        for (String key : placeholders.keySet()) message = message.replace(key, placeholders.get(key));
+        StringUtils.send(sender, message);
+    }
+
+    @Override
+    public void sendList(final CommandSender sender, final String... var) {
+        this.sendList(sender, new HashMap<>(), var);
+    }
+
+    @Override
+    public void sendList(final CommandSender sender, final Map<String, String> placeholders, final String... var) {
+        if (this.getStringList(var).isEmpty()) return;
+        this.getStringList(var).forEach(msg -> {
+            for (String key : placeholders.keySet()) msg = msg.replace(key, placeholders.get(key));
+            sender.sendMessage(TextComponent.fromLegacyText(this.getCustomString(msg, var)));
+        });
     }
 
     @Override

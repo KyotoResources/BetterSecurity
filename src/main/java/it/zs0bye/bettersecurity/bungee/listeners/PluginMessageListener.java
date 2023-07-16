@@ -37,7 +37,7 @@ public class PluginMessageListener implements Listener {
         final String player = in.readUTF();
         final String command = in.readUTF();
 
-        this.plugin.getProxy().getServersCopy().keySet().forEach(server -> {
+        this.plugin.getProxy().getServers().keySet().forEach(server -> {
             final ServerInfo serverInfo = this.plugin.getProxy().getServerInfo(server);
 
             final ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -60,7 +60,7 @@ public class PluginMessageListener implements Listener {
         final String port = in.readUTF();
         final String ip = in.readUTF();
 
-        this.plugin.getProxy().getServersCopy().keySet().forEach(server -> {
+        this.plugin.getProxy().getServers().keySet().forEach(server -> {
             final ServerInfo serverInfo = this.plugin.getProxy().getServerInfo(server);
 
             final ByteArrayOutputStream stream = new ByteArrayOutputStream();

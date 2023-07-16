@@ -16,6 +16,9 @@
 #   Do you need help?
 #   -> https://docs.kyotoresources.space
 #
+#   You can use the following global placeholders for messages:
+#   - %prefix% | (Plugin prefix: config.yml > Settings > Prefix)
+#   - %center% | (You can center text)
 
 
 #  _________                              ______
@@ -38,16 +41,16 @@ update_notification: '%prefix%A new update is available! (You currently have: &c
 Help_Command:
   texts:
     - ''
-    - '&6 ┃ &e%version% ‑ %proxy%'
+    - '  &6&l%plugin% &7[%version%]'
+    - '  &cVersion compatible with &n%proxy%&r'
     - ''
-    - '&6 ┃ &d[] &7⁼ &7Optional'
-    - '&6 ┃ &c‹› &7⁼ &7Required'
+    - '  &d[] &7= &7Optional &8┃ &c<> &7= &7Required'
     - ''
-    - '&6 ┃ &f/%command% help &7‑ &eOpen this page.'
-    - '&6 ┃ &f/%command% about &7‑ &eShow plug-in info.'
-    - '&6 ┃ &f/%command% reload &7‑ &eReload configurations.'
+    - '  &6/%command% help &8- &7Open this page.'
+    - '  &6/%command% about &8- &7Show plug-in info.'
+    - '  &6/%command% reload &8- &7Reload configurations.'
     - ''
-    - '&6 ┃ &e%author%'
+    - '  &e%author%'
     - ''
 
 
