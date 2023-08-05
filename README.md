@@ -8,4 +8,4 @@ Wiki: https://zs0bye.gitbook.io/bettersecurity/plugins/bettersecurity
 
 Development builds: https://dev.kyotoresources.space/job/BetterSecurity/
 
-Discord: https://discord.gg/FctDctBWEm 
+Discord: https://ds.kyotoresources.space
