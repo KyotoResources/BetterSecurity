@@ -166,7 +166,7 @@
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-proxy</artifactId>
             <version>1.20-R0.1-SNAPSHOT</version>
-            <systemPath>${basedir}\libs\bungeecord-proxy-1.20-R0.1.jar</systemPath>
+            <systemPath>${basedir}/libs/bungeecord-proxy-1.20-R0.1.jar</systemPath>
             <scope>system</scope>
         </dependency>
         <dependency>
