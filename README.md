@@ -6,4 +6,4 @@ Resources Link:
 
 Wiki: https://zs0bye.gitbook.io/bettersecurity/plugins/bettersecurity
 
-Discord: https://dev.kyotoresources.space 
+Discord: https://ds.kyotoresources.space 
