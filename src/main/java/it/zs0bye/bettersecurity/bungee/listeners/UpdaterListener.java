@@ -18,7 +18,7 @@ public class UpdaterListener implements Listener {
     @EventHandler
     public void onJoin(final ServerConnectEvent event) {
         final ProxiedPlayer player = event.getPlayer();
-        if(!player.hasPermission("bettersecuritybungee.updatenotify")) return;
+        if(!player.hasPermission("bettersecurity.updatenotify")) return;
         if(this.plugin.getUpdateMsg() == null) return;
         StringUtils.send(player, this.plugin.getUpdateMsg());
     }

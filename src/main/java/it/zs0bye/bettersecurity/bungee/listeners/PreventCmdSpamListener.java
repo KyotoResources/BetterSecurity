@@ -46,7 +46,7 @@ public class PreventCmdSpamListener implements Listener {
 
         final int delay = Config.PREVENT_COMMAND_SPAM_DELAY.getInt();
 
-        if(player.hasPermission("bettersecuritybungee.bypass.cmdspam")) return;
+        if(player.hasPermission("bettersecurity.bypass.cmdspam")) return;
         if(this.canBlock(command)) return;
 
         if(cooldowns.containsKey(player)) {

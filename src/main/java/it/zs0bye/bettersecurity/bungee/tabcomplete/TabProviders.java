@@ -8,45 +8,46 @@ import java.util.*;
 
 public abstract class TabProviders {
 
-    protected List<String> legacy(final Method method, final String completion, final List<String> suggestions, final List<String> commands, final Cancellable cancelled) {
-        final List<String> newsuggestions = new ArrayList<>();
-        suggestions.forEach(suggestion->  {
-            if (method.get()) {
-                if (!completion.startsWith("/" + suggestion)) return;
+    protected Set<String> legacy(final MethodType methodType, final String completion, final Set<String> newsuggestions, final List<String> oldsuggestions, final List<String> commands, final Cancellable cancelled) {
+        String firstcompletion = completion.contains(" ") ? completion.split(" ")[0] : completion;
+        firstcompletion = firstcompletion.replaceFirst("/", "");
+        final Method method = new Method(methodType, oldsuggestions, firstcompletion);
+        for(final String suggestion : oldsuggestions) {
+
+            if (methodType == MethodType.BLACKLIST && method.contains()) {
                 commands.clear();
                 cancelled.setCancelled(true);
             }
 
-            if (!completion.startsWith("/") || completion.contains(" ")) return;
-            if (completion.startsWith("/" + suggestion)) return;
-            commands.clear();
-
-            if (newsuggestions.contains(suggestion)) return;
-            newsuggestions.add("/" + suggestion);
-        });
-        return newsuggestions;
-    }
-
-    protected void waterfall(final Method method, final List<String> suggestions, final Iterator<String> iterator) {
-        while (iterator.hasNext()) {
-            final String command = iterator.next();
-            method.setCommand(command);
-            if ((method.get() && !suggestions.contains(command))
-                    || (!method.get() && suggestions.contains(command))) return;
-            iterator.remove();
-        }
-    }
-
-    protected Map<String, String> childrens(final Method method, final List<String> suggestions) {
-        final Map<String, String> newsuggestions = new HashMap<>();
-        for (final String suggestion : suggestions) {
-            if (method.getType() == MethodType.BLACKLIST || newsuggestions.containsKey(suggestion)) {
-                newsuggestions.remove(suggestion);
+            if (!completion.startsWith("/")) break;
+            if (!completion.contains(" ")) cancelled.setCancelled(false);
+            if (completion.startsWith("/" + suggestion) || completion.contains(" ")) {
+                if (methodType == MethodType.WHITELIST && method.contains()) cancelled.setCancelled(false);
                 break;
             }
-            newsuggestions.put(suggestion, "");
+
+            this.childrens(true, method, newsuggestions, suggestion);
+        }
+
+        return newsuggestions;
+    }
+
+    protected Set<String> childrens(final Method method, final Set<String> newsuggestions, final List<String> oldsuggestions) {
+        for (String suggestion : oldsuggestions) {
+            this.childrens(false, method, newsuggestions, suggestion);
         }
         return newsuggestions;
+    }
+
+    protected void childrens(final boolean legacy, final Method method, final Set<String> newsuggestions, String suggestion) {
+        method.setCommand(suggestion);
+        suggestion = legacy ? "/" + suggestion : suggestion;
+        if(!method.contains()) return;
+        if (method.getType() == MethodType.BLACKLIST && method.contains() || newsuggestions.contains(suggestion)) {
+            newsuggestions.remove(suggestion);
+            return;
+        }
+        newsuggestions.add(suggestion);
     }
 
 }

@@ -4,7 +4,6 @@ import it.zs0bye.bettersecurity.bungee.commands.MainCommand;
 import it.zs0bye.bettersecurity.bungee.files.FileManager;
 import it.zs0bye.bettersecurity.bungee.files.enums.Config;
 import it.zs0bye.bettersecurity.bungee.files.enums.Lang;
-import it.zs0bye.bettersecurity.bungee.hooks.HooksManager;
 import it.zs0bye.bettersecurity.bungee.listeners.*;
 import it.zs0bye.bettersecurity.common.updater.UpdateType;
 import it.zs0bye.bettersecurity.common.updater.VandalUpdater;
@@ -25,7 +24,6 @@ public class BetterSecurityBungee extends Plugin {
     private FileManager configFile;
     private FileManager languagesFile;
     private BungeeAudiences adventure;
-    private HooksManager hooks;
 
     private String updateMsg;
 
@@ -55,7 +53,6 @@ public class BetterSecurityBungee extends Plugin {
         this.getLogger().info(ConsoleUtils.YELLOW + "┃ Current version v" + this.getDescription().getVersion() + " ● Running on " + this.getProxy().getName() + ConsoleUtils.RESET);
 
         this.loadFiles();
-        this.loadHooks();
 
         this.loadCommands();
         this.loadListeners();
@@ -105,22 +102,10 @@ public class BetterSecurityBungee extends Plugin {
         this.getProxy().getPluginManager().registerListener(this, new PluginMessageListener(this));
         this.getProxy().getPluginManager().registerListener(this, new ManageTabCompleteListener(this));
         this.getProxy().getPluginManager().registerListener(this, new PreventCmdSpamListener(this));
-        this.getProxy().getPluginManager().registerListener(this, new CommandsPacketListener(this));
-
-        if(Config.MANAGE_TAB_COMPLETE_WATERFALL_PREVENTION.getBoolean())
-            this.getProxy().getPluginManager().registerListener(this, new WaterTabCompleteListener(this));
+        this.getProxy().getPluginManager().registerListener(this, new PacketsListener(this));
+        WaterTabCompleteListener.register(this);
 
         this.getLogger().info(ConsoleUtils.YELLOW + "┃ Events registered successfully!" + ConsoleUtils.RESET);
-    }
-
-    private void loadHooks() {
-        this.getLogger().info("");
-        this.getLogger().info(ConsoleUtils.YELLOW + "┃ Loading Hooks.." + ConsoleUtils.RESET);
-
-        this.hooks = new HooksManager(this);
-//        this.hooks.registerTabPacket();
-
-        this.getLogger().info(ConsoleUtils.YELLOW + "┃ Hooks loaded successfully!" + ConsoleUtils.RESET);
     }
 
     private void loadUpdater() {
@@ -134,6 +119,5 @@ public class BetterSecurityBungee extends Plugin {
             this.getProxy().getPluginManager().registerListener(this, new UpdaterListener(this));
         }, 20L, 30 * 60, TimeUnit.SECONDS);
     }
-
 
 }

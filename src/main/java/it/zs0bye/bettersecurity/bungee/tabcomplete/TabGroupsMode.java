@@ -23,71 +23,53 @@ public class TabGroupsMode extends TabProviders {
         this.tab = tab;
     }
 
-    private boolean hasBypass() {
-        return false;
-    }
-
     private MethodType getMethodType(final TabGroup group) {
         return this.tab.getMethodType(group.getMethodPath(), group.getName(), group.getPermission());
     }
 
     public void initTabLegacy(final List<String> commands, final String completion, final Cancellable cancelled) {
 
-        final List<String> suggestions = new ArrayList<>();
+        final Set<String> suggestions = new HashSet<>();
+        cancelled.setCancelled(true);
 
-//        grouploop:
-//        for (final TabGroup group : TabGroupsMode.groups(player)) {
-//            final Method method = new Method(this.getMethodType(group), group.getSuggestions(), completion);
-//
-//            for(final String suggestion : group.getSuggestions()) {
-//                if (method.get()) {
-//                    if (!completion.startsWith("/" + suggestion)) continue grouploop;
-//                    commands.clear();
-//                    cancelled.setCancelled(true);
-//                }
-//
-//                if (!completion.startsWith("/") || completion.contains(" ")) continue grouploop;
-//                if (completion.startsWith("/" + suggestion)) continue grouploop;
-//                commands.clear();
-//
-//                if (newsuggestions.contains(suggestion)) continue grouploop;
-//                newsuggestions.add("/" + suggestion);
-//            }
-//        }
+        TabGroupsMode.groups(player).forEach(group -> suggestions.addAll(this.legacy(this.getMethodType(group), completion, suggestions, group.getSuggestions(), commands, cancelled)));
 
-        TabGroupsMode.groups(player).forEach(group ->
-                suggestions.addAll(this.legacy(new Method(this.getMethodType(group), group.getSuggestions(), completion),
-                completion,
-                group.getSuggestions(),
-                commands,
-                cancelled)));
+        if(!suggestions.isEmpty()) {
+            commands.addAll(Config.MANAGE_TAB_COMPLETE_PARTIAL_MATCHES.getBoolean() ?
+                    CStringUtils.copyPartialMatches(completion, suggestions) :
+                    suggestions);
+            return;
+        }
 
-        commands.addAll(Config.MANAGE_TAB_COMPLETE_PARTIAL_MATCHES.getBoolean() ?
-                CStringUtils.copyPartialMatches(completion, suggestions) :
-                suggestions);
-
-        if (!suggestions.isEmpty()) return;
+        if(completion.contains(" ")) return;
         commands.clear();
         cancelled.setCancelled(true);
     }
 
-    public void initTabWaterfall(final Iterator<String> iterator) {
-        TabGroupsMode.groups(player).forEach(group ->
-                this.waterfall(new Method(this.getMethodType(group), group.getSuggestions(), null),
-                group.getSuggestions(), iterator));
+    public void initTabWaterfall(final Set<String> suggestions) {
+        final Set<String> newsuggestions = new HashSet<>();
+
+        TabGroupsMode.groups(player).forEach(group -> newsuggestions.addAll(this.childrens(new Method(this.getMethodType(group), group.getSuggestions(), null),
+                newsuggestions,
+                new ArrayList<>(suggestions))));
+
+        final Iterator<String> iterator = suggestions.iterator();
+        while (iterator.hasNext()) {
+            final String command = iterator.next();
+            if(!newsuggestions.isEmpty() && newsuggestions.contains(command)) continue;
+            iterator.remove();
+        }
     }
 
     public void initTabChildren(final Collection<CommandNode<?>> childrens) {
-        final Map<String, String> suggestions = new HashMap<>();
-        final List<TabGroup> groups = TabGroupsMode.groups(player);
+        final Set<String> suggestions = new HashSet<>();
 
-        for (int i = groups.size() - 1; i >= 0; i--) {
-            final TabGroup group = groups.get(i);
-            suggestions.putAll(this.childrens(new Method(this.getMethodType(group), group.getSuggestions(), null), group.getSuggestions()));
-        }
+        final List<String> childrensName = new ArrayList<>();
+        for(final CommandNode<?> node : childrens) childrensName.add(node.getName());
+        TabGroupsMode.groups(player).forEach(group -> suggestions.addAll(this.childrens(new Method(this.getMethodType(group), group.getSuggestions(), null), suggestions, childrensName)));
 
         childrens.removeIf(node -> {
-            for(final String suggestion : suggestions.keySet()) {
+            for(final String suggestion : suggestions) {
                 if(node.getName().equalsIgnoreCase(suggestion)) return false;
             }
             return true;
@@ -111,10 +93,19 @@ public class TabGroupsMode extends TabProviders {
         final Map<Integer, TabGroup> map = new HashMap<>();
         for(final String egroup : enabledGroups()) {
             final TabGroup group = new TabGroup(plugin, egroup, player, new TabComplete(plugin, player));
+            if(hasDuplications(plugin, group, map)) break;
             map.put(group.getPriority(), group);
         }
         for(final Integer priority : map.keySet()) groups.add(map.get(priority));
+        Collections.reverse(groups);
         return groups;
+    }
+
+    private static boolean hasDuplications(final BetterSecurityBungee plugin, final TabGroup group, final Map<Integer, TabGroup> map) {
+        final int priority = group.getPriority();
+        if(!map.containsKey(priority)) return false;
+        plugin.getLogger().severe("Group \"" + group.getName() + "\" contains a duplicate priority (" + priority + "). Please set a different priority for all groups.");
+        return true;
     }
 
 }

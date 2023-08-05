@@ -5,11 +5,11 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public enum MethodType {
     BLACKLIST("BLACKLIST"),
     WHITELIST("WHITELIST");
 
-    @Getter
     private final String name;
 
     MethodType(final String name) {

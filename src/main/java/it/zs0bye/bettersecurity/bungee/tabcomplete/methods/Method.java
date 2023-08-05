@@ -15,10 +15,8 @@ public class Method {
     private List<String> suggestions;
     private String command;
 
-    public boolean get() {
-        if (this.type == MethodType.BLACKLIST) return !this.suggestions.contains(this.command);
-        if (this.type == MethodType.WHITELIST) return this.suggestions.contains(this.command);
-        return true;
+    public boolean contains() {
+        return this.suggestions.contains(this.command);
     }
 
 }

@@ -21,10 +21,7 @@ public class ManageTabCompleteListener implements Listener {
     @EventHandler
     public void onTabComplete(final TabCompleteEvent event) {
         if(!Config.MANAGE_TAB_COMPLETE_ENABLED.getBoolean()) return;
-
         final ProxiedPlayer player = (ProxiedPlayer) event.getSender();
-        if(player.hasPermission("bettersecurity.bypass.tab")) return;
-
         final String completion = event.getCursor();
         final List<String> commands = event.getSuggestions();
         new TabComplete(this.plugin, player).applyTabLegacy(commands, completion, event);

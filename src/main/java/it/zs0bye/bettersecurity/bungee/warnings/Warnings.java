@@ -24,7 +24,7 @@ public class Warnings {
         this.player = player;
         this.type = type;
         this.values = values;
-        this.permission = "bettersecuritybungee.broadcast.warnings";
+        this.permission = "bettersecurity.broadcast.warnings";
         this.placeholders.put("%player%", this.player.getName());
         this.placeholders.put("%server%", this.player.getServer().getInfo().getName());
         this.sendWarningCmds();

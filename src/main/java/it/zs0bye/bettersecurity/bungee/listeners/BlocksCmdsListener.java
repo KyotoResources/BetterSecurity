@@ -49,7 +49,7 @@ public class BlocksCmdsListener implements Listener {
 
         if(!Config.BLOCKS_COMMANDS_FORCE_CHECK.getBoolean() && event.isCancelled()) return;
 
-        if(player.hasPermission("bettersecuritybungee.bypass.blockscmds")) return;
+        if(player.hasPermission("bettersecurity.bypass.blockscmds")) return;
         if(this.canBlock(command, player)) return;
 
         SendExecutors.send(this.plugin, this.getExecutors(command, player), player, this.placeholders);
