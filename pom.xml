@@ -46,6 +46,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
                             <relocations>
                                 <relocation>
                                     <pattern>org.apache</pattern>
@@ -110,10 +111,6 @@
             <id>exceptionflug</id>
             <url>https://mvn.exceptionflug.de/repository/exceptionflug-public/</url>
         </repository>
-        <repository>
-            <id>Local repository</id>
-            <url>file://${basedir}\libs</url>
-        </repository>
     </repositories>
 
     <dependencies>
@@ -169,7 +166,8 @@
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-proxy</artifactId>
             <version>1.20-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
+            <systemPath>${basedir}\libs\bungeecord-proxy-1.20-R0.1.jar</systemPath>
+            <scope>system</scope>
         </dependency>
         <dependency>
             <groupId>io.github.waterfallmc</groupId>
