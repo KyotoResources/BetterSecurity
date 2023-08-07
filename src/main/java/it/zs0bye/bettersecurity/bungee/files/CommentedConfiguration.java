@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package it.zs0bye.bettersecurity.bukkit.files;
+package it.zs0bye.bettersecurity.bungee.files;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
