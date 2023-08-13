@@ -17,7 +17,7 @@
 
 package it.zs0bye.bettersecurity.bungee.executors;
 
-import it.zs0bye.bettersecurity.bungee.files.enums.Config;
+import it.zs0bye.bettersecurity.bungee.files.readers.Config;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 

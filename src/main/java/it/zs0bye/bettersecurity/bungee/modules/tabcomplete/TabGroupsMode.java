@@ -15,13 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package it.zs0bye.bettersecurity.bungee.tabcomplete;
+package it.zs0bye.bettersecurity.bungee.modules.tabcomplete;
 
 import com.mojang.brigadier.tree.CommandNode;
 import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
-import it.zs0bye.bettersecurity.bungee.files.enums.Config;
-import it.zs0bye.bettersecurity.bungee.tabcomplete.methods.Method;
-import it.zs0bye.bettersecurity.bungee.tabcomplete.methods.MethodType;
+import it.zs0bye.bettersecurity.bungee.files.readers.Tab;
+import it.zs0bye.bettersecurity.common.methods.Method;
+import it.zs0bye.bettersecurity.common.methods.MethodType;
 import it.zs0bye.bettersecurity.common.utils.CStringUtils;
 import lombok.Getter;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -52,7 +52,7 @@ public class TabGroupsMode extends TabProviders {
         TabGroupsMode.groups(player).forEach(group -> suggestions.addAll(this.legacy(this.getMethodType(group), completion, suggestions, group.getSuggestions(), commands, cancelled)));
 
         if(!suggestions.isEmpty()) {
-            commands.addAll(Config.MANAGE_TAB_COMPLETE_PARTIAL_MATCHES.getBoolean() ?
+            commands.addAll(Tab.PARTIAL_MATCHES.getBoolean() ?
                     CStringUtils.copyPartialMatches(completion, suggestions) :
                     suggestions);
             return;
@@ -95,9 +95,9 @@ public class TabGroupsMode extends TabProviders {
 
     private static Collection<String> enabledGroups() {
         final Collection<String> groups = new HashSet<>();
-        final List<String> enabled_groups = Config.MANAGE_TAB_COMPLETE_GROUPS_MODE_ENABLED_GROUPS.getStringList();
+        final List<String> enabled_groups = Tab.GROUPS_MODE_ENABLED_GROUPS.getStringList();
         if(enabled_groups.contains("*")) {
-            groups.addAll(Config.MANAGE_TAB_COMPLETE_GROUPS_MODE_GROUPS.getSection());
+            groups.addAll(Tab.GROUPS_MODE_GROUPS.getSection());
             return groups;
         }
         groups.addAll(enabled_groups);

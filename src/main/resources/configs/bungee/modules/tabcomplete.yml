@@ -1,0 +1,224 @@
+#
+#   ▄▄▄▄   ▓█████▄▄▄█████▓▄▄▄█████▓▓█████  ██▀███       ██████ ▓█████  ▄████▄   █    ██  ██▀███   ██▓▄▄▄█████▓▓██   ██▓
+#  ▓█████▄ ▓█   ▀▓  ██▒ ▓▒▓  ██▒ ▓▒▓█   ▀ ▓██ ▒ ██▒   ▒██    ▒ ▓█   ▀ ▒██▀ ▀█   ██  ▓██▒▓██ ▒ ██▒▓██▒▓  ██▒ ▓▒ ▒██  ██▒
+#  ▒██▒ ▄██▒███  ▒ ▓██░ ▒░▒ ▓██░ ▒░▒███   ▓██ ░▄█ ▒   ░ ▓██▄   ▒███   ▒▓█    ▄ ▓██  ▒██░▓██ ░▄█ ▒▒██▒▒ ▓██░ ▒░  ▒██ ██░
+#  ▒██░█▀  ▒▓█  ▄░ ▓██▓ ░ ░ ▓██▓ ░ ▒▓█  ▄ ▒██▀▀█▄       ▒   ██▒▒▓█  ▄ ▒▓▓▄ ▄██▒▓▓█  ░██░▒██▀▀█▄  ░██░░ ▓██▓ ░   ░ ▐██▓░
+#  ░▓█  ▀█▓░▒████▒ ▒██▒ ░   ▒██▒ ░ ░▒████▒░██▓ ▒██▒   ▒██████▒▒░▒████▒▒ ▓███▀ ░▒▒█████▓ ░██▓ ▒██▒░██░  ▒██▒ ░   ░ ██▒▓░
+#  ░▒▓███▀▒░░ ▒░ ░ ▒ ░░     ▒ ░░   ░░ ▒░ ░░ ▒▓ ░▒▓░   ▒ ▒▓▒ ▒ ░░░ ▒░ ░░ ░▒ ▒  ░░▒▓▒ ▒ ▒ ░ ▒▓ ░▒▓░░▓    ▒ ░░      ██▒▒▒
+#  ▒░▒   ░  ░ ░  ░   ░        ░     ░ ░  ░  ░▒ ░ ▒░   ░ ░▒  ░ ░ ░ ░  ░  ░  ▒   ░░▒░ ░ ░   ░▒ ░ ▒░ ▒ ░    ░     ▓██ ░▒░
+#   ░    ░    ░    ░        ░         ░     ░░   ░    ░  ░  ░     ░   ░         ░░░ ░ ░   ░░   ░  ▒ ░  ░       ▒ ▒ ░░
+#   ░         ░  ░                    ░  ░   ░              ░     ░  ░░ ░         ░        ░      ░            ░ ░
+#        ░                                                            ░                                        ░ ░
+#
+#   Version: ${project.version} | BungeeCord Version
+#   Modules -> tabcomplete.yml
+#
+#   Do you need help?
+#   -> https://docs.kyotoresources.space
+#
+#   --------- < ⚠ > ---------
+#   If you have BungeeCord, the use of Waterfall (https://papermc.io/) is recommended.
+#   This is because you can also block the commands in tab 1.13+ of the proxy.
+
+
+# If this is set to "true", you will ignore the initial warning to use waterfall.
+# This warning only appears if you have a clean version of BungeeCord.
+ignore_waterfall_warning: false
+
+# If this is set to "true", the plugin will not be able to interact with the tab complete
+# of versions 1.13+ (up to the latest). This section will only work for 1.7-1.12.2 clients.
+# ⚠ It is not recommended to enable it! If you enable it, it's at your own risk.
+ignore_1_13_tab_complete: false
+
+# If it is on "true", you will be able to tab the command much more conveniently!
+# BUT, in order to function correctly, the use of BetterSecurity is also recommended in the spigot.
+# This is because by activating this method, blocking the tab only from the bungeecord, it may not work correctly.
+partial_matches: false
+
+# You can use "global bypass", to ignore complete tab changes to specific players, or by permission.
+# In this way, whoever has the global bypass, will be able to use the entire complete tab with
+# the suggestions of all the commands (both bukkit and bungeecord).
+global_bypass:
+
+  # If this is set to "false", you will not be able to see suggestions for all commands.
+  # Remember, that by enabling it, it will work for both the advanced and basic parts.
+  enabled: true
+
+  # Here you can enter what kind of bypass you prefer
+  # to be able to perform the complete tab:
+  # - PERMISSION | (Bypass via permission: bettersecurity.bypass.tab)
+  # - PLAYERS | (Bypass by player name)
+  method: 'PERMISSION'
+  # Tip. You can put both the player's name and his UUID.
+  players:
+    - 'playerName1'
+    - '8667ba71-b85a-4004-af54-457a9734eed7'
+
+#   _____         _        _____         ___ _                 _   _
+#  | __  |___ ___|_|___   |     |___ ___|  _|_|___ _ _ ___ ___| |_|_|___ ___
+#  | __ -| .'|_ -| |  _|  |   --| . |   |  _| | . | | |  _| .'|  _| | . |   |
+#  |_____|__,|___|_|___|  |_____|___|_|_|_| |_|_  |___|_| |__,|_| |_|___|_|_|
+#                                             |___|
+# This is the "basic" configuration of the complete tab. (Ignore this section, if you have enabled the advanced one)
+# To bypass the suggestions, you need to enable "global_bypass".
+
+# Here you can enter the type of method you want to use to block commands:
+# - BLACKLIST | (The commands in the list will be blocked)
+# - WHITELIST | (The commands in the list will be able to execute)
+method: 'BLACKLIST'
+
+# This list will only be utilized if "groups_mode" below is NOT enabled.
+suggestions:
+  - 'pl'
+  - 'plugins'
+  - 'ver'
+  - 'version'
+  - 'about'
+  - '?'
+  - 'help'
+  - 'bukkit:pl'
+  - 'bukkit:plugins'
+  - 'bukkit:ver'
+  - 'bukkit:version'
+  - 'bukkit:about'
+  - 'bukkit:?'
+  - 'bukkit:help'
+  - 'minecraft:?'
+  - 'minecraft:help'
+
+#   _____   _                       _    _____         ___ _                 _   _
+#  |  _  |_| |_ _ ___ ___ ___ ___ _| |  |     |___ ___|  _|_|___ _ _ ___ ___| |_|_|___ ___
+#  |     | . | | | .'|   |  _| -_| . |  |   --| . |   |  _| | . | | |  _| .'|  _| | . |   |
+#  |__|__|___|\_/|__,|_|_|___|___|___|  |_____|___|_|_|_| |_|_  |___|_| |__,|_| |_|___|_|_|
+#                                                           |___|
+# This is the "advanced" configuration, here you can 100% customize the complete tab to your liking!
+groups_mode:
+
+  # By enabling the groups_mode, above options "method", and "suggestions" will be fully ignored
+  # and instead you configure everything below with SO much more flexibility.
+  enabled: true
+
+  # Here you can put the groups under the "groups" list, which are enabled in the proxy.
+  # If you enter "*", you will enable all groups.
+  enabled_groups:
+    - '*'
+
+  # This is the list of suggestions groups whitelisted in the complete tab.
+  # In these groups you can put the following requirements:
+  # - required_servers: ['server1', 'server2'] | (If you put this requirement, the group will go only for the specified server)
+  # - required_permission: <permission> | (If you set this requirement, the group will go only for those who have the specified permission)
+  # - required_players: ['playername1', 'playername2'] | (If you put this requirement, the group will go only for the players in the list)
+  # If you want to put multiple requirements in one group you can do it safely.
+  # You can also ignore one or more servers in a group, by putting:
+  # - ignore_servers: ['server1', 'server2'] | (Servers that are in this list will not see group suggestions)
+  groups:
+    # Besides "required_permission" option, there are permissions for each group.
+    # There can be used force-invert permissions:
+    # - bettersecurity.tab.<group_name_from_here>.INVERT
+    # * If the group here has "BLACKLIST" method && if player/group has this permission, this group will act like it is "WHITELIST" method only for them
+    # * If the group here has "WHITELIST" method && if player/group has this permission, this group will act like it is "BLACKLIST" method only for them
+    # There are also regular force permissions:
+    # - bettersecurity.tab.<group_name_from_here>.BLACKLIST | if player/group has this permission, this group will always act like it is "BLACKLIST" method only for them
+    # - bettersecurity.tab.<group_name_from_here>.WHITELIST | if player/group has this permission, this group will always act like it is "WHITELIST" method only for them
+
+    # This is an example of a group with no requirements, suggestions inside this group will be seen by everyone.
+    # This name can be set to literally anything.
+    global:
+      # Priority will declare how powerful this set of commands/suggestions is - HIGHER number means LOWER priority.
+      # For example, priority of this "global" group namespace is 1, which is the highest and it has BLACKLIST for command "/versions" (tab completion).
+      # Let's say that we have another group called "survival-whitelists" and there we have WHITELIST method with listed "/versions" command,
+      # but priority of that "survival-whitelists" group is set to "2". Because of this, the players won't be able to tab complete command "/versions",
+      # and they will only be if in this "global" group they are in some way bypassing it (by permission or whatever)
+      # WARNING! Priorities are mandatory requirements! And all groups must have a different priority from each other,
+      # they can't have multiple equal priorities.
+      priority: 1
+      method: 'BLACKLIST'
+      # List of group's suggestions.
+      suggestions:
+        - 'pl'
+        - 'plugins'
+        - 'ver'
+        - 'version'
+        - 'about'
+        - '?'
+        - 'help'
+        - 'bukkit:pl'
+        - 'bukkit:plugins'
+        - 'bukkit:ver'
+        - 'bukkit:version'
+        - 'bukkit:about'
+        - 'bukkit:?'
+        - 'bukkit:help'
+        - 'minecraft:?'
+        - 'minecraft:help'
+    # In this example group, the hints will be shown on all servers, except the servers that have been skipped.
+    spawn:
+      priority: 2
+      method: 'WHITELIST'
+      ignore_servers:
+        - 'bedwars'
+        - 'skywars'
+      suggestions:
+        - 'spawn'
+    # This is an example of a group that only requires one server.
+    # The suggestions in this list will only be displayed by the requested server.
+    lobby:
+      priority: 3
+      method: 'WHITELIST'
+      required_servers:
+        - 'lobby'
+        - 'hub'
+      suggestions:
+        - 'login'
+        - 'l'
+        - 'reg'
+        - 'register'
+    # This is an example of a group that only requires one server and one permission.
+    # The player who is inside that server, and has that permission, will see the suggestions listed.
+    faction_vip:
+      priority: 4
+      method: 'WHITELIST'
+      required_servers:
+        - 'faction'
+      required_permission: 'bettersecurity.tab.faction_vip'
+      suggestions:
+        - 'fly'
+    # This is an example of a group that only requires a permit.
+    # The player who has that permission will see this list of suggestions.
+    staff:
+      priority: 5
+      method: 'WHITELIST'
+      required_permission: 'bettersecurity.tab.staff'
+      suggestions:
+        - 'tempban'
+        - 'tempmute'
+        - 'unban'
+        - 'pardon'
+        - 'kick'
+        - 'unmute'
+        - 'warn'
+        - 'warnings'
+        - 'history'
+        - 'dupeip'
+        - 'ss'
+        - 'freeze'
+        - 'unfreeze'
+    # This is an example of a group that only requires a list of players.
+    # Players in this list will see these suggestions.
+    owner:
+      priority: 6
+      method: 'WHITELIST'
+      required_players:
+        - 'playername1'
+        - '8667ba71-b85a-4004-af54-457a9734eed7'
+      suggestions:
+        - 'op'
+        - 'deop'
+
+
+#    ____                                _   _             _  __           _        ____
+#   |  _ \ _____      _____ _ __ ___  __| | | |__  _   _  | |/ /   _  ___ | |_ ___ |  _ \ ___  ___  ___  _   _ _ __ ___ ___  ___
+#   | |_) / _ \ \ /\ / / _ \ '__/ _ \/ _` | | '_ \| | | | | ' / | | |/ _ \| __/ _ \| |_) / _ \/ __|/ _ \| | | | '__/ __/ _ \/ __|
+#   |  __/ (_) \ V  V /  __/ | |  __/ (_| | | |_) | |_| | | . \ |_| | (_) | || (_) |  _ <  __/\__ \ (_) | |_| | | | (_|  __/\__ \
+#   |_|   \___/ \_/\_/ \___|_|  \___|\__,_| |_.__/ \__, | |_|\_\__, |\___/ \__\___/|_| \_\___||___/\___/ \__,_|_|  \___\___||___/
+#                                                  |___/       |___/

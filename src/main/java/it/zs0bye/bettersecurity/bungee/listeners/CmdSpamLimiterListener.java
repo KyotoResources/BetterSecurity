@@ -19,7 +19,7 @@ package it.zs0bye.bettersecurity.bungee.listeners;
 
 import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
 import it.zs0bye.bettersecurity.bungee.executors.SendExecutors;
-import it.zs0bye.bettersecurity.bungee.files.enums.Config;
+import it.zs0bye.bettersecurity.bungee.files.readers.Config;
 import it.zs0bye.bettersecurity.bungee.warnings.Warnings;
 import it.zs0bye.bettersecurity.bungee.warnings.enums.TypeWarning;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -30,12 +30,12 @@ import net.md_5.bungee.event.EventPriority;
 
 import java.util.*;
 
-public class PreventCmdSpamListener implements Listener {
+public class CmdSpamLimiterListener implements Listener {
 
     private final BetterSecurityBungee plugin;
     private final Map<String, String> placeholders = new HashMap<>();
 
-    public PreventCmdSpamListener(final BetterSecurityBungee plugin) {
+    public CmdSpamLimiterListener(final BetterSecurityBungee plugin) {
         this.plugin = plugin;
     }
 
@@ -45,7 +45,7 @@ public class PreventCmdSpamListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onChat(final ChatEvent event) {
 
-        if(!Config.PREVENT_COMMAND_SPAM_ENABLED.getBoolean()) return;
+        if(!Config.COMMAND_SPAM_LIMITER_ENABLED.getBoolean()) return;
         if(!event.getMessage().startsWith("/")) return;
 
         final String command = event.getMessage()
@@ -61,7 +61,7 @@ public class PreventCmdSpamListener implements Listener {
         this.placeholders.put("%player%", player.getName());
         this.placeholders.put("%server%", player.getServer().getInfo().getName());
 
-        final int delay = Config.PREVENT_COMMAND_SPAM_DELAY.getInt();
+        final int delay = Config.COMMAND_SPAM_LIMITER_DELAY.getInt();
 
         if(player.hasPermission("bettersecurity.bypass.cmdspam")) return;
         if(this.canBlock(command)) return;
@@ -69,7 +69,7 @@ public class PreventCmdSpamListener implements Listener {
         if(cooldowns.containsKey(player)) {
             final long secondsLeft = ((cooldowns.get(player) / 1000) + delay) - (System.currentTimeMillis() / 1000);
             if(this.punishPlayer(player, command, secondsLeft)) {
-                event.setCancelled(Config.PREVENT_COMMAND_SPAM_BLOCK_COMMAND.getBoolean());
+                event.setCancelled(Config.COMMAND_SPAM_LIMITER_BLOCK_COMMAND.getBoolean());
                 return;
             }
         }
@@ -80,13 +80,13 @@ public class PreventCmdSpamListener implements Listener {
     private boolean punishPlayer(final ProxiedPlayer player, final String command, final long seconds) {
         if (seconds > 0) {
             this.placeholders.put("%seconds%", seconds + "");
-            if(Config.PREVENT_COMMAND_SPAM_COMMAND_LIMIT.getInt() <= 0) {
+            if(Config.COMMAND_SPAM_LIMITER_COMMAND_LIMIT.getInt() <= 0) {
                 this.sendExecutor(player, command);
                 return true;
             }
             this.addCommands(player, command);
             this.placeholders.put("%commands%", commands.get(player).size() + "");
-            if (commands.containsKey(player) && commands.get(player).size() < Config.PREVENT_COMMAND_SPAM_COMMAND_LIMIT.getInt()) return true;
+            if (commands.containsKey(player) && commands.get(player).size() < Config.COMMAND_SPAM_LIMITER_COMMAND_LIMIT.getInt()) return true;
             this.sendExecutor(player, command);
             return true;
         }
@@ -97,7 +97,7 @@ public class PreventCmdSpamListener implements Listener {
 
     private void sendExecutor(final ProxiedPlayer player, final String command) {
         new Warnings(this.plugin, player, TypeWarning.PREVENT_COMMAND_SPAM, command);
-        SendExecutors.send(this.plugin, Config.PREVENT_COMMAND_SPAM_EXECUTORS.getStringList(), player, this.placeholders);
+        SendExecutors.send(this.plugin, Config.COMMAND_SPAM_LIMITER_EXECUTORS.getStringList(), player, this.placeholders);
     }
 
     private void addCommands(final ProxiedPlayer player, final String command) {
@@ -111,8 +111,8 @@ public class PreventCmdSpamListener implements Listener {
     }
 
     private boolean canBlock(final String command) {
-        final String method = Config.PREVENT_COMMAND_SPAM_METHOD.getString();
-        final List<String> commands = Config.PREVENT_COMMAND_SPAM_COMMANDS.getStringList();
+        final String method = Config.COMMAND_SPAM_LIMITER_METHOD.getString();
+        final List<String> commands = Config.COMMAND_SPAM_LIMITER_COMMANDS.getStringList();
         if(commands.isEmpty()) return true;
         if(method.equals("BLACKLIST")) return !commands.contains(command);
         if(method.equals("WHITELIST")) return commands.contains(command);

@@ -18,10 +18,12 @@
 package it.zs0bye.bettersecurity.bungee;
 
 import it.zs0bye.bettersecurity.bungee.commands.MainCommand;
-import it.zs0bye.bettersecurity.bungee.files.FileManager;
-import it.zs0bye.bettersecurity.bungee.files.enums.Config;
-import it.zs0bye.bettersecurity.bungee.files.enums.Lang;
+import it.zs0bye.bettersecurity.bungee.files.FileHandler;
+import it.zs0bye.bettersecurity.bungee.files.FileType;
+import it.zs0bye.bettersecurity.bungee.files.readers.Config;
+import it.zs0bye.bettersecurity.bungee.files.readers.Lang;
 import it.zs0bye.bettersecurity.bungee.listeners.*;
+import it.zs0bye.bettersecurity.bungee.modules.Module;
 import it.zs0bye.bettersecurity.common.updater.UpdateType;
 import it.zs0bye.bettersecurity.common.updater.VandalUpdater;
 import it.zs0bye.bettersecurity.common.utils.enums.ConsoleUtils;
@@ -38,10 +40,7 @@ public class BetterSecurityBungee extends Plugin {
     @Getter
     private static BetterSecurityBungee instance;
 
-    private FileManager configFile;
-    private FileManager languagesFile;
     private BungeeAudiences adventure;
-
     private String updateMsg;
 
     @Override
@@ -95,9 +94,9 @@ public class BetterSecurityBungee extends Plugin {
         this.getLogger().info("");
         this.getLogger().info(ConsoleUtils.YELLOW + "┃ Loading resources.." + ConsoleUtils.RESET);
 
-        this.configFile = new FileManager(this, "config", null).saveDefaultConfig();
-        this.languagesFile = new FileManager(this, Config.SETTINGS_LOCALE.getString(), "languages")
-                .saveDefaultConfig();
+        new FileHandler(this, FileType.CONFIG).saveDefaultConfig();
+        new FileHandler(this, FileType.LANG).saveDefaultConfig();
+        Module.loadFiles();
 
         this.getLogger().info(ConsoleUtils.YELLOW + "┃ Resources uploaded successfully!" + ConsoleUtils.RESET);
     }
@@ -115,10 +114,8 @@ public class BetterSecurityBungee extends Plugin {
         this.getLogger().info("");
         this.getLogger().info(ConsoleUtils.YELLOW + "┃ Registering events.." + ConsoleUtils.RESET);
 
-        this.getProxy().getPluginManager().registerListener(this, new BlocksCmdsListener(this));
+        Module.loadListeners();
         this.getProxy().getPluginManager().registerListener(this, new PluginMessageListener(this));
-        this.getProxy().getPluginManager().registerListener(this, new ManageTabCompleteListener(this));
-        this.getProxy().getPluginManager().registerListener(this, new PreventCmdSpamListener(this));
         this.getProxy().getPluginManager().registerListener(this, new PacketsListener(this));
         WaterTabCompleteListener.register(this);
 

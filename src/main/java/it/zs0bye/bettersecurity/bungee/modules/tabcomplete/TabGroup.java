@@ -15,10 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package it.zs0bye.bettersecurity.bungee.tabcomplete;
+package it.zs0bye.bettersecurity.bungee.modules.tabcomplete;
 
 import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
-import it.zs0bye.bettersecurity.bungee.files.enums.Config;
+import it.zs0bye.bettersecurity.bungee.files.readers.Tab;
 import lombok.Getter;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -43,14 +43,14 @@ public class TabGroup {
         this.player = player;
         this.tab = tab;
         this.server = player.getServer().getInfo().getName();
-        this.path = Config.MANAGE_TAB_COMPLETE_GROUPS_MODE_GROUPS.getPath() + "." + this.name;
-        this.methodPath = this.path + Config.MANAGE_TAB_COMPLETE_GROUPS_MODE_GROUPS_METHOD.getPath();
+        this.path = Tab.GROUPS_MODE_GROUPS.getPath() + "." + this.name;
+        this.methodPath = this.path + Tab.GROUPS_MODE_GROUPS_METHOD.getPath();
     }
 
     protected String getPermission() {
-        final String path = this.path + Config.MANAGE_TAB_COMPLETE_GROUPS_MODE_GROUPS_REQUIRED_PERMISSION.getPath();
-        if(!Config.CUSTOM.contains(path)) return "";
-        return Config.CUSTOM.getString(path);
+        final String path = this.path + Tab.GROUPS_MODE_GROUPS_REQUIRED_PERMISSION.getPath();
+        if(!Tab.INSTANCE.contains(path)) return "";
+        return Tab.INSTANCE.getString(path);
     }
 
     protected boolean getRequiredPermission() {
@@ -59,46 +59,46 @@ public class TabGroup {
     }
 
     protected boolean getRequiredServers() {
-        final String path = this.path + Config.MANAGE_TAB_COMPLETE_GROUPS_MODE_GROUPS_REQUIRED_SERVERS.getPath();
-        if(!Config.CUSTOM.contains(path)) return false;
-        final List<String> servers = Config.CUSTOM.getStringList(path);
+        final String path = this.path + Tab.GROUPS_MODE_GROUPS_REQUIRED_SERVERS.getPath();
+        if(!Tab.INSTANCE.contains(path)) return false;
+        final List<String> servers = Tab.INSTANCE.getStringList(path);
         return !servers.contains(this.server.toLowerCase());
     }
 
     protected boolean getRequiredPlayers() {
-        final String path = this.path + Config.MANAGE_TAB_COMPLETE_GROUPS_MODE_GROUPS_REQUIRED_PLAYERS.getPath();
-        if(!Config.CUSTOM.contains(path)) return false;
-        final List<String> players = Config.CUSTOM.getStringList(path);
+        final String path = this.path + Tab.GROUPS_MODE_GROUPS_REQUIRED_PLAYERS.getPath();
+        if(!Tab.INSTANCE.contains(path)) return false;
+        final List<String> players = Tab.INSTANCE.getStringList(path);
         return !players.contains(this.player.getName()) && !players.contains(this.player.getUniqueId().toString());
     }
 
     protected boolean getIgnoreServers() {
-        final String path = this.path + Config.MANAGE_TAB_COMPLETE_GROUPS_MODE_GROUPS_IGNORE_SERVERS.getPath();
-        if(!Config.CUSTOM.contains(path)) return false;
-        final List<String> servers = Config.CUSTOM.getStringList(path);
+        final String path = this.path + Tab.GROUPS_MODE_GROUPS_IGNORE_SERVERS.getPath();
+        if(!Tab.INSTANCE.contains(path)) return false;
+        final List<String> servers = Tab.INSTANCE.getStringList(path);
         return servers.contains(this.server.toLowerCase());
     }
 
     protected int getPriority() {
-        final String path = this.path + Config.MANAGE_TAB_COMPLETE_GROUPS_MODE_GROUPS_PRIORITY.getPath();
-        if(!Config.CUSTOM.contains(path)) return 0;
-        final String number = String.valueOf(Config.CUSTOM.getObject(path));
+        final String path = this.path + Tab.GROUPS_MODE_GROUPS_PRIORITY.getPath();
+        if(!Tab.INSTANCE.contains(path)) return 0;
+        final String number = String.valueOf(Tab.INSTANCE.getObject(path));
         if(!NumberUtils.isDigits(number)) {
             this.plugin.getLogger().warning("The priority (" + number + ") you set to group \"" + this.name + "\" does not have a valid number!");
             return 0;
         }
-        return Config.CUSTOM.getInt(path);
+        return Tab.INSTANCE.getInt(path);
     }
 
     protected List<String> getSuggestions() {
-        final String path = this.path + Config.MANAGE_TAB_COMPLETE_GROUPS_MODE_GROUPS_SUGGESTIONS.getPath();
+        final String path = this.path + Tab.GROUPS_MODE_GROUPS_SUGGESTIONS.getPath();
         final List<String> suggestions = new ArrayList<>();
-        if(!Config.CUSTOM.contains(path)) {
+        if(!Tab.INSTANCE.contains(path)) {
             this.plugin.getLogger().warning("The suggestions of group \"" + this.name + "\", have not been set! The list can't be empty, so add suggestions to it.");
             return suggestions;
         }
         if(this.getRequiredPermission() || this.getRequiredPlayers() || this.getRequiredServers() || this.getIgnoreServers()) return suggestions;
-        suggestions.addAll(Config.CUSTOM.getStringList(path));
+        suggestions.addAll(Tab.INSTANCE.getStringList(path));
         return suggestions;
     }
 

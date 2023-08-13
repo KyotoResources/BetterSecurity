@@ -11,7 +11,7 @@
 #        ░                                                            ░                                        ░ ░
 #
 #   Version: ${project.version} | BungeeCord Version
-#   Configuration
+#   Modules -> commands.yml
 #
 #   Do you need help?
 #   -> https://docs.kyotoresources.space
@@ -52,125 +52,72 @@
 # - %center% | (You can center text, only works with messages)
 
 
-#  _________                              ______
-#  __  ____/_____________________________ ___  /
-#  _  / __ _  _ \_  __ \  _ \_  ___/  __ `/_  /
-#  / /_/ / /  __/  / / /  __/  /   / /_/ /_  /
-#  \____/  \___//_/ /_/\___//_/    \__,_/ /_/
-#
-Settings:
-  prefix: '&6BetterSecurity &8┃ &7'
-  # Available languages: en_US, it_IT
-  locale: en_US
-  check_update: true
+# If it is on "true" the execution attempt warning will be sent to chat.
+warning: true
 
+# Here you can enter the type of method you want to use to block commands:
+# - BLACKLIST | (The commands in the list will be blocked)
+# - WHITELIST | (The commands in the list will be able to execute)
+method: 'BLACKLIST'
 
-#  ______  ___     _________      ______
-#  ___   |/  /___________  /___  ____  /____________
-#  __  /|_/ /_  __ \  __  /_  / / /_  /_  _ \_  ___/
-#  _  /  / / / /_/ / /_/ / / /_/ /_  / /  __/(__  )
-#  /_/  /_/  \____/\__,_/  \__,_/ /_/  \___//____/
-#
-# You can enable the modules to better manage your server, according to your needs.
-# To configure the modules, you can find the files at: /plugins/BetterSecurity/modules/<module>.yml
-Modules:
+# Forced checking if enabled can cause problems with other plugins.
+# For example AuthMeBungee (If you execute a blocked command before login, the plugin will overwrite it)
+force_check: false
 
-  # If it is "true" you will enable the Tab Complete management module.
-  tab_complete: true
+# This message will be shown as soon as the command is blocked.
+# < ? > You can find more information about the executors in the header.
+executors:
+  - '[MESSAGE] %prefix%&cYou cannot execute this command!'
 
-  # If it is "true" you will enable the command management module.
-  commands: true
+# List of blocked or enabled commands according to the selected method.
+# If you want to block commands only through "server mode", just put "commands: []"
+commands:
+  - 'bungee'
+  - 'waterfall'
+  - 'pl'
+  - 'plugins'
+  - 'ver'
+  - 'version'
+  - 'about'
+  - '?'
+  - 'help'
+  - 'bukkit:pl'
+  - 'bukkit:plugins'
+  - 'bukkit:ver'
+  - 'bukkit:version'
+  - 'bukkit:about'
+  - 'bukkit:?'
+  - 'bukkit:help'
+  - 'minecraft:?'
+  - 'minecraft:help'
 
+# Server mode allows you to block commands based on the server the player is on.
+server_mode:
 
-#  ___       __                    _____
-#  __ |     / /_____ _________________(_)_____________ ________
-#  __ | /| / /_  __ `/_  ___/_  __ \_  /__  __ \_  __ `/_  ___/
-#  __ |/ |/ / / /_/ /_  /   _  / / /  / _  / / /  /_/ /_(__  )
-#  ____/|__/  \__,_/ /_/    /_/ /_//_/  /_/ /_/_\__, / /____/
-#                                              /____/
-Warnings:
+  enabled: false
 
-  # In this field you can decide whether to activate the logs also via the console.
-  log_console: true
-
-  # This message will be sent to those with permission: bettersecurity.broadcast.warnings
-  # < ? > You can find more information about the executors in the header.
-  # ATTENTION! Do not use the "@" in front of the broadcast, there is already the automatic one via the above permission.
-  formats:
-    commands:
-      # You can use the following placeholders:
-      # - %command% | (The command that was blocked)
-      format:
-        - '[MESSAGE] &e[%server%] &f%player% &7attempted to execute the command > &c%command%'
-      console: '%player% attempted to execute the command: %command%'
-    prevent_command_spam:
-      # You can use the following placeholders:
-      # - %command% | (The command executed too many times)
-      format:
-        - '[MESSAGE] &e[%server%] &f%player% &7has executed the command too many times > &c%command%'
-      console: '%player% has executed the command too many times: %command%'
-
-
-#  _________                                         _________   ________                               ___________           __________
-#  __  ____/____________ __________ _________ _____________  /   __  ___/_____________ _______ ___      ___  /___(_)______ ______(_)_  /_____________
-#  _  /    _  __ \_  __ `__ \_  __ `__ \  __ `/_  __ \  __  /    _____ \___  __ \  __ `/_  __ `__ \     __  / __  /__  __ `__ \_  /_  __/  _ \_  ___/
-#  / /___  / /_/ /  / / / / /  / / / / / /_/ /_  / / / /_/ /     ____/ /__  /_/ / /_/ /_  / / / / /     _  /___  / _  / / / / /  / / /_ /  __/  /
-#  \____/  \____//_/ /_/ /_//_/ /_/ /_/\__,_/ /_/ /_/\__,_/      /____/ _  .___/\__,_/ /_/ /_/ /_/      /_____/_/  /_/ /_/ /_//_/  \__/ \___//_/
-#                                                                       /_/
-# Description: The bungeecord has a vulnerability that concerns the commands!
-#              In fact, there is no command limiter inside. And what does this entail?
-#              that there are clients capable of executing commands quickly up to bringing down the proxy.
-#              If activated, this feature allows you to limit the execution of commands,
-#              and prevent your network from going offline.
-Command_Spam_Limiter:
-
-  # This feature allows you to fix an exploit that crashes your proxy!
-  # You can customize it as you like according to your needs.
-  enabled: true
-
-  # If it is on "true" the execution attempt warning will be sent to chat.
-  warning: true
-
-  # This option determines how often you can run the command (In seconds)
-  delay: 3
-
-  # This function determines how many commands based on the delay, the player is punished.
-  # (If set to 0, this function will be ignored)
-  command_limit: 10
-
-  # If this is set to "true", you will not be able to execute the command during the cooldown.
-  block_command: false
-
-  # (If you have set the command limit, along with the kick, this section will be ignored.
-  # You can also ignore it by simply putting -> message: '')
-  # This message will be shown during a cooldown.
-  #
-  # You can use the following placeholders:
-  # - %seconds% | (Seconds left)
-  # - %commands% | (Number of commands executed)
-  # < ? > You can find more information about the executors in the header.
-  executors:
-    - '[KICK] &cYou performed %commands% commands in 3 seconds!\n&cPlease rejoin and don''t make commands too fast.'
-
-  # Here you can enter the type of method you want to use to set the command cooldown:
-  # - BLACKLIST | (The commands in the list will have the cooldown)
-  # - WHITELIST | (Commands in the list will have no cooldowns)
-  method: 'BLACKLIST'
-
-  commands:
-    - 'alert'
-    - 'alertraw'
-    - 'bungee'
-    - 'end'
-    - 'find'
-    - 'glist'
-    - 'greload'
-    - 'ip'
-    - 'perms'
-    - 'send'
-    - 'server'
-    - 'lpb'
-    - 'luckpermsbungee'
+  # This is the list of servers where commands are blocked.
+  servers:
+    # This is an example server.
+    lobby:
+      # < ? > The methods are the same that are located above.
+      method: 'BLACKLIST'
+      # Instead these are the commands blocked on that server.
+      commands:
+        - 'examplecommand1'
+        - 'examplecommand2'
+    # In this example you can use another message.
+    survival:
+      # < ? > The methods are the same that are located above.
+      method: 'BLACKLIST'
+      # This executor will only be sent to this server.
+      # < ? > You can find more information about the executors in the header.
+      executors:
+        - '[MESSAGE] &a&lSURVIVAL ┃ &cYou cannot execute this command!'
+      # Instead these are the commands blocked on that server.
+      commands:
+        - 'examplecommand1'
+        - 'examplecommand2'
 
 
 #    ____                                _   _             _  __           _        ____

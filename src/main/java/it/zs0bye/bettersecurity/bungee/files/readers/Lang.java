@@ -15,33 +15,37 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package it.zs0bye.bettersecurity.bungee.files.enums;
+package it.zs0bye.bettersecurity.bungee.files.readers;
 
-import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
-import it.zs0bye.bettersecurity.bungee.files.IFiles;
+import it.zs0bye.bettersecurity.bungee.files.FileHandler;
+import it.zs0bye.bettersecurity.bungee.files.ConfigReader;
+import it.zs0bye.bettersecurity.bungee.files.FileType;
 import it.zs0bye.bettersecurity.bungee.utils.StringUtils;
 import it.zs0bye.bettersecurity.common.utils.CStringUtils;
+import lombok.Getter;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.config.Configuration;
 
 import java.util.*;
 
-public enum Lang implements IFiles {
-    CUSTOM(""),
+public enum Lang implements ConfigReader {
+    INSTANCE(""),
     IS_NOT_NUMBER("is_not_number"),
     INSUFFICIENT_PERMISSIONS("insufficient_permissions"),
     UPDATE_NOTIFICATION("update_notification"),
     HELP_TEXTS("Help_Command.texts"),
     RELOAD_CONFIGURATIONS("Reload_Command.configurations");
 
-    private final BetterSecurityBungee plugin;
+    @Getter
     private final String path;
-    private Configuration lang;
+    @Getter
+    private final FileType type;
+    private Configuration config;
 
     Lang(final String path) {
         this.path = path;
-        this.plugin = BetterSecurityBungee.getInstance();
+        this.type = FileType.LANG;
         this.reloadConfig();
     }
 
@@ -55,23 +59,20 @@ public enum Lang implements IFiles {
 
     @Override
     public void reloadConfig() {
-        this.lang = this.plugin.getLanguagesFile().getConfig();
-    }
-
-    @Override
-    public String getPath() {
-        return this.path;
+        final Configuration config = FileHandler.getConfig(this.type);
+        if(config == null) return;
+        this.config = config;
     }
 
     @Override
     public String getString(final String... var) {
-        return StringUtils.colorize(this.lang.getString(this.variables(var)));
+        return StringUtils.colorize(this.config.getString(this.variables(var)));
     }
 
     @Override
     public List<String> getStringList(final String... var) {
         List<String> list = new ArrayList<>();
-        for (String setList : this.lang.getStringList(this.variables(var))) {
+        for (String setList : this.config.getStringList(this.variables(var))) {
             list.add(StringUtils.colorize(setList));
         }
         return list;
@@ -79,17 +80,17 @@ public enum Lang implements IFiles {
 
     @Override
     public boolean getBoolean(final String... var) {
-        return this.lang.getBoolean(this.variables(var));
+        return this.config.getBoolean(this.variables(var));
     }
 
     @Override
     public boolean contains(final String... var) {
-        return this.lang.contains(this.variables(var));
+        return this.config.contains(this.variables(var));
     }
 
     @Override
     public int getInt(final String... var) {
-        return this.lang.getInt(this.variables(var));
+        return this.config.getInt(this.variables(var));
     }
 
     @Override
@@ -145,6 +146,6 @@ public enum Lang implements IFiles {
     @SuppressWarnings("all")
     @Override
     public Collection<String> getSection(final String... var) {
-        return this.lang.getSection(this.variables(var)).getKeys();
+        return this.config.getSection(this.variables(var)).getKeys();
     }
 }

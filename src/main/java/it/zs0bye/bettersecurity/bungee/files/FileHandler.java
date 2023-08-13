@@ -34,30 +34,35 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 @Getter
-public class FileManager {
+public class FileHandler {
 
     private final BetterSecurityBungee plugin;
-    private final String fileName;
+    private final String fileName, dirName;
+    private final FileType type;
 
     private Configuration config;
-    private File file;
     private String pattern;
-    private File directory;
+    private File file, directory;
 
-    private final static Map<String, Configuration> files = new HashMap<>();
+    @Getter
+    private final static Map<FileType, Configuration> files = new HashMap<>();
+    @Getter
+    private final static Map<FileType, FileHandler> handlers = new HashMap<>();
 
     @SuppressWarnings("all")
     @SneakyThrows
-    public FileManager(final BetterSecurityBungee plugin, final String fileName, final String directory) {
+    public FileHandler(final BetterSecurityBungee plugin, final FileType type) {
         this.plugin = plugin;
-        this.fileName = fileName;
+        this.type = type;
+        this.fileName = this.type.getName();
+        this.dirName = this.type.getDirectory();
         this.pattern = "configs/bungee/" + this.fileName + ".yml";
 
-        if(directory != null) {
-            if(directory.length() > 16) return;
-            if(!Pattern.compile("^[a-zA-Z _]*").matcher(directory).matches()) return;
-            this.pattern = "configs/bungee/" + directory + "/" + this.fileName + ".yml";
-            this.directory = new File(this.plugin.getDataFolder(), directory);
+        if(this.dirName != null) {
+            if(this.dirName.length() > 16) return;
+            if(!Pattern.compile("^[a-zA-Z _]*").matcher(this.dirName).matches()) return;
+            this.pattern = "configs/bungee/" + this.dirName + "/" + this.fileName + ".yml";
+            this.directory = new File(this.plugin.getDataFolder(), this.dirName);
             this.file = new File(this.directory, this.fileName + ".yml");
 
             if(!this.directory.exists()) this.directory.mkdirs();
@@ -71,7 +76,7 @@ public class FileManager {
 
     @SuppressWarnings("all")
     @SneakyThrows
-    public FileManager saveDefaultConfig() {
+    public FileHandler saveDefaultConfig() {
 
         if (!this.plugin.getDataFolder().exists()) this.plugin.getDataFolder().mkdirs();
 
@@ -84,21 +89,29 @@ public class FileManager {
         }
 
         this.config = this.initConfig();
-        files.put(this.fileName.toLowerCase(), this.config);
+        files.put(this.type, this.config);
+        handlers.put(this.type, this);
+        System.out.println("test save - " + this.fileName);
+        for(final ConfigReader reader : this.type.getReader()) reader.reloadConfig();
         return this;
     }
 
-    public boolean reload() {
-        files.remove(this.fileName.toLowerCase());
+    public void reload() {
+        files.remove(this.type);
+        handlers.remove(this.type);
         this.saveDefaultConfig();
-        return true;
     }
 
     @SneakyThrows
     private Configuration initConfig() {
-        if(!files.containsKey(this.fileName.toLowerCase()))
+        if(!files.containsKey(this.type))
             return ConfigurationProvider.getProvider(YamlConfiguration.class).load(this.file);
-        return files.get(this.fileName.toLowerCase());
+        return files.get(this.type);
+    }
+
+    public static Configuration getConfig(final FileType type) {
+        if(!handlers.containsKey(type)) return null;
+        return handlers.get(type).getConfig();
     }
 
 }

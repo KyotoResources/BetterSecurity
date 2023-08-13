@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package it.zs0bye.bettersecurity.bungee.tabcomplete.methods;
+package it.zs0bye.bettersecurity.common.methods;
 
 import lombok.Getter;
 

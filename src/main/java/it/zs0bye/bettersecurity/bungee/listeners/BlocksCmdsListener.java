@@ -19,7 +19,8 @@ package it.zs0bye.bettersecurity.bungee.listeners;
 
 import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
 import it.zs0bye.bettersecurity.bungee.executors.SendExecutors;
-import it.zs0bye.bettersecurity.bungee.files.enums.Config;
+import it.zs0bye.bettersecurity.bungee.files.readers.Command;
+import it.zs0bye.bettersecurity.bungee.modules.Module;
 import it.zs0bye.bettersecurity.bungee.warnings.Warnings;
 import it.zs0bye.bettersecurity.bungee.warnings.enums.TypeWarning;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -45,7 +46,7 @@ public class BlocksCmdsListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onChat(final ChatEvent event) {
 
-        if(!Config.BLOCKS_COMMANDS_ENABLED.getBoolean()) return;
+        if(Module.COMMANDS.isDisabled()) return;
 
         String command = event.getMessage();
 
@@ -64,7 +65,7 @@ public class BlocksCmdsListener implements Listener {
         this.placeholders.put("%server%", player.getServer().getInfo().getName());
         this.placeholders.put("%command%", "/" + command);
 
-        if(!Config.BLOCKS_COMMANDS_FORCE_CHECK.getBoolean() && event.isCancelled()) return;
+        if(!Command.FORCE_CHECK.getBoolean() && event.isCancelled()) return;
 
         if(player.hasPermission("bettersecurity.bypass.blockscmds")) return;
         if(this.canBlock(command, player)) return;
@@ -72,7 +73,7 @@ public class BlocksCmdsListener implements Listener {
         SendExecutors.send(this.plugin, this.getExecutors(command, player), player, this.placeholders);
         event.setCancelled(true);
 
-        if(!Config.BLOCKS_COMMANDS_WARNING.getBoolean()) return;
+        if(!Command.WARNING.getBoolean()) return;
         new Warnings(this.plugin, player, TypeWarning.COMMANDS, command);
     }
 
@@ -89,8 +90,8 @@ public class BlocksCmdsListener implements Listener {
     }
 
     private boolean checkDefaultBlock(final String command) {
-        final String method = Config.BLOCKS_COMMANDS_METHOD.getString();
-        final List<String> commands = Config.BLOCKS_COMMANDS.getStringList();
+        final String method = Command.METHOD.getString();
+        final List<String> commands = Command.BLOCKS_COMMANDS.getStringList();
         if(commands.isEmpty()) return false;
         if(method.equals("BLACKLIST")) return commands.contains(command);
         if(method.equals("WHITELIST")) return !commands.contains(command);
@@ -98,36 +99,36 @@ public class BlocksCmdsListener implements Listener {
     }
 
     private List<String> getWhitelistedCommands(final String command, final ProxiedPlayer player) {
-        final List<String> commands = new ArrayList<>(Config.BLOCKS_COMMANDS.getStringList());
+        final List<String> commands = new ArrayList<>(Command.BLOCKS_COMMANDS.getStringList());
         if(this.checkDefaultBlock(command)) return commands;
-        if(!Config.BLOCKS_COMMANDS_SERVER_MODE_ENABLED.getBoolean()) return commands;
-        final String path = this.getPath(player) + Config.BLOCKS_COMMANDS_SERVER_MODE_COMMANDS.getPath();
-        if(!Config.CUSTOM.contains(path)) return commands;
-        commands.addAll(Config.CUSTOM.getStringList(path));
+        if(!Command.SERVER_MODE_ENABLED.getBoolean()) return commands;
+        final String path = this.getPath(player) + Command.SERVER_MODE_COMMANDS.getPath();
+        if(!Command.INSTANCE.contains(path)) return commands;
+        commands.addAll(Command.INSTANCE.getStringList(path));
         return commands;
     }
 
     private String getMethod(final String command, final ProxiedPlayer player) {
-        final String method = Config.BLOCKS_COMMANDS_METHOD.getString();
+        final String method = Command.METHOD.getString();
         if(this.checkDefaultBlock(command)) return method;
-        if(!Config.BLOCKS_COMMANDS_SERVER_MODE_ENABLED.getBoolean()) return method;
-        final String path = this.getPath(player) + Config.BLOCKS_COMMANDS_SERVER_MODE_METHOD.getPath();
-        if(!Config.CUSTOM.contains(path)) return method;
-        return Config.CUSTOM.getString(path);
+        if(!Command.SERVER_MODE_ENABLED.getBoolean()) return method;
+        final String path = this.getPath(player) + Command.SERVER_MODE_METHOD.getPath();
+        if(!Command.INSTANCE.contains(path)) return method;
+        return Command.INSTANCE.getString(path);
     }
 
     private List<String> getExecutors(final String command, final ProxiedPlayer player) {
-        final List<String> defaultCmds = Config.BLOCKS_COMMANDS_EXECUTORS.getStringList();
+        final List<String> defaultCmds = Command.EXECUTORS.getStringList();
         if(this.checkDefaultBlock(command)) return defaultCmds;
-        if(!Config.BLOCKS_COMMANDS_SERVER_MODE_ENABLED.getBoolean()) return defaultCmds;
-        final String path = this.getPath(player) + Config.BLOCKS_COMMANDS_SERVER_MODE_EXECUTORS.getPath();
-        if(!Config.CUSTOM.contains(path)) return defaultCmds;
-        return Config.CUSTOM.getStringList(path);
+        if(!Command.SERVER_MODE_ENABLED.getBoolean()) return defaultCmds;
+        final String path = this.getPath(player) + Command.SERVER_MODE_EXECUTORS.getPath();
+        if(!Command.INSTANCE.contains(path)) return defaultCmds;
+        return Command.INSTANCE.getStringList(path);
     }
 
     private String getPath(final ProxiedPlayer player) {
         final String server = player.getServer().getInfo().getName();
-        return Config.BLOCKS_COMMANDS_SERVER_MODE_SERVERS.getPath() + "." + server;
+        return Command.SERVER_MODE_SERVERS.getPath() + "." + server;
     }
 
 }

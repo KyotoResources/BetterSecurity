@@ -15,75 +15,51 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package it.zs0bye.bettersecurity.bungee.files.enums;
+package it.zs0bye.bettersecurity.bungee.files.readers;
 
-import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
-import it.zs0bye.bettersecurity.bungee.files.IFiles;
+import it.zs0bye.bettersecurity.bungee.files.FileHandler;
+import it.zs0bye.bettersecurity.bungee.files.ConfigReader;
+import it.zs0bye.bettersecurity.bungee.files.FileType;
+import it.zs0bye.bettersecurity.bungee.modules.Module;
 import it.zs0bye.bettersecurity.bungee.utils.StringUtils;
 import it.zs0bye.bettersecurity.common.utils.CStringUtils;
+import lombok.Getter;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.config.Configuration;
 
 import java.util.*;
 
-public enum Config implements IFiles {
-    CUSTOM(""),
-    SETTINGS_LOCALE("Settings.locale"),
-    SETTINGS_PREFIX("Settings.prefix"),
-    SETTINGS_CHECK_UPDATE("Settings.check_update"),
-    MANAGE_TAB_COMPLETE_ENABLED("Manage_Tab_Complete.enabled"),
-    MANAGE_TAB_COMPLETE_IGNORE_WATERFALL_WARNING("Manage_Tab_Complete.ignore_waterfall_warning"),
-    MANAGE_TAB_COMPLETE_IGNORE_1_13_TAB_COMPLETE("Manage_Tab_Complete.ignore_1_13_tab_complete"),
-    MANAGE_TAB_COMPLETE_PARTIAL_MATCHES("Manage_Tab_Complete.partial_matches"),
-    MANAGE_TAB_COMPLETE_GLOBAL_BYPASS_ENABLED("Manage_Tab_Complete.global_bypass.enabled"),
-    MANAGE_TAB_COMPLETE_GLOBAL_BYPASS_METHOD("Manage_Tab_Complete.global_bypass.method"),
-    MANAGE_TAB_COMPLETE_GLOBAL_BYPASS_PLAYERS("Manage_Tab_Complete.global_bypass.players"),
-    MANAGE_TAB_COMPLETE_SUGGESTIONS("Manage_Tab_Complete.suggestions"),
-    MANAGE_TAB_COMPLETE_METHOD("Manage_Tab_Complete.method"),
-    MANAGE_TAB_COMPLETE_GROUPS_MODE_ENABLED("Manage_Tab_Complete.groups_mode.enabled"),
-    MANAGE_TAB_COMPLETE_GROUPS_MODE_ENABLED_GROUPS("Manage_Tab_Complete.groups_mode.enabled_groups"),
-    MANAGE_TAB_COMPLETE_GROUPS_MODE_GROUPS("Manage_Tab_Complete.groups_mode.groups"),
-    MANAGE_TAB_COMPLETE_GROUPS_MODE_GROUPS_PRIORITY(".priority"),
-    MANAGE_TAB_COMPLETE_GROUPS_MODE_GROUPS_METHOD(".method"),
-    MANAGE_TAB_COMPLETE_GROUPS_MODE_GROUPS_SUGGESTIONS(".suggestions"),
-    MANAGE_TAB_COMPLETE_GROUPS_MODE_GROUPS_REQUIRED_SERVERS(".required_servers"),
-    MANAGE_TAB_COMPLETE_GROUPS_MODE_GROUPS_REQUIRED_PERMISSION(".required_permission"),
-    MANAGE_TAB_COMPLETE_GROUPS_MODE_GROUPS_REQUIRED_PLAYERS(".required_players"),
-    MANAGE_TAB_COMPLETE_GROUPS_MODE_GROUPS_IGNORE_SERVERS(".ignore_servers"),
-    WARNINGS_PROXY("Warnings.proxy"),
-    WARNINGS_FORMATS_CMDS_FORMAT("Warnings.formats.commands.format"),
-    WARNINGS_FORMATS_CMDS_CONSOLE("Warnings.formats.commands.console"),
-    WARNINGS_FORMATS_PCS_FORMAT("Warnings.formats.prevent_command_spam.format"),
-    WARNINGS_FORMATS_PCS_CONSOLE("Warnings.formats.prevent_command_spam.console"),
-    WARNINGS_LOG_CONSOLE("Warnings.log_console"),
-    BLOCKS_COMMANDS_ENABLED("Blocks_Commands.enabled"),
-    BLOCKS_COMMANDS_WARNING("Blocks_Commands.warning"),
-    BLOCKS_COMMANDS_METHOD("Blocks_Commands.method"),
-    BLOCKS_COMMANDS_FORCE_CHECK("Blocks_Commands.force_check"),
-    BLOCKS_COMMANDS_EXECUTORS("Blocks_Commands.executors"),
-    BLOCKS_COMMANDS("Blocks_Commands.commands"),
-    BLOCKS_COMMANDS_SERVER_MODE_ENABLED("Blocks_Commands.server_mode.enabled"),
-    BLOCKS_COMMANDS_SERVER_MODE_SERVERS("Blocks_Commands.server_mode.servers"),
-    BLOCKS_COMMANDS_SERVER_MODE_METHOD(".method"),
-    BLOCKS_COMMANDS_SERVER_MODE_EXECUTORS(".executors"),
-    BLOCKS_COMMANDS_SERVER_MODE_COMMANDS(".commands"),
-    PREVENT_COMMAND_SPAM_ENABLED("Prevent_Command_Spam.enabled"),
-    PREVENT_COMMAND_SPAM_WARNING("Prevent_Command_Spam.warning"),
-    PREVENT_COMMAND_SPAM_DELAY("Prevent_Command_Spam.delay"),
-    PREVENT_COMMAND_SPAM_COMMAND_LIMIT("Prevent_Command_Spam.command_limit"),
-    PREVENT_COMMAND_SPAM_BLOCK_COMMAND("Prevent_Command_Spam.block_command"),
-    PREVENT_COMMAND_SPAM_EXECUTORS("Prevent_Command_Spam.executors"),
-    PREVENT_COMMAND_SPAM_METHOD("Prevent_Command_Spam.method"),
-    PREVENT_COMMAND_SPAM_COMMANDS("Prevent_Command_Spam.commands");
+public enum Tab implements ConfigReader {
+    INSTANCE(""),
+    IGNORE_WATERFALL_WARNING("ignore_waterfall_warning"),
+    IGNORE_1_13_TAB_COMPLETE("ignore_1_13_tab_complete"),
+    PARTIAL_MATCHES("partial_matches"),
+    GLOBAL_BYPASS_ENABLED("global_bypass.enabled"),
+    GLOBAL_BYPASS_METHOD("global_bypass.method"),
+    GLOBAL_BYPASS_PLAYERS("global_bypass.players"),
+    SUGGESTIONS("suggestions"),
+    METHOD("method"),
+    GROUPS_MODE_ENABLED("groups_mode.enabled"),
+    GROUPS_MODE_ENABLED_GROUPS("groups_mode.enabled_groups"),
+    GROUPS_MODE_GROUPS("groups_mode.groups"),
+    GROUPS_MODE_GROUPS_PRIORITY(".priority"),
+    GROUPS_MODE_GROUPS_METHOD(".method"),
+    GROUPS_MODE_GROUPS_SUGGESTIONS(".suggestions"),
+    GROUPS_MODE_GROUPS_REQUIRED_SERVERS(".required_servers"),
+    GROUPS_MODE_GROUPS_REQUIRED_PERMISSION(".required_permission"),
+    GROUPS_MODE_GROUPS_REQUIRED_PLAYERS(".required_players"),
+    GROUPS_MODE_GROUPS_IGNORE_SERVERS(".ignore_servers");
 
+    @Getter
     private final String path;
-    private final BetterSecurityBungee plugin;
+    @Getter
+    private final FileType type;
     private Configuration config;
 
-    Config(final String path) {
+    Tab(final String path) {
         this.path = path;
-        this.plugin = BetterSecurityBungee.getInstance();
+        this.type = Module.TAB_COMPLETE.getType();
         this.reloadConfig();
     }
 
@@ -97,21 +73,19 @@ public enum Config implements IFiles {
 
     @Override
     public void reloadConfig() {
-        this.config = this.plugin.getConfigFile().getConfig();
+        final Configuration config = FileHandler.getConfig(this.type);
+        if(config == null) return;
+        this.config = config;
     }
 
-    @Override
-    public String getPath() {
-        return this.path;
+
+    public Object getObject(final String... var) {
+        return this.config.get(this.variables(var));
     }
 
     @Override
     public String getString(final String... var) {
         return StringUtils.colorize(this.config.getString(this.variables(var)));
-    }
-
-    public Object getObject(final String... var) {
-        return this.config.get(this.variables(var));
     }
 
     @Override

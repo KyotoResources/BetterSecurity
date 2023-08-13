@@ -57,7 +57,7 @@ public class MainCommand extends Command implements TabExecutor {
         }
 
         if(args.length == 1) {
-            new ReloadSubCMD(this.getName(), args, sender, this.plugin);
+            new ReloadSubCMD(this.getName(), args, sender);
             new AboutSubCMD(this.getName(), args, sender, this.plugin);
 
             if(checkArgs(args, "reload", "about")) return;

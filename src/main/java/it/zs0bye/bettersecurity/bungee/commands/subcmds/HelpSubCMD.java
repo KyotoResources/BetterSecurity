@@ -19,7 +19,7 @@ package it.zs0bye.bettersecurity.bungee.commands.subcmds;
 
 import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
 import it.zs0bye.bettersecurity.bungee.commands.BaseCommand;
-import it.zs0bye.bettersecurity.bungee.files.enums.Lang;
+import it.zs0bye.bettersecurity.bungee.files.readers.Lang;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 

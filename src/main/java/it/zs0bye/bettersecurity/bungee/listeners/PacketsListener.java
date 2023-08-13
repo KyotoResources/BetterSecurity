@@ -21,10 +21,11 @@ import com.mojang.brigadier.tree.CommandNode;
 import io.netty.channel.Channel;
 import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
 import it.zs0bye.bettersecurity.bungee.event.PacketEvent;
-import it.zs0bye.bettersecurity.bungee.files.enums.Config;
+import it.zs0bye.bettersecurity.bungee.files.readers.Tab;
+import it.zs0bye.bettersecurity.bungee.modules.Module;
 import it.zs0bye.bettersecurity.bungee.packet.PacketDecoder;
 import it.zs0bye.bettersecurity.bungee.packet.PacketEncoder;
-import it.zs0bye.bettersecurity.bungee.tabcomplete.TabComplete;
+import it.zs0bye.bettersecurity.bungee.modules.tabcomplete.TabComplete;
 import it.zs0bye.bettersecurity.common.utils.VersionUtils;
 import net.md_5.bungee.ServerConnection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -52,8 +53,8 @@ public class PacketsListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onServerSwitch(final ServerSwitchEvent event) {
-        if(!Config.MANAGE_TAB_COMPLETE_ENABLED.getBoolean()) return;
-        if(Config.MANAGE_TAB_COMPLETE_IGNORE_1_13_TAB_COMPLETE.getBoolean()) return;
+        if(Module.TAB_COMPLETE.isDisabled()) return;
+        if(Tab.IGNORE_1_13_TAB_COMPLETE.getBoolean()) return;
         final ProxiedPlayer player = event.getPlayer();
         if(player == null || !player.isConnected()) return;
         final Channel channel = this.channel(player);
@@ -64,8 +65,8 @@ public class PacketsListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPostLogin(final PostLoginEvent event) {
-        if(!Config.MANAGE_TAB_COMPLETE_ENABLED.getBoolean()) return;
-        if(Config.MANAGE_TAB_COMPLETE_IGNORE_1_13_TAB_COMPLETE.getBoolean()) return;
+        if(Module.TAB_COMPLETE.isDisabled()) return;
+        if(Tab.IGNORE_1_13_TAB_COMPLETE.getBoolean()) return;
         final ProxiedPlayer player = event.getPlayer();
         final Channel channel = this.channel(player);
         if(channel == null) return;

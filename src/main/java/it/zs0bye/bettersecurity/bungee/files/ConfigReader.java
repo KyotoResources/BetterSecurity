@@ -23,9 +23,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public interface IFiles {
+public interface ConfigReader {
 
     void reloadConfig();
+
+    FileType getType();
 
     String getPath();
 

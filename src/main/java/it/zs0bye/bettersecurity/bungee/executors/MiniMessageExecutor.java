@@ -18,7 +18,7 @@
 package it.zs0bye.bettersecurity.bungee.executors;
 
 import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
-import it.zs0bye.bettersecurity.bungee.files.enums.Config;
+import it.zs0bye.bettersecurity.bungee.files.readers.Config;
 import it.zs0bye.bettersecurity.common.utils.CStringUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;

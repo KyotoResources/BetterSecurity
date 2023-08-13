@@ -19,7 +19,7 @@ package it.zs0bye.bettersecurity.bungee.warnings;
 
 import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
 import it.zs0bye.bettersecurity.bungee.executors.SendExecutors;
-import it.zs0bye.bettersecurity.bungee.files.enums.Config;
+import it.zs0bye.bettersecurity.bungee.files.readers.Config;
 import it.zs0bye.bettersecurity.bungee.warnings.enums.TypeWarning;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 

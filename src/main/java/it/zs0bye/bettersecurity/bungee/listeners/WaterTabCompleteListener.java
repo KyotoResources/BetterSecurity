@@ -19,8 +19,9 @@ package it.zs0bye.bettersecurity.bungee.listeners;
 
 import io.github.waterfallmc.waterfall.event.ProxyDefineCommandsEvent;
 import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
-import it.zs0bye.bettersecurity.bungee.tabcomplete.TabComplete;
-import it.zs0bye.bettersecurity.bungee.files.enums.Config;
+import it.zs0bye.bettersecurity.bungee.files.readers.Tab;
+import it.zs0bye.bettersecurity.bungee.modules.Module;
+import it.zs0bye.bettersecurity.bungee.modules.tabcomplete.TabComplete;
 import lombok.Getter;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
@@ -57,7 +58,7 @@ public class WaterTabCompleteListener implements Listener {
          } catch (final ClassNotFoundException e) {
              registered = false;
              if(hasDisabled()) return;
-             if(Config.MANAGE_TAB_COMPLETE_IGNORE_WATERFALL_WARNING.getBoolean()) return;
+             if(Tab.IGNORE_WATERFALL_WARNING.getBoolean()) return;
              plugin.getLogger().warning("------------------------- TAB COMPLETE NOT SAFE -------------------------");
              plugin.getLogger().warning("You are using the regular version of bungeecord.");
              plugin.getLogger().warning("And this does not allow the complete tab to work 100%.");
@@ -70,8 +71,8 @@ public class WaterTabCompleteListener implements Listener {
      }
 
      private static boolean hasDisabled() {
-         if(!Config.MANAGE_TAB_COMPLETE_ENABLED.getBoolean()) return true;
-         return Config.MANAGE_TAB_COMPLETE_IGNORE_1_13_TAB_COMPLETE.getBoolean();
+         if(Module.TAB_COMPLETE.isDisabled()) return true;
+         return Tab.IGNORE_1_13_TAB_COMPLETE.getBoolean();
      }
 
 }

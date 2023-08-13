@@ -15,10 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package it.zs0bye.bettersecurity.bungee.tabcomplete;
+package it.zs0bye.bettersecurity.bungee.modules.tabcomplete;
 
-import it.zs0bye.bettersecurity.bungee.tabcomplete.methods.Method;
-import it.zs0bye.bettersecurity.bungee.tabcomplete.methods.MethodType;
+import it.zs0bye.bettersecurity.common.methods.Method;
+import it.zs0bye.bettersecurity.common.methods.MethodType;
 import net.md_5.bungee.api.plugin.Cancellable;
 
 import java.util.*;
