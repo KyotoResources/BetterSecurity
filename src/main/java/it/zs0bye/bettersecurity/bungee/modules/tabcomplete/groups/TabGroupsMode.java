@@ -1,6 +1,6 @@
 /*
  * Security plugin for your server - https://github.com/KyotoResources/BetterSecurity
- * Copyright (C) 2023 KyotoResources
+ * Copyright (c) 2023 KyotoResources
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,11 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package it.zs0bye.bettersecurity.bungee.modules.tabcomplete;
+package it.zs0bye.bettersecurity.bungee.modules.tabcomplete.groups;
 
 import com.mojang.brigadier.tree.CommandNode;
 import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
 import it.zs0bye.bettersecurity.bungee.files.readers.Tab;
+import it.zs0bye.bettersecurity.bungee.modules.tabcomplete.TabHandler;
+import it.zs0bye.bettersecurity.bungee.modules.tabcomplete.TabProviders;
 import it.zs0bye.bettersecurity.common.methods.Method;
 import it.zs0bye.bettersecurity.common.methods.MethodType;
 import it.zs0bye.bettersecurity.common.utils.CStringUtils;
@@ -33,9 +35,9 @@ import java.util.*;
 public class TabGroupsMode extends TabProviders {
 
     private final ProxiedPlayer player;
-    private final TabComplete tab;
+    private final TabHandler tab;
 
-    public TabGroupsMode(final ProxiedPlayer player,  final TabComplete tab) {
+    public TabGroupsMode(final ProxiedPlayer player, final TabHandler tab) {
         this.player = player;
         this.tab = tab;
     }
@@ -109,7 +111,7 @@ public class TabGroupsMode extends TabProviders {
         final List<TabGroup> groups = new ArrayList<>();
         final Map<Integer, TabGroup> map = new HashMap<>();
         for(final String egroup : enabledGroups()) {
-            final TabGroup group = new TabGroup(plugin, egroup, player, new TabComplete(plugin, player));
+            final TabGroup group = new TabGroup(plugin, egroup, player, new TabHandler(plugin, player));
             if(hasDuplications(plugin, group, map)) break;
             map.put(group.getPriority(), group);
         }

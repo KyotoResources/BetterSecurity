@@ -61,7 +61,8 @@ Help_Command:
 #  /_/ |_| \___//_/  \____/\__,_/ \__,_/      \____/  \____//_/ /_/ /_//_/ /_/ /_/\__,_/ /_/ /_/\__,_/
 #
 Reload_Command:
-  configurations: '%prefix%Configurations have been reloaded!'
+  configurations: '%prefix%&aConfigurations have been reloaded!'
+  new_language_detected: '%prefix%The language "%lang%" has been added, run the &e/%command% reload &7command again.'
 
 
 #    ____                                _   _             _  __           _        ____

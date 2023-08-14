@@ -21,7 +21,7 @@ import io.github.waterfallmc.waterfall.event.ProxyDefineCommandsEvent;
 import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
 import it.zs0bye.bettersecurity.bungee.files.readers.Tab;
 import it.zs0bye.bettersecurity.bungee.modules.Module;
-import it.zs0bye.bettersecurity.bungee.modules.tabcomplete.TabComplete;
+import it.zs0bye.bettersecurity.bungee.modules.tabcomplete.TabHandler;
 import lombok.Getter;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
@@ -47,7 +47,7 @@ public class WaterTabCompleteListener implements Listener {
          if(hasDisabled()) return;
          final ProxiedPlayer player = (ProxiedPlayer) event.getReceiver();
          final Map<String, Command> commands = event.getCommands();
-         new TabComplete(this.plugin, player).applyTabWaterfall(commands.keySet());
+         new TabHandler(this.plugin, player).applyTabWaterfall(commands.keySet());
      }
 
      public static void register(final BetterSecurityBungee plugin) {

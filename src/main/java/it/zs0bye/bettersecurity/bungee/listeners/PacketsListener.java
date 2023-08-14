@@ -25,7 +25,7 @@ import it.zs0bye.bettersecurity.bungee.files.readers.Tab;
 import it.zs0bye.bettersecurity.bungee.modules.Module;
 import it.zs0bye.bettersecurity.bungee.packet.PacketDecoder;
 import it.zs0bye.bettersecurity.bungee.packet.PacketEncoder;
-import it.zs0bye.bettersecurity.bungee.modules.tabcomplete.TabComplete;
+import it.zs0bye.bettersecurity.bungee.modules.tabcomplete.TabHandler;
 import it.zs0bye.bettersecurity.common.utils.VersionUtils;
 import net.md_5.bungee.ServerConnection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -83,7 +83,7 @@ public class PacketsListener implements Listener {
         final Commands packet = (Commands) event.getPacket();
         final Collection<CommandNode<?>> childrens = packet.getRoot().getChildren();
         childrens.removeIf(node -> node.getName().contains(":"));
-        new TabComplete(this.plugin, player).applyTabChildren(childrens);
+        new TabHandler(this.plugin, player).applyTabChildren(childrens);
 
         player.getServer().getInfo().ping((serverPing, throwable) -> {
             if(serverPing == null || serverPing.getVersion() == null) return;

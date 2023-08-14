@@ -17,21 +17,25 @@
 
 package it.zs0bye.bettersecurity.bungee.commands.subcmds;
 
+import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
 import it.zs0bye.bettersecurity.bungee.commands.BaseCommand;
 import it.zs0bye.bettersecurity.bungee.files.FileHandler;
+import it.zs0bye.bettersecurity.bungee.files.readers.Config;
 import it.zs0bye.bettersecurity.bungee.files.readers.Lang;
 import net.md_5.bungee.api.CommandSender;
 
-import java.util.Set;
+import java.util.*;
 
 public class ReloadSubCMD extends BaseCommand {
 
     private final String command;
     private CommandSender sender;
+    private BetterSecurityBungee plugin;
 
-    public ReloadSubCMD(final String command, final String[] args, final CommandSender sender) {
+    public ReloadSubCMD(final String command, final String[] args, final CommandSender sender, final BetterSecurityBungee plugin) {
         this.command = command;
         this.sender = sender;
+        this.plugin = plugin;
         if(!args[0].equalsIgnoreCase(this.getName())) return;
         this.execute();
     }
@@ -54,7 +58,19 @@ public class ReloadSubCMD extends BaseCommand {
             return;
         }
 
-        FileHandler.getHandlers().values().forEach(FileHandler::reload);
+        final List<FileHandler> handlers = new ArrayList<>();
+        final Map<Integer, FileHandler> map = new HashMap<>();
+        this.plugin.getHandlers().values().forEach(file -> map.put(file.getType().getPriority(), file));
+        for(final Integer priority : map.keySet()) handlers.add(map.get(priority));
+
+        handlers.forEach(file -> {
+            if(file.reload()) return;
+            Lang.RELOAD_NEW_LANGUAGE_DETECTED.send(this.sender, new HashMap<>(){{
+                put("%lang%", Config.SETTINGS_LOCALE.getString());
+                put("%command%", command);
+            }});
+        });
+
         Lang.RELOAD_CONFIGURATIONS.send(this.sender);
     }
 

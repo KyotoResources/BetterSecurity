@@ -21,8 +21,8 @@ import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
 import it.zs0bye.bettersecurity.bungee.commands.BaseCommand;
 import it.zs0bye.bettersecurity.bungee.files.readers.Lang;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.TextComponent;
 
+import java.util.HashMap;
 import java.util.Set;
 
 public class HelpSubCMD extends BaseCommand {
@@ -52,21 +52,19 @@ public class HelpSubCMD extends BaseCommand {
     @Override
     protected void execute() {
 
-        if(!this.sender.hasPermission(this.command + ".command." + this.getName())) {
+        if (!this.sender.hasPermission(this.command + ".command." + this.getName())) {
             Lang.INSUFFICIENT_PERMISSIONS.send(this.sender);
             return;
         }
 
-        Lang.HELP_TEXTS.getStringList().forEach(text -> this.sender.sendMessage(TextComponent.fromLegacyText(text
-                .replace("%command%", this.command)
-                .replace("%version%", version())
-                .replace("%proxy%", this.plugin.getProxy().getName())
-                .replace("%author%", author()))));
+        Lang.HELP_TEXTS.sendList(this.sender, new HashMap<>() {{
+            put("%command%", command);
+            put("%plugin%", plugin.getDescription().getName());
+            put("%version%", "v" + plugin.getDescription().getVersion());
+            put("%proxy%", plugin.getProxy().getName());
+            put("%author%", author());
+        }});
 
-    }
-
-    private String version() {
-        return "BetterSecurity v" + this.plugin.getDescription().getVersion();
     }
 
     private String author() {

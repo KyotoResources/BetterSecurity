@@ -20,6 +20,7 @@ package it.zs0bye.bettersecurity.bungee.modules.tabcomplete;
 import com.mojang.brigadier.tree.CommandNode;
 import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
 import it.zs0bye.bettersecurity.bungee.files.readers.Tab;
+import it.zs0bye.bettersecurity.bungee.modules.tabcomplete.groups.TabGroupsMode;
 import it.zs0bye.bettersecurity.common.methods.Method;
 import it.zs0bye.bettersecurity.common.methods.MethodType;
 import it.zs0bye.bettersecurity.common.utils.CStringUtils;
@@ -28,7 +29,7 @@ import net.md_5.bungee.api.plugin.Cancellable;
 
 import java.util.*;
 
-public class TabComplete extends TabProviders {
+public class TabHandler extends TabProviders {
 
     private final BetterSecurityBungee plugin;
     private final ProxiedPlayer player;
@@ -40,7 +41,7 @@ public class TabComplete extends TabProviders {
 
     private final TabGroupsMode groupsMode;
 
-    public TabComplete(final BetterSecurityBungee plugin, final ProxiedPlayer player) {
+    public TabHandler(final BetterSecurityBungee plugin, final ProxiedPlayer player) {
         this.plugin = plugin;
         this.player = player;
         this.bypass_enabled = Tab.GLOBAL_BYPASS_ENABLED.getBoolean();
@@ -50,7 +51,7 @@ public class TabComplete extends TabProviders {
         this.groupsMode = new TabGroupsMode(this.player, this);
     }
 
-    protected MethodType getMethodType(final String path, String group, String permission) {
+    public MethodType getMethodType(final String path, String group, String permission) {
         group = group.isEmpty() ? group : "." + group;
         permission = permission.isEmpty() ? "bettersecurity.tab" + group : permission;
         for(final MethodType type : MethodType.values()) {

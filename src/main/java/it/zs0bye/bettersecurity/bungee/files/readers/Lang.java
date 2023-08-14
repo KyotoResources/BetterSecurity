@@ -17,7 +17,7 @@
 
 package it.zs0bye.bettersecurity.bungee.files.readers;
 
-import it.zs0bye.bettersecurity.bungee.files.FileHandler;
+import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
 import it.zs0bye.bettersecurity.bungee.files.ConfigReader;
 import it.zs0bye.bettersecurity.bungee.files.FileType;
 import it.zs0bye.bettersecurity.bungee.utils.StringUtils;
@@ -29,21 +29,23 @@ import net.md_5.bungee.config.Configuration;
 
 import java.util.*;
 
+@Getter
 public enum Lang implements ConfigReader {
     INSTANCE(""),
     IS_NOT_NUMBER("is_not_number"),
     INSUFFICIENT_PERMISSIONS("insufficient_permissions"),
     UPDATE_NOTIFICATION("update_notification"),
     HELP_TEXTS("Help_Command.texts"),
-    RELOAD_CONFIGURATIONS("Reload_Command.configurations");
+    RELOAD_CONFIGURATIONS("Reload_Command.configurations"),
+    RELOAD_NEW_LANGUAGE_DETECTED("Reload_Command.new_language_detected");
 
-    @Getter
+    private final BetterSecurityBungee plugin;
     private final String path;
-    @Getter
     private final FileType type;
     private Configuration config;
 
     Lang(final String path) {
+        this.plugin = BetterSecurityBungee.getInstance();
         this.path = path;
         this.type = FileType.LANG;
         this.reloadConfig();
@@ -59,9 +61,7 @@ public enum Lang implements ConfigReader {
 
     @Override
     public void reloadConfig() {
-        final Configuration config = FileHandler.getConfig(this.type);
-        if(config == null) return;
-        this.config = config;
+        this.config = this.plugin.getConfig(this.type);
     }
 
     @Override

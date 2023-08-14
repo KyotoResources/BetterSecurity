@@ -17,34 +17,43 @@
 
 package it.zs0bye.bettersecurity.bungee.files;
 
+import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
 import it.zs0bye.bettersecurity.bungee.files.readers.Command;
 import it.zs0bye.bettersecurity.bungee.files.readers.Config;
 import it.zs0bye.bettersecurity.bungee.files.readers.Lang;
 import it.zs0bye.bettersecurity.bungee.files.readers.Tab;
-import it.zs0bye.bettersecurity.bungee.modules.Module;
 import lombok.Getter;
-
-import java.lang.module.Configuration;
+import lombok.SneakyThrows;
 
 @Getter
 public enum FileType {
-    CONFIG(Config.values(), "config", null),
-    LANG(Lang.values(), defaultLocale(), "languages"),
-    COMMAND(Command.values(), "tabcomplete", "modules"),
-    TAB(Tab.values(), "commands", "modules");
+    CONFIG(1, "config", null, Config.class),
+    LANG(2, "en_US", "languages", Lang.class),
+    TAB(3, "tabcomplete", "modules", Tab.class),
+    COMMAND(4, "commands", "modules", Command.class);
 
-    private final ConfigReader[] reader;
+    private final BetterSecurityBungee plugin;
+    private final int priority;
     private final String name, directory;
+    private final Class<? extends ConfigReader> reader;
 
-    FileType(final ConfigReader[] reader, final String name, final String directory) {
-        this.reader = reader;
+    FileType(final int priority, final String name, final String directory, final Class<? extends ConfigReader> reader) {
+        this.plugin = BetterSecurityBungee.getInstance();
+        this.priority = priority;
         this.name = name;
         this.directory = directory;
+        this.reader = reader;
     }
 
-    private static String defaultLocale() {
-        if(Config.SETTINGS_LOCALE.getConfig() == null) return "en_US";
+    public String getName() {
+        if(this != FileType.LANG) return this.name;
+        if(!this.plugin.getHandlers().containsKey(FileType.CONFIG)) return this.name;
         return Config.SETTINGS_LOCALE.getString();
+    }
+
+    @SneakyThrows
+    public ConfigReader[] getReader() {
+        return this.reader.getEnumConstants();
     }
 
 }

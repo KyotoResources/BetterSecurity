@@ -19,6 +19,7 @@ package it.zs0bye.bettersecurity.bungee.files;
 
 import com.google.common.io.ByteStreams;
 import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
+import it.zs0bye.bettersecurity.bungee.files.readers.Config;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import net.md_5.bungee.config.Configuration;
@@ -46,8 +47,6 @@ public class FileHandler {
 
     @Getter
     private final static Map<FileType, Configuration> files = new HashMap<>();
-    @Getter
-    private final static Map<FileType, FileHandler> handlers = new HashMap<>();
 
     @SuppressWarnings("all")
     @SneakyThrows
@@ -90,16 +89,31 @@ public class FileHandler {
 
         this.config = this.initConfig();
         files.put(this.type, this.config);
-        handlers.put(this.type, this);
-        System.out.println("test save - " + this.fileName);
-        for(final ConfigReader reader : this.type.getReader()) reader.reloadConfig();
         return this;
     }
 
-    public void reload() {
+    public boolean reload() {
         files.remove(this.type);
-        handlers.remove(this.type);
         this.saveDefaultConfig();
+
+        if(this.reloadLang()) return false;
+        this.reloadReader();
+        return true;
+    }
+
+    private void reloadReader() {
+        for(final ConfigReader reader : this.type.getReader()) reader.reloadConfig();
+    }
+
+    private boolean reloadLang() {
+        final Map<FileType, FileHandler> handlers = this.plugin.getHandlers();
+        if(!handlers.containsKey(FileType.CONFIG) && !handlers.containsKey(FileType.LANG)) return false;
+        if(this.type != FileType.LANG) return false;
+        if(this.directory == null || !this.directory.exists()) return false;
+        if(this.fileName.equals(Config.SETTINGS_LOCALE.getString())) return false;
+        handlers.put(this.type, new FileHandler(this.plugin, this.type).saveDefaultConfig());
+        this.reloadReader();
+        return true;
     }
 
     @SneakyThrows
@@ -107,11 +121,6 @@ public class FileHandler {
         if(!files.containsKey(this.type))
             return ConfigurationProvider.getProvider(YamlConfiguration.class).load(this.file);
         return files.get(this.type);
-    }
-
-    public static Configuration getConfig(final FileType type) {
-        if(!handlers.containsKey(type)) return null;
-        return handlers.get(type).getConfig();
     }
 
 }

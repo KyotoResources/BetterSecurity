@@ -1,6 +1,6 @@
 /*
  * Security plugin for your server - https://github.com/KyotoResources/BetterSecurity
- * Copyright (C) 2023 KyotoResources
+ * Copyright (c) 2023 KyotoResources
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,10 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package it.zs0bye.bettersecurity.bungee.modules.tabcomplete;
+package it.zs0bye.bettersecurity.bungee.modules.tabcomplete.groups;
 
 import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
 import it.zs0bye.bettersecurity.bungee.files.readers.Tab;
+import it.zs0bye.bettersecurity.bungee.modules.tabcomplete.TabHandler;
 import lombok.Getter;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -32,12 +33,12 @@ public class TabGroup {
     private final BetterSecurityBungee plugin;
     private final String name;
     private final ProxiedPlayer player;
-    private final TabComplete tab;
+    private final TabHandler tab;
     private final String server;
     private final String path;
     private final String methodPath;
 
-    public TabGroup(final BetterSecurityBungee plugin, final String name, final ProxiedPlayer player, final TabComplete tab) {
+    public TabGroup(final BetterSecurityBungee plugin, final String name, final ProxiedPlayer player, final TabHandler tab) {
         this.plugin = plugin;
         this.name = name;
         this.player = player;

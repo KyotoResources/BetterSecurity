@@ -28,6 +28,7 @@ import lombok.SneakyThrows;
 import net.md_5.bungee.api.plugin.Listener;
 
 import java.lang.reflect.Constructor;
+import java.util.Map;
 
 @Getter
 public enum Module {
@@ -50,9 +51,8 @@ public enum Module {
         return !Config.valueOf("MODULES_" + this.name()).getBoolean();
     }
 
-    public void loadFile() {
-        if(this.type == null) return;
-        new FileHandler(this.plugin, this.type).saveDefaultConfig();
+    public void loadFile(final Map<FileType, FileHandler> handlers) {
+        handlers.put(this.type, new FileHandler(this.plugin, this.type).saveDefaultConfig());
     }
 
     @SneakyThrows
@@ -68,8 +68,8 @@ public enum Module {
         for (final Module module : Module.values()) module.loadListener();
     }
 
-    public static void loadFiles() {
-        for (final Module module : Module.values()) module.loadFile();
+    public static void loadFiles(final Map<FileType, FileHandler> handlers) {
+        for (final Module module : Module.values()) module.loadFile(handlers);
     }
 
 }

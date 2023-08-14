@@ -17,7 +17,7 @@
 
 package it.zs0bye.bettersecurity.bungee.files.readers;
 
-import it.zs0bye.bettersecurity.bungee.files.FileHandler;
+import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
 import it.zs0bye.bettersecurity.bungee.files.ConfigReader;
 import it.zs0bye.bettersecurity.bungee.files.FileType;
 import it.zs0bye.bettersecurity.bungee.modules.Module;
@@ -30,6 +30,7 @@ import net.md_5.bungee.config.Configuration;
 
 import java.util.*;
 
+@Getter
 public enum Tab implements ConfigReader {
     INSTANCE(""),
     IGNORE_WATERFALL_WARNING("ignore_waterfall_warning"),
@@ -51,13 +52,13 @@ public enum Tab implements ConfigReader {
     GROUPS_MODE_GROUPS_REQUIRED_PLAYERS(".required_players"),
     GROUPS_MODE_GROUPS_IGNORE_SERVERS(".ignore_servers");
 
-    @Getter
+    private final BetterSecurityBungee plugin;
     private final String path;
-    @Getter
     private final FileType type;
     private Configuration config;
 
     Tab(final String path) {
+        this.plugin = BetterSecurityBungee.getInstance();
         this.path = path;
         this.type = Module.TAB_COMPLETE.getType();
         this.reloadConfig();
@@ -73,9 +74,7 @@ public enum Tab implements ConfigReader {
 
     @Override
     public void reloadConfig() {
-        final Configuration config = FileHandler.getConfig(this.type);
-        if(config == null) return;
-        this.config = config;
+        this.config = this.plugin.getConfig(this.type);
     }
 
 

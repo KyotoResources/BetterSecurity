@@ -17,7 +17,7 @@
 
 package it.zs0bye.bettersecurity.bungee.files.readers;
 
-import it.zs0bye.bettersecurity.bungee.files.FileHandler;
+import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
 import it.zs0bye.bettersecurity.bungee.files.ConfigReader;
 import it.zs0bye.bettersecurity.bungee.files.FileType;
 import it.zs0bye.bettersecurity.bungee.utils.StringUtils;
@@ -52,13 +52,16 @@ public enum Config implements ConfigReader {
     COMMAND_SPAM_LIMITER_METHOD("Command_Spam_Limiter.method"),
     COMMAND_SPAM_LIMITER_COMMANDS("Command_Spam_Limiter.commands");
 
+    private final BetterSecurityBungee plugin;
     private final String path;
     private final FileType type;
     private Configuration config;
 
     Config(final String path) {
+        this.plugin = BetterSecurityBungee.getInstance();
         this.path = path;
         this.type = FileType.CONFIG;
+        this.reloadConfig();
     }
 
     @Override
@@ -71,8 +74,7 @@ public enum Config implements ConfigReader {
 
     @Override
     public void reloadConfig() {
-        System.out.println("test 1 - " + this.name());
-        this.config = FileHandler.getConfig(this.type);
+        this.config = this.plugin.getConfig(this.type);
     }
 
     @Override

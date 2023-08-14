@@ -30,8 +30,11 @@ import it.zs0bye.bettersecurity.common.utils.enums.ConsoleUtils;
 import lombok.Getter;
 import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
 import net.md_5.bungee.api.plugin.Plugin;
+import net.md_5.bungee.config.Configuration;
 import org.bstats.bungeecord.Metrics;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Getter
@@ -39,6 +42,7 @@ public class BetterSecurityBungee extends Plugin {
 
     @Getter
     private static BetterSecurityBungee instance;
+    private final static Map<FileType, FileHandler> handlers = new HashMap<>();
 
     private BungeeAudiences adventure;
     private String updateMsg;
@@ -94,9 +98,9 @@ public class BetterSecurityBungee extends Plugin {
         this.getLogger().info("");
         this.getLogger().info(ConsoleUtils.YELLOW + "┃ Loading resources.." + ConsoleUtils.RESET);
 
-        new FileHandler(this, FileType.CONFIG).saveDefaultConfig();
-        new FileHandler(this, FileType.LANG).saveDefaultConfig();
-        Module.loadFiles();
+        handlers.put(FileType.CONFIG, new FileHandler(this, FileType.CONFIG).saveDefaultConfig());
+        handlers.put(FileType.LANG, new FileHandler(this, FileType.LANG).saveDefaultConfig());
+        Module.loadFiles(handlers);
 
         this.getLogger().info(ConsoleUtils.YELLOW + "┃ Resources uploaded successfully!" + ConsoleUtils.RESET);
     }
@@ -132,6 +136,14 @@ public class BetterSecurityBungee extends Plugin {
                     this.getDescription().getVersion(), null, null);
             this.getProxy().getPluginManager().registerListener(this, new UpdaterListener(this));
         }, 20L, 30 * 60, TimeUnit.SECONDS);
+    }
+
+    public Map<FileType, FileHandler> getHandlers() {
+        return handlers;
+    }
+
+    public Configuration getConfig(final FileType type) {
+        return handlers.get(type).getConfig();
     }
 
 }
