@@ -65,7 +65,7 @@ public class ReloadSubCMD extends BaseCommand {
 
         handlers.forEach(file -> {
             if(file.reload()) return;
-            Lang.RELOAD_NEW_LANGUAGE_DETECTED.send(this.sender, new HashMap<>(){{
+            Lang.RELOAD_NEW_LANGUAGE_DETECTED.send(this.sender, new HashMap<String, String>(){{
                 put("%lang%", Config.SETTINGS_LOCALE.getString());
                 put("%command%", command);
             }});

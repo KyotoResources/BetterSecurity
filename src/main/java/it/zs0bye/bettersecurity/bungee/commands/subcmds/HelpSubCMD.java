@@ -57,7 +57,7 @@ public class HelpSubCMD extends BaseCommand {
             return;
         }
 
-        Lang.HELP_TEXTS.sendList(this.sender, new HashMap<>() {{
+        Lang.HELP_TEXTS.sendList(this.sender, new HashMap<String, String>() {{
             put("%command%", command);
             put("%plugin%", plugin.getDescription().getName());
             put("%version%", "v" + plugin.getDescription().getVersion());
