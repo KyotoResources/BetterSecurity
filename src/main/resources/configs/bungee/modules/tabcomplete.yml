@@ -214,8 +214,8 @@ advanced_mode:
       # - "*"           | This will mean that group will apply for ALL sub-servers that are registered at the moment.
       # - "example"     | This will mean that group will apply for sub-server called "example".
       # - "!example"    | This will mean that group will NOT apply for sub-server called "example".
-      # - "#ex_arena-"  | This will mean that group will apply for sub-server starting with "example-".
-      # - "!#ex_arena-" | This will mean that group will NOT apply for sub-server starting with "example-".
+      # - "#ex_arena-"  | This will mean that group will apply for sub-server starting with "ex_arena-".
+      # - "!#ex_arena-" | This will mean that group will NOT apply for sub-server starting with "ex_arena-".
       # < ⚠ > This option is OPTIONAL (not required). If it is not defined, this group will apply for all sub-servers
       target_servers:
         - '*' # if you are going to define only this '*', you can delete this "target_servers" section for this group as it will work the same without it
@@ -258,8 +258,8 @@ advanced_mode:
       # - "*"           | This will mean that group will apply for ALL sub-servers that are registered at the moment.
       # - "example"     | This will mean that group will apply for sub-server called "example".
       # - "!example"    | This will mean that group will NOT apply for sub-server called "example".
-      # - "#ex_arena-"  | This will mean that group will apply for sub-server starting with "example-".
-      # - "!#ex_arena-" | This will mean that group will NOT apply for sub-server starting with "example-".
+      # - "#ex_arena-"  | This will mean that group will apply for sub-server starting with "ex_arena-".
+      # - "!#ex_arena-" | This will mean that group will NOT apply for sub-server starting with "ex_arena-".
       # < ⚠ > This option is OPTIONAL (not required). If it is not defined, this group will apply for all sub-servers
       target_servers:
         - 'lobby'
@@ -300,8 +300,8 @@ advanced_mode:
       # - "*"           | This will mean that group will apply for ALL sub-servers that are registered at the moment.
       # - "example"     | This will mean that group will apply for sub-server called "example".
       # - "!example"    | This will mean that group will NOT apply for sub-server called "example".
-      # - "#ex_arena-"  | This will mean that group will apply for sub-server starting with "example-".
-      # - "!#ex_arena-" | This will mean that group will NOT apply for sub-server starting with "example-".
+      # - "#ex_arena-"  | This will mean that group will apply for sub-server starting with "ex_arena-".
+      # - "!#ex_arena-" | This will mean that group will NOT apply for sub-server starting with "ex_arena-".
       # < ⚠ > This option is OPTIONAL (not required). If it is not defined, this group will apply for all sub-servers
       target_servers:
         - '!#bw_arena-'
@@ -333,8 +333,8 @@ advanced_mode:
       # - "*"           | This will mean that group will apply for ALL sub-servers that are registered at the moment.
       # - "example"     | This will mean that group will apply for sub-server called "example".
       # - "!example"    | This will mean that group will NOT apply for sub-server called "example".
-      # - "#ex_arena-"  | This will mean that group will apply for sub-server starting with "example-".
-      # - "!#ex_arena-" | This will mean that group will NOT apply for sub-server starting with "example-".
+      # - "#ex_arena-"  | This will mean that group will apply for sub-server starting with "ex_arena-".
+      # - "!#ex_arena-" | This will mean that group will NOT apply for sub-server starting with "ex_arena-".
       # < ⚠ > This option is OPTIONAL (not required). If it is not defined, this group will apply for all sub-servers
       target_servers:
         - '*' # if you are going to define only this '*', you can delete this "target_servers" section for this group as it will work the same without it
