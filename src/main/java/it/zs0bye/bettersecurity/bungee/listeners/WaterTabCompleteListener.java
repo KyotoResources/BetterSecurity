@@ -47,7 +47,7 @@ public class WaterTabCompleteListener implements Listener {
          if(hasDisabled()) return;
          final ProxiedPlayer player = (ProxiedPlayer) event.getReceiver();
          final Map<String, Command> commands = event.getCommands();
-         new TabHandler(this.plugin, player).applyTabWaterfall(commands.keySet());
+         new TabHandler(this.plugin, player).injectTabSuggestions(commands.keySet());
      }
 
      public static void register(final BetterSecurityBungee plugin) {

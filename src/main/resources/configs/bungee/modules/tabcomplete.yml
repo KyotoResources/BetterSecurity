@@ -59,42 +59,45 @@ global_bypass:
 #  | __ -| .'|_ -| |  _|  |   --| . |   |  _| | . | | |  _| .'|  _| | . |   |
 #  |_____|__,|___|_|___|  |_____|___|_|_|_| |_|_  |___|_| |__,|_| |_|___|_|_|
 #                                             |___|
-# This is the "basic" configuration of the complete tab. (Ignore this section, if you have enabled the advanced one)
-# To bypass the suggestions, you need to enable "global_bypass".
+# This is the "basic" configuration of the tabcomplete section, enabled by default, it targets GLOBAL (all sub-servers) network.
+# < ⚠ > If you are advanced user, it is recommended to first check "advanced_mode" from "Advanced Configuration" below.
+# If you decide to use "advanced_mode" and enable it below, everything from "basic_mode" will be ignored.
+basic_mode:
 
-# Here you can enter the type of method you want to use to block commands:
-# - BLACKLIST | (The commands in the list will be blocked)
-# - WHITELIST | (The commands in the list will be able to execute)
-method: 'BLACKLIST'
+  # Here you can enter the type of method you want to use to block commands:
+  # - BLACKLIST | (The commands in the list will be blocked)
+  # - WHITELIST | (The commands in the list will be able to execute)
+  method: 'BLACKLIST'
 
-# This list will only be utilized if "groups_mode" below is NOT enabled.
-suggestions:
-  - 'pl'
-  - 'plugins'
-  - 'ver'
-  - 'version'
-  - 'about'
-  - '?'
-  - 'help'
-  - 'bukkit:pl'
-  - 'bukkit:plugins'
-  - 'bukkit:ver'
-  - 'bukkit:version'
-  - 'bukkit:about'
-  - 'bukkit:?'
-  - 'bukkit:help'
-  - 'minecraft:?'
-  - 'minecraft:help'
+  # < ⚠ > Remember that this list will only be in function if "advanced_mode" is NOT enabled.
+  list:
+    - 'pl'
+    - 'plugins'
+    - 'ver'
+    - 'version'
+    - 'about'
+    - '?'
+    - 'help'
+    - 'bukkit:pl'
+    - 'bukkit:plugins'
+    - 'bukkit:ver'
+    - 'bukkit:version'
+    - 'bukkit:about'
+    - 'bukkit:?'
+    - 'bukkit:help'
+    - 'minecraft:?'
+    - 'minecraft:help'
 
 #   _____   _                       _    _____         ___ _                 _   _
 #  |  _  |_| |_ _ ___ ___ ___ ___ _| |  |     |___ ___|  _|_|___ _ _ ___ ___| |_|_|___ ___
 #  |     | . | | | .'|   |  _| -_| . |  |   --| . |   |  _| | . | | |  _| .'|  _| | . |   |
 #  |__|__|___|\_/|__,|_|_|___|___|___|  |_____|___|_|_|_| |_|_  |___|_| |__,|_| |_|___|_|_|
 #                                                           |___|
-# This is the "advanced" configuration, here you can 100% customize the complete tab to your liking!
-groups_mode:
+# This is the "advanced" configuration, here you can 100% customize the tabcomplete to your liking!
+# To bypass the restrictions, you need to enable "global_bypass".
+advanced_mode:
 
-  # By enabling the groups_mode, above options "method", and "suggestions" will be fully ignored
+  # By enabling the "advanced_mode", the section above "basic_mode" will be fully ignored
   # and instead you configure everything below with SO much more flexibility.
   enabled: true
 
@@ -103,38 +106,36 @@ groups_mode:
   enabled_groups:
     - '*'
 
-  # This is the list of suggestions groups whitelisted in the complete tab.
-  # In these groups you can put the following requirements:
-  # - required_servers: ['server1', 'server2'] | (If you put this requirement, the group will go only for the specified server)
-  # - required_permission: <permission> | (If you set this requirement, the group will go only for those who have the specified permission)
-  # - required_players: ['playername1', 'playername2'] | (If you put this requirement, the group will go only for the players in the list)
-  # If you want to put multiple requirements in one group you can do it safely.
-  # You can also ignore one or more servers in a group, by putting:
-  # - ignore_servers: ['server1', 'server2'] | (Servers that are in this list will not see group suggestions)
-  groups:
-    # Besides "required_permission" option, there are permissions for each group.
-    # There can be used force-invert permissions:
-    # - bettersecurity.tab.<group_name_from_here>.INVERT
-    # * If the group here has "BLACKLIST" method && if player/group has this permission, this group will act like it is "WHITELIST" method only for them
-    # * If the group here has "WHITELIST" method && if player/group has this permission, this group will act like it is "BLACKLIST" method only for them
-    # There are also regular force permissions:
-    # - bettersecurity.tab.<group_name_from_here>.BLACKLIST | if player/group has this permission, this group will always act like it is "BLACKLIST" method only for them
-    # - bettersecurity.tab.<group_name_from_here>.WHITELIST | if player/group has this permission, this group will always act like it is "WHITELIST" method only for them
+  # This is the list of options that can be used for each group defined below at "groups" section:
+  # ("*" = required option; "~" = optional, not required option)
+  # * priority            | A number that defines the priority. The LOWER number -> the GREATER priority of the group.
+  # * method              | Defines the method/mode of the group, allowing or denying the defined list.
+  # ~ target_servers      | A list of servers that are being targeted. Use "!" as prefix before server name to negate, or "*" for all/global.
+  # ~ required_permission | If this requirement is set, the group will be applied only for those who have the specified permission.
+  # ~ required_property   | If this requirement is set, the group will be applied only for those who are in some way defined inside of this option.
 
-    # This is an example of a group with no requirements, suggestions inside this group will be seen by everyone.
-    # This name can be set to literally anything.
-    global:
-      # Priority will declare how powerful this set of commands/suggestions is - HIGHER number means LOWER priority.
-      # For example, priority of this "global" group namespace is 1, which is the highest and it has BLACKLIST for command "/versions" (tab completion).
-      # Let's say that we have another group called "survival-whitelists" and there we have WHITELIST method with listed "/versions" command,
-      # but priority of that "survival-whitelists" group is set to "2". Because of this, the players won't be able to tab complete command "/versions",
-      # and they will only be if in this "global" group they are in some way bypassing it (by permission or whatever)
-      # WARNING! Priorities are mandatory requirements! And all groups must have a different priority from each other,
-      # they can't have multiple equal priorities.
+  # Define here plugin groups, a group of commands that player will be or will not be able to tabcomplete, with so much options.
+  # Be sure to read examples, which are enabled by default if your "enabled_groups" has "*" in it (which is also default).
+  #
+  # For each group defined, there is integrated permission node "bettersecurity.tab.<groupname>" with enforcements:
+  # - "bettersecurity.tab.<groupname>.ALLOW"  | This permission will make user's method to given group ALWAYS "WHITELIST" (allow) from the one defined.
+  # - "bettersecurity.tab.<groupname>.DENY"   | This permission will make user's method to given group ALWAYS "BLACKLIST" (deny) from the one defined.
+  # - "bettersecurity.tab.<groupname>.INVERT" | This permission will make user's method to given group OPPOSITE (inverted) from the one defined.
+  groups:
+
+    # This is the group name, it could be ANY given name, a namespace.
+    example_blacklist:
+
+      # Defines a priority of this specific group, whereas: LOWER number -> GREATER priority
       priority: 1
+
+      # Here you can enter the type of method you want to use to control commands from "list":
+      # - BLACKLIST | The commands in the list will be blocked for tabcompletion.
+      # - WHITELIST | The commands in the list will be allowed for tabcompletion.
       method: 'BLACKLIST'
-      # List of group's suggestions.
-      suggestions:
+
+      # The content list of actual commands that will be manipulated by the group and it's options.
+      list:
         - 'pl'
         - 'plugins'
         - 'ver'
@@ -151,51 +152,131 @@ groups_mode:
         - 'bukkit:help'
         - 'minecraft:?'
         - 'minecraft:help'
-    # In this example group, the hints will be shown on all servers, except the servers that have been skipped.
-    spawn:
+
+    # This is the group name, it could be ANY given name, a namespace.
+    example_playersonly:
+
+      # Defines a priority of this specific group, whereas: LOWER number -> GREATER priority
       priority: 2
+
+      # Here you can enter the type of method you want to use to control commands from "list":
+      # - BLACKLIST | The commands in the list will be blocked for tabcompletion.
+      # - WHITELIST | The commands in the list will be allowed for tabcompletion.
       method: 'WHITELIST'
-      ignore_servers:
-        - 'bedwars'
-        - 'skywars'
-      suggestions:
-        - 'spawn'
-    # This is an example of a group that only requires one server.
-    # The suggestions in this list will only be displayed by the requested server.
-    lobby:
+
+      # The specific player/UUID/group requirement. To define a group, make sure to put "g:" as prefix.
+      # < ⚠ > This option is OPTIONAL (not required). If it is defined, it will only apply for the specifically stated players/player UUIDs/groups.
+      required_property:
+        - 'playername1'
+        - '8667ba71-b85a-4004-af54-457a9734eed7'
+        - 'g:groupname1'
+
+      # The content list of actual commands that will be manipulated by the group and it's options.
+      list:
+        - 'bpl'
+        - 'bplugins'
+
+    # This is the group name, it could be ANY given name, a namespace.
+    example_operator:
+
+      # Defines a priority of this specific group, whereas: LOWER number -> GREATER priority
       priority: 3
+
+      # Here you can enter the type of method you want to use to control commands from "list":
+      # - BLACKLIST | The commands in the list will be blocked for tabcompletion.
+      # - WHITELIST | The commands in the list will be allowed for tabcompletion.
       method: 'WHITELIST'
-      required_servers:
+
+      # The specific player/UUID/group requirement. To define a group, make sure to put "g:" as prefix.
+      # < ⚠ > This option is OPTIONAL (not required). If it is defined, it will only apply for the specifically stated players/player UUIDs/groups.
+      required_property:
+        - 'playername1'
+        - '8667ba71-b85a-4004-af54-457a9734eed7'
+        - 'g:groupname1'
+
+      # The content list of actual commands that will be manipulated by the group and it's options.
+      list:
+        - 'greload'
+        - 'end'
+
+    # This is the group name, it could be ANY given name, a namespace.
+    example_admin:
+
+      # Defines a priority of this specific group, whereas: LOWER number -> GREATER priority
+      priority: 4
+
+      # Here you can enter the type of method you want to use to control commands from "list":
+      # - BLACKLIST | The commands in the list will be blocked for tabcompletion.
+      # - WHITELIST | The commands in the list will be allowed for tabcompletion.
+      method: 'WHITELIST'
+
+      # The sub-server(s) on which this group and its options will apply. If the list is empty, this group won't apply to any sub-server(s) at all.
+      # - "*"           | This will mean that group will apply for ALL sub-servers that are registered at the moment.
+      # - "example"     | This will mean that group will apply for sub-server called "example".
+      # - "!example"    | This will mean that group will NOT apply for sub-server called "example".
+      # - "#ex_arena-"  | This will mean that group will apply for sub-server starting with "example-".
+      # - "!#ex_arena-" | This will mean that group will NOT apply for sub-server starting with "example-".
+      # < ⚠ > This option is OPTIONAL (not required). If it is not defined, this group will apply for all sub-servers
+      target_servers:
+        - '*' # if you are going to define only this '*', you can delete this "target_servers" section for this group as it will work the same without it
+
+      # The permission node requirement.
+      # < ⚠ > This option is OPTIONAL (not required). If it is defined, it will only apply for the players/groups that have the defined permission node.
+      required_permission: 'bettersecurity.tab.example_admin'
+
+      # The specific player/UUID/group requirement. To define a group, make sure to put "g:" as prefix.
+      # < ⚠ > This option is OPTIONAL (not required). If it is defined, it will only apply for the specifically stated players/player UUIDs/groups.
+      required_property:
+        - 'playername1'
+        - '8667ba71-b85a-4004-af54-457a9734eed7'
+        - 'g:groupname1'
+
+      # The content list of actual commands that will be manipulated by the group and it's options.
+      list:
+        #- 'fly'
+        #- 'gamemode'
+        #- 'gm'
+        #- 'god'
+        - 'mute'
+        - 'ban'
+        - 'ipban'
+        - 'ipmute'
+        - 'clearchat'
+
+    # This is the group name, it could be ANY given name, a namespace.
+    example_staff:
+
+      # Defines a priority of this specific group, whereas: LOWER number -> GREATER priority
+      priority: 5
+
+      # Here you can enter the type of method you want to use to control commands from "list":
+      # - BLACKLIST | The commands in the list will be blocked for tabcompletion.
+      # - WHITELIST | The commands in the list will be allowed for tabcompletion.
+      method: 'WHITELIST'
+
+      # The sub-server(s) on which this group and its options will apply. If the list is empty, this group won't apply to any sub-server(s) at all.
+      # - "*"           | This will mean that group will apply for ALL sub-servers that are registered at the moment.
+      # - "example"     | This will mean that group will apply for sub-server called "example".
+      # - "!example"    | This will mean that group will NOT apply for sub-server called "example".
+      # - "#ex_arena-"  | This will mean that group will apply for sub-server starting with "example-".
+      # - "!#ex_arena-" | This will mean that group will NOT apply for sub-server starting with "example-".
+      # < ⚠ > This option is OPTIONAL (not required). If it is not defined, this group will apply for all sub-servers
+      target_servers:
         - 'lobby'
         - 'hub'
-      suggestions:
-        - 'login'
-        - 'l'
-        - 'reg'
-        - 'register'
-    # This is an example of a group that only requires one server and one permission.
-    # The player who is inside that server, and has that permission, will see the suggestions listed.
-    faction_vip:
-      priority: 4
-      method: 'WHITELIST'
-      required_servers:
-        - 'faction'
-      required_permission: 'bettersecurity.tab.faction_vip'
-      suggestions:
-        - 'fly'
-    # This is an example of a group that only requires a permit.
-    # The player who has that permission will see this list of suggestions.
-    staff:
-      priority: 5
-      method: 'WHITELIST'
-      required_permission: 'bettersecurity.tab.staff'
-      suggestions:
-        - 'tempban'
-        - 'tempmute'
-        - 'unban'
-        - 'pardon'
-        - 'kick'
-        - 'unmute'
+
+      # The permission node requirement.
+      # < ⚠ > This option is OPTIONAL (not required). If it is defined, it will only apply for the players/groups that have the defined permission node.
+      required_permission: 'bettersecurity.tab.example_staff'
+
+      # The content list of actual commands that will be manipulated by the group and it's options.
+      list:
+        #- 'tempban'
+        #- 'tempmute'
+        #- 'unban'
+        #- 'pardon'
+        #- 'kick'
+        #- 'unmute'
         - 'warn'
         - 'warnings'
         - 'history'
@@ -203,17 +284,71 @@ groups_mode:
         - 'ss'
         - 'freeze'
         - 'unfreeze'
-    # This is an example of a group that only requires a list of players.
-    # Players in this list will see these suggestions.
-    owner:
+
+    # This is the group name, it could be ANY given name, a namespace.
+    example_donors:
+
+      # Defines a priority of this specific group, whereas: LOWER number -> GREATER priority
       priority: 6
+
+      # Here you can enter the type of method you want to use to control commands from "list":
+      # - BLACKLIST | The commands in the list will be blocked for tabcompletion.
+      # - WHITELIST | The commands in the list will be allowed for tabcompletion.
       method: 'WHITELIST'
-      required_players:
-        - 'playername1'
-        - '8667ba71-b85a-4004-af54-457a9734eed7'
-      suggestions:
-        - 'op'
-        - 'deop'
+
+      # The sub-server(s) on which this group and its options will apply. If the list is empty, this group won't apply to any sub-server(s) at all.
+      # - "*"           | This will mean that group will apply for ALL sub-servers that are registered at the moment.
+      # - "example"     | This will mean that group will apply for sub-server called "example".
+      # - "!example"    | This will mean that group will NOT apply for sub-server called "example".
+      # - "#ex_arena-"  | This will mean that group will apply for sub-server starting with "example-".
+      # - "!#ex_arena-" | This will mean that group will NOT apply for sub-server starting with "example-".
+      # < ⚠ > This option is OPTIONAL (not required). If it is not defined, this group will apply for all sub-servers
+      target_servers:
+        - '!#bw_arena-'
+
+      # The specific player/UUID/group requirement. To define a group, make sure to put "g:" as prefix.
+      # < ⚠ > This option is OPTIONAL (not required). If it is defined, it will only apply for the specifically stated players/player UUIDs/groups.
+      required_property:
+        - 'g:vip'
+
+      # The content list of actual commands that will be manipulated by the group and it's options.
+      list:
+        #- 'fly'
+        #- 'god'
+        - 'craft'
+        - 'repair'
+
+    # This is the group name, it could be ANY given name, a namespace.
+    example_general:
+
+      # Defines a priority of this specific group, whereas: LOWER number -> GREATER priority
+      priority: 7
+
+      # Here you can enter the type of method you want to use to control commands from "list":
+      # - BLACKLIST | The commands in the list will be blocked for tabcompletion.
+      # - WHITELIST | The commands in the list will be allowed for tabcompletion.
+      method: 'WHITELIST'
+
+      # The sub-server(s) on which this group and its options will apply. If the list is empty, this group won't apply to any sub-server(s) at all.
+      # - "*"           | This will mean that group will apply for ALL sub-servers that are registered at the moment.
+      # - "example"     | This will mean that group will apply for sub-server called "example".
+      # - "!example"    | This will mean that group will NOT apply for sub-server called "example".
+      # - "#ex_arena-"  | This will mean that group will apply for sub-server starting with "example-".
+      # - "!#ex_arena-" | This will mean that group will NOT apply for sub-server starting with "example-".
+      # < ⚠ > This option is OPTIONAL (not required). If it is not defined, this group will apply for all sub-servers
+      target_servers:
+        - '*' # if you are going to define only this '*', you can delete this "target_servers" section for this group as it will work the same without it
+
+      # The content list of actual commands that will be manipulated by the group and it's options.
+      list:
+        #- 'spawn'
+        #- 'tell'
+        #- 'msg'
+        #- 'w'
+        - 'whisper'
+        - 't'
+        - 'r'
+        - 'reply'
 
 
 #    ____                                _   _             _  __           _        ____

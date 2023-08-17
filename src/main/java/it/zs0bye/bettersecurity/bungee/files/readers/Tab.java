@@ -39,18 +39,17 @@ public enum Tab implements ConfigReader {
     GLOBAL_BYPASS_ENABLED("global_bypass.enabled"),
     GLOBAL_BYPASS_METHOD("global_bypass.method"),
     GLOBAL_BYPASS_PLAYERS("global_bypass.players"),
-    SUGGESTIONS("suggestions"),
-    METHOD("method"),
-    GROUPS_MODE_ENABLED("groups_mode.enabled"),
-    GROUPS_MODE_ENABLED_GROUPS("groups_mode.enabled_groups"),
-    GROUPS_MODE_GROUPS("groups_mode.groups"),
-    GROUPS_MODE_GROUPS_PRIORITY(".priority"),
-    GROUPS_MODE_GROUPS_METHOD(".method"),
-    GROUPS_MODE_GROUPS_SUGGESTIONS(".suggestions"),
-    GROUPS_MODE_GROUPS_REQUIRED_SERVERS(".required_servers"),
-    GROUPS_MODE_GROUPS_REQUIRED_PERMISSION(".required_permission"),
-    GROUPS_MODE_GROUPS_REQUIRED_PLAYERS(".required_players"),
-    GROUPS_MODE_GROUPS_IGNORE_SERVERS(".ignore_servers");
+    BASIC_MODE_METHOD("basic_mode.method"),
+    BASIC_MODE_LIST("basic_mode.list"),
+    ADV_MODE_ENABLED("advanced_mode.enabled"),
+    ADV_MODE_ENABLED_GROUPS("advanced_mode.enabled_groups"),
+    ADV_MODE_GROUPS("advanced_mode.groups"),
+    ADV_MODE_GROUPS_PRIORITY(".priority"),
+    ADV_MODE_GROUPS_METHOD(".method"),
+    ADV_MODE_GROUPS_LIST(".list"),
+    ADV_MODE_GROUPS_TARGET_SERVERS(".target_servers"),
+    ADV_MODE_GROUPS_REQUIRED_PERMISSION(".required_permission"),
+    ADV_MODE_GROUPS_REQUIRED_PROPERTY(".required_property");
 
     private final BetterSecurityBungee plugin;
     private final String path;

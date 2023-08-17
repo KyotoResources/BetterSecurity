@@ -83,7 +83,7 @@ public class PacketsListener implements Listener {
         final Commands packet = (Commands) event.getPacket();
         final Collection<CommandNode<?>> childrens = packet.getRoot().getChildren();
         childrens.removeIf(node -> node.getName().contains(":"));
-        new TabHandler(this.plugin, player).applyTabChildren(childrens);
+        new TabHandler(this.plugin, player).injectTabSuggestions(childrens);
 
         player.getServer().getInfo().ping((serverPing, throwable) -> {
             if(serverPing == null || serverPing.getVersion() == null) return;

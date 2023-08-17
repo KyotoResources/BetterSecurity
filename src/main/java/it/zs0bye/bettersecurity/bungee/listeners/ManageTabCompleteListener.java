@@ -41,7 +41,7 @@ public class ManageTabCompleteListener implements Listener {
         final ProxiedPlayer player = (ProxiedPlayer) event.getSender();
         final String completion = event.getCursor();
         final List<String> commands = event.getSuggestions();
-        new TabHandler(this.plugin, player).applyTabLegacy(commands, completion, event);
+        new TabHandler(this.plugin, player).injectTabSuggestions(commands, completion, event);
     }
 
 }
