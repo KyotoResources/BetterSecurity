@@ -1,0 +1,355 @@
+#
+#   ▄▄▄▄   ▓█████▄▄▄█████▓▄▄▄█████▓▓█████  ██▀███       ██████ ▓█████  ▄████▄   █    ██  ██▀███   ██▓▄▄▄█████▓▓██   ██▓
+#  ▓█████▄ ▓█   ▀▓  ██▒ ▓▒▓  ██▒ ▓▒▓█   ▀ ▓██ ▒ ██▒   ▒██    ▒ ▓█   ▀ ▒██▀ ▀█   ██  ▓██▒▓██ ▒ ██▒▓██▒▓  ██▒ ▓▒ ▒██  ██▒
+#  ▒██▒ ▄██▒███  ▒ ▓██░ ▒░▒ ▓██░ ▒░▒███   ▓██ ░▄█ ▒   ░ ▓██▄   ▒███   ▒▓█    ▄ ▓██  ▒██░▓██ ░▄█ ▒▒██▒▒ ▓██░ ▒░  ▒██ ██░
+#  ▒██░█▀  ▒▓█  ▄░ ▓██▓ ░ ░ ▓██▓ ░ ▒▓█  ▄ ▒██▀▀█▄       ▒   ██▒▒▓█  ▄ ▒▓▓▄ ▄██▒▓▓█  ░██░▒██▀▀█▄  ░██░░ ▓██▓ ░   ░ ▐██▓░
+#  ░▓█  ▀█▓░▒████▒ ▒██▒ ░   ▒██▒ ░ ░▒████▒░██▓ ▒██▒   ▒██████▒▒░▒████▒▒ ▓███▀ ░▒▒█████▓ ░██▓ ▒██▒░██░  ▒██▒ ░   ░ ██▒▓░
+#  ░▒▓███▀▒░░ ▒░ ░ ▒ ░░     ▒ ░░   ░░ ▒░ ░░ ▒▓ ░▒▓░   ▒ ▒▓▒ ▒ ░░░ ▒░ ░░ ░▒ ▒  ░░▒▓▒ ▒ ▒ ░ ▒▓ ░▒▓░░▓    ▒ ░░      ██▒▒▒
+#  ▒░▒   ░  ░ ░  ░   ░        ░     ░ ░  ░  ░▒ ░ ▒░   ░ ░▒  ░ ░ ░ ░  ░  ░  ▒   ░░▒░ ░ ░   ░▒ ░ ▒░ ▒ ░    ░     ▓██ ░▒░
+#   ░    ░    ░    ░        ░         ░     ░░   ░    ░  ░  ░     ░   ░         ░░░ ░ ░   ░░   ░  ▒ ░  ░       ▒ ▒ ░░
+#   ░         ░  ░                    ░  ░   ░              ░     ░  ░░ ░         ░        ░      ░            ░ ░
+#        ░                                                            ░                                        ░ ░
+#
+#   Version: ${project.version} | Bukkit Version
+#   Modules -> tabcomplete.yml
+#
+#   Do you need help?
+#   -> https://docs.kyotoresources.space
+#
+#   --------- < ⚠ > ---------
+#   WARNING: It is absolutely recommended to use ProtocolLib for all versions of spigot.
+#   This way you will be able to 100% block any attempts to steal plugins.
+#   If you have set ProtocolLib, make sure that "Settings -> Hooks -> ProtocolLib" is true
+#   (It is not enough to reload the plugin, you have to restart the server)
+
+
+# If it is on "true", you will be able to tab the command much more conveniently!
+# BUT, in order to function correctly, the use of BetterSecurity is also recommended in the spigot.
+# This is because by activating this method, blocking the tab only from the bungeecord, it may not work correctly.
+partial_matches: false
+
+# You can use "global bypass", to ignore complete tab changes to specific players, or by permission.
+# In this way, whoever has the global bypass, will be able to use the entire complete tab with
+# the suggestions of all the commands (both bukkit and bungeecord).
+global_bypass:
+
+  # If this is set to "false", you will not be able to see suggestions for all commands.
+  # Remember, that by enabling it, it will work for both the advanced and basic parts.
+  enabled: true
+
+  # Here you can enter what kind of bypass you prefer
+  # to be able to perform the complete tab:
+  # - PERMISSION | (Bypass via permission: bettersecurity.bypass.tab)
+  # - PLAYERS | (Bypass by player name)
+  method: 'PERMISSION'
+  # Tip. You can put both the player's name and his UUID.
+  players:
+    - 'playerName1'
+    - '8667ba71-b85a-4004-af54-457a9734eed7'
+
+#   _____         _        _____         ___ _                 _   _
+#  | __  |___ ___|_|___   |     |___ ___|  _|_|___ _ _ ___ ___| |_|_|___ ___
+#  | __ -| .'|_ -| |  _|  |   --| . |   |  _| | . | | |  _| .'|  _| | . |   |
+#  |_____|__,|___|_|___|  |_____|___|_|_|_| |_|_  |___|_| |__,|_| |_|___|_|_|
+#                                             |___|
+# This is the "basic" configuration of the tabcomplete section, enabled by default, it targets GLOBAL (all server worlds) locality.
+# < ⚠ > If you are advanced user, it is recommended to first check "advanced_mode" from "Advanced Configuration" below.
+# If you decide to use "advanced_mode" and enable it below, everything from "basic_mode" will be ignored.
+basic_mode:
+
+  # Here you can enter the type of method you want to use to block commands:
+  # - BLACKLIST | (The commands in the list will be blocked)
+  # - WHITELIST | (The commands in the list will be able to execute)
+  method: 'BLACKLIST'
+
+  # < ⚠ > Remember that this list will only be in function if "advanced_mode" is NOT enabled.
+  list:
+    - 'pl'
+    - 'plugins'
+    - 'ver'
+    - 'version'
+    - 'about'
+    - '?'
+    - 'help'
+    - 'bukkit:pl'
+    - 'bukkit:plugins'
+    - 'bukkit:ver'
+    - 'bukkit:version'
+    - 'bukkit:about'
+    - 'bukkit:?'
+    - 'bukkit:help'
+    - 'minecraft:?'
+    - 'minecraft:help'
+
+#   _____   _                       _    _____         ___ _                 _   _
+#  |  _  |_| |_ _ ___ ___ ___ ___ _| |  |     |___ ___|  _|_|___ _ _ ___ ___| |_|_|___ ___
+#  |     | . | | | .'|   |  _| -_| . |  |   --| . |   |  _| | . | | |  _| .'|  _| | . |   |
+#  |__|__|___|\_/|__,|_|_|___|___|___|  |_____|___|_|_|_| |_|_  |___|_| |__,|_| |_|___|_|_|
+#                                                           |___|
+# This is the "advanced" configuration, here you can 100% customize the tabcomplete to your liking!
+# To bypass the restrictions, you need to enable "global_bypass".
+advanced_mode:
+
+  # By enabling the "advanced_mode", the section above "basic_mode" will be fully ignored
+  # and instead you configure everything below with SO much more flexibility.
+  enabled: true
+
+  # Here you can put the groups under the "groups" list, which are enabled in the proxy.
+  # If you enter "*", you will enable all groups.
+  enabled_groups:
+    - '*'
+
+  # This is the list of options that can be used for each group defined below at "groups" section:
+  # ("*" = required option; "~" = optional, not required option)
+  # * priority            | A number that defines the priority. The LOWER number -> the GREATER priority of the group.
+  # * method              | Defines the method/mode of the group, allowing or denying the defined list.
+  # ~ target_worlds       | A list of worlds that are being targeted. Use "!" as prefix before world name to negate, or "*" for all/global.
+  # ~ required_permission | If this requirement is set, the group will be applied only for those who have the specified permission.
+  # ~ required_property   | If this requirement is set, the group will be applied only for those who are in some way defined inside of this option.
+
+  # Define here plugin groups, a group of commands that player will be or will not be able to tabcomplete, with so much options.
+  # Be sure to read examples, which are enabled by default if your "enabled_groups" has "*" in it (which is also default).
+  #
+  # For each group defined, there is integrated permission node "bettersecurity.tab.<groupname>" with enforcements:
+  # - "bettersecurity.tab.<groupname>.ALLOW"  | This permission will make user's method to given group ALWAYS "WHITELIST" (allow) from the one defined.
+  # - "bettersecurity.tab.<groupname>.DENY"   | This permission will make user's method to given group ALWAYS "BLACKLIST" (deny) from the one defined.
+  # - "bettersecurity.tab.<groupname>.INVERT" | This permission will make user's method to given group OPPOSITE (inverted) from the one defined.
+  groups:
+
+    # This is the group name, it could be ANY given name, a namespace.
+    example_blacklist:
+
+      # Defines a priority of this specific group, whereas: LOWER number -> GREATER priority
+      priority: 1
+
+      # Here you can enter the type of method you want to use to control commands from "list":
+      # - BLACKLIST | The commands in the list will be blocked for tabcompletion.
+      # - WHITELIST | The commands in the list will be allowed for tabcompletion.
+      method: 'BLACKLIST'
+
+      # The content list of actual commands that will be manipulated by the group and it's options.
+      list:
+        - 'pl'
+        - 'plugins'
+        - 'ver'
+        - 'version'
+        - 'about'
+        - '?'
+        - 'help'
+        - 'bukkit:pl'
+        - 'bukkit:plugins'
+        - 'bukkit:ver'
+        - 'bukkit:version'
+        - 'bukkit:about'
+        - 'bukkit:?'
+        - 'bukkit:help'
+        - 'minecraft:?'
+        - 'minecraft:help'
+
+    # This is the group name, it could be ANY given name, a namespace.
+    example_playersonly:
+
+      # Defines a priority of this specific group, whereas: LOWER number -> GREATER priority
+      priority: 2
+
+      # Here you can enter the type of method you want to use to control commands from "list":
+      # - BLACKLIST | The commands in the list will be blocked for tabcompletion.
+      # - WHITELIST | The commands in the list will be allowed for tabcompletion.
+      method: 'WHITELIST'
+
+      # The specific player/UUID/group requirement. To define a group, make sure to put "g:" as prefix.
+      # < ⚠ > This option is OPTIONAL (not required). If it is defined, it will only apply for the specifically stated players/player UUIDs/groups.
+      required_property:
+        - 'playername1'
+        - '8667ba71-b85a-4004-af54-457a9734eed7'
+        - 'g:groupname1'
+
+      # The content list of actual commands that will be manipulated by the group and it's options.
+      list:
+        - 'pl'
+        - 'plugins'
+        - 'bukkit:pl'
+        - 'bukkit:plugins'
+
+    # This is the group name, it could be ANY given name, a namespace.
+    example_operator:
+
+      # Defines a priority of this specific group, whereas: LOWER number -> GREATER priority
+      priority: 3
+
+      # Here you can enter the type of method you want to use to control commands from "list":
+      # - BLACKLIST | The commands in the list will be blocked for tabcompletion.
+      # - WHITELIST | The commands in the list will be allowed for tabcompletion.
+      method: 'WHITELIST'
+
+      # The specific player/UUID/group requirement. To define a group, make sure to put "g:" as prefix.
+      # < ⚠ > This option is OPTIONAL (not required). If it is defined, it will only apply for the specifically stated players/player UUIDs/groups.
+      required_property:
+        - 'playername1'
+        - '8667ba71-b85a-4004-af54-457a9734eed7'
+        - 'g:groupname1'
+
+      # The content list of actual commands that will be manipulated by the group and it's options.
+      list:
+        - 'reload'
+        - 'stop'
+
+    # This is the group name, it could be ANY given name, a namespace.
+    example_admin:
+
+      # Defines a priority of this specific group, whereas: LOWER number -> GREATER priority
+      priority: 4
+
+      # Here you can enter the type of method you want to use to control commands from "list":
+      # - BLACKLIST | The commands in the list will be blocked for tabcompletion.
+      # - WHITELIST | The commands in the list will be allowed for tabcompletion.
+      method: 'WHITELIST'
+
+      # The world(s) on which this group and its options will apply. If the list is empty, this group won't apply to any world at all.
+      # - "*"           | This will mean that group will apply for ALL server worlds that are registered at the moment
+      # - "example"     | This will mean that group will apply for server world called "example"
+      # - "!example"    | This will mean that group will NOT apply for server world called "example"
+      # - "#ex_arena-"  | This will mean that group will apply for server world starting with "ex_arena-".
+      # - "!#ex_arena-" | This will mean that group will NOT apply for server world starting with "ex_arena-".
+      # < ⚠ > This option is OPTIONAL (not required). If it is not defined, this group will apply for all server worlds.
+      target_worlds:
+        - '*' # if you are going to define only this '*', you can delete this "target_worlds" section for this group as it will work the same without it
+
+      # The permission node requirement.
+      # < ⚠ > This option is OPTIONAL (not required). If it is defined, it will only apply for the players/groups that have the defined permission node.
+      required_permission: 'bettersecurity.tab.example_admin'
+
+      # The specific player/UUID/group requirement. To define a group, make sure to put "g:" as prefix.
+      # < ⚠ > This option is OPTIONAL (not required). If it is defined, it will only apply for the specifically stated players/player UUIDs/groups.
+      required_property:
+        - 'playername1'
+        - '8667ba71-b85a-4004-af54-457a9734eed7'
+        - 'g:groupname1'
+
+      # The content list of actual commands that will be manipulated by the group and it's options.
+      list:
+        - 'fly'
+        - 'gamemode'
+        - 'gm'
+        - 'god'
+        #- 'mute'
+        #- 'ban'
+        #- 'ipban'
+        #- 'ipmute'
+        #- 'clearchat'
+
+    # This is the group name, it could be ANY given name, a namespace.
+    example_staff:
+
+      # Defines a priority of this specific group, whereas: LOWER number -> GREATER priority
+      priority: 5
+
+      # Here you can enter the type of method you want to use to control commands from "list":
+      # - BLACKLIST | The commands in the list will be blocked for tabcompletion.
+      # - WHITELIST | The commands in the list will be allowed for tabcompletion.
+      method: 'WHITELIST'
+
+      # The world(s) on which this group and its options will apply. If the list is empty, this group won't apply to any world at all.
+      # - "*"           | This will mean that group will apply for ALL server worlds that are registered at the moment
+      # - "example"     | This will mean that group will apply for server world called "example"
+      # - "!example"    | This will mean that group will NOT apply for server world called "example"
+      # - "#ex_arena-"  | This will mean that group will apply for server world starting with "ex_arena-".
+      # - "!#ex_arena-" | This will mean that group will NOT apply for server world starting with "ex_arena-".
+      # < ⚠ > This option is OPTIONAL (not required). If it is not defined, this group will apply for all server worlds.
+      target_worlds:
+        - 'world'
+
+      # The permission node requirement.
+      # < ⚠ > This option is OPTIONAL (not required). If it is defined, it will only apply for the players/groups that have the defined permission node.
+      required_permission: 'bettersecurity.tab.example_staff'
+
+      # The content list of actual commands that will be manipulated by the group and it's options.
+      list:
+        - 'tempban'
+        - 'tempmute'
+        - 'unban'
+        - 'pardon'
+        - 'kick'
+        - 'unmute'
+        #- 'warn'
+        #- 'warnings'
+        #- 'history'
+        #- 'dupeip'
+        #- 'ss'
+        #- 'freeze'
+        #- 'unfreeze'
+
+    # This is the group name, it could be ANY given name, a namespace.
+    example_donors:
+
+      # Defines a priority of this specific group, whereas: LOWER number -> GREATER priority
+      priority: 6
+
+      # Here you can enter the type of method you want to use to control commands from "list":
+      # - BLACKLIST | The commands in the list will be blocked for tabcompletion.
+      # - WHITELIST | The commands in the list will be allowed for tabcompletion.
+      method: 'WHITELIST'
+
+      # The world(s) on which this group and its options will apply. If the list is empty, this group won't apply to any world at all.
+      # - "*"           | This will mean that group will apply for ALL server worlds that are registered at the moment
+      # - "example"     | This will mean that group will apply for server world called "example"
+      # - "!example"    | This will mean that group will NOT apply for server world called "example"
+      # - "#ex_arena-"  | This will mean that group will apply for server world starting with "ex_arena-".
+      # - "!#ex_arena-" | This will mean that group will NOT apply for server world starting with "ex_arena-".
+      # < ⚠ > This option is OPTIONAL (not required). If it is not defined, this group will apply for all server worlds.
+      target_worlds:
+        - '!#world_arena-'
+
+      # The specific player/UUID/group requirement. To define a group, make sure to put "g:" as prefix.
+      # < ⚠ > This option is OPTIONAL (not required). If it is defined, it will only apply for the specifically stated players/player UUIDs/groups.
+      required_property:
+        - 'g:vip'
+
+      # The content list of actual commands that will be manipulated by the group and it's options.
+      list:
+        - 'fly'
+        - 'god'
+        #- 'craft'
+        #- 'repair'
+
+    # This is the group name, it could be ANY given name, a namespace.
+    example_general:
+
+      # Defines a priority of this specific group, whereas: LOWER number -> GREATER priority
+      priority: 7
+
+      # Here you can enter the type of method you want to use to control commands from "list":
+      # - BLACKLIST | The commands in the list will be blocked for tabcompletion.
+      # - WHITELIST | The commands in the list will be allowed for tabcompletion.
+      method: 'WHITELIST'
+
+      # The world(s) on which this group and its options will apply. If the list is empty, this group won't apply to any world at all.
+      # - "*"           | This will mean that group will apply for ALL server worlds that are registered at the moment
+      # - "example"     | This will mean that group will apply for server world called "example"
+      # - "!example"    | This will mean that group will NOT apply for server world called "example"
+      # - "#ex_arena-"  | This will mean that group will apply for server world starting with "ex_arena-".
+      # - "!#ex_arena-" | This will mean that group will NOT apply for server world starting with "ex_arena-".
+      # < ⚠ > This option is OPTIONAL (not required). If it is not defined, this group will apply for all server worlds.
+      target_worlds:
+        - '*' # if you are going to define only this '*', you can delete this "target_worlds" section for this group as it will work the same without it
+
+      # The content list of actual commands that will be manipulated by the group and it's options.
+      list:
+        - 'spawn'
+        - 'tell'
+        - 'msg'
+        - 'w'
+        #- 'whisper'
+        #- 't'
+        #- 'r'
+        #- 'reply'
+
+
+#    ____                                _   _             _  __           _        ____
+#   |  _ \ _____      _____ _ __ ___  __| | | |__  _   _  | |/ /   _  ___ | |_ ___ |  _ \ ___  ___  ___  _   _ _ __ ___ ___  ___
+#   | |_) / _ \ \ /\ / / _ \ '__/ _ \/ _` | | '_ \| | | | | ' / | | |/ _ \| __/ _ \| |_) / _ \/ __|/ _ \| | | | '__/ __/ _ \/ __|
+#   |  __/ (_) \ V  V /  __/ | |  __/ (_| | | |_) | |_| | | . \ |_| | (_) | || (_) |  _ <  __/\__ \ (_) | |_| | | | (_|  __/\__ \
+#   |_|   \___/ \_/\_/ \___|_|  \___|\__,_| |_.__/ \__, | |_|\_\__, |\___/ \__\___/|_| \_\___||___/\___/ \__,_|_|  \___\___||___/
+#                                                  |___/       |___/
+# Don't change this section!
+Module Tab Complete Version: '1.0'

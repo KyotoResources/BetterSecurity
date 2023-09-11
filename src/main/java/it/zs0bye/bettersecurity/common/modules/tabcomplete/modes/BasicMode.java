@@ -15,19 +15,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package it.zs0bye.bettersecurity.bungee.modules.tabcomplete.modes;
+package it.zs0bye.bettersecurity.common.modules.tabcomplete.modes;
 
 import com.mojang.brigadier.tree.CommandNode;
-import it.zs0bye.bettersecurity.bungee.files.readers.Tab;
-import it.zs0bye.bettersecurity.bungee.modules.tabcomplete.TabHandler;
-import it.zs0bye.bettersecurity.bungee.modules.tabcomplete.providers.TabProviders;
-import it.zs0bye.bettersecurity.bungee.modules.tabcomplete.providers.SuggestionProvider;
 import it.zs0bye.bettersecurity.common.methods.Method;
 import it.zs0bye.bettersecurity.common.methods.MethodType;
+import it.zs0bye.bettersecurity.common.modules.tabcomplete.TabHandler;
+import it.zs0bye.bettersecurity.common.modules.tabcomplete.providers.SuggestionProvider;
+import it.zs0bye.bettersecurity.common.modules.tabcomplete.providers.TabProviders;
 import it.zs0bye.bettersecurity.common.utils.CStringUtils;
-import net.md_5.bungee.api.plugin.Cancellable;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class BasicMode extends TabProviders implements SuggestionProvider {
 
@@ -36,20 +35,20 @@ public class BasicMode extends TabProviders implements SuggestionProvider {
 
     public BasicMode(final TabHandler handler) {
         this.handler = handler;
-        this.suggestions = Tab.BASIC_MODE_LIST.getStringList();
+        this.suggestions = this.handler.reader("BASIC_MODE_LIST").getStringList();
     }
 
     private MethodType getMethodType() {
-        return this.handler.getMethodType(Tab.BASIC_MODE_METHOD.getPath(), "", "");
+        return this.handler.getMethodType(this.handler.reader("BASIC_MODE_METHOD").getPath(), "", "");
     }
 
     @Override
-    public void addSuggestions(final List<String> commands, final String completion, final Cancellable cancelled) {
+    public void addSuggestions(final List<String> commands, final String completion, final Consumer<Boolean> cancelled) {
 
-        cancelled.setCancelled(true);
+        cancelled.accept(true);
         final Set<String> suggestions = this.legacy(this.getMethodType(), completion, new HashSet<>(), this.suggestions, commands, cancelled);
 
-        commands.addAll(Tab.PARTIAL_MATCHES.getBoolean() ?
+        commands.addAll(this.handler.reader("PARTIAL_MATCHES").getBoolean() ?
                 CStringUtils.copyPartialMatches(completion, suggestions) :
                 suggestions);
 

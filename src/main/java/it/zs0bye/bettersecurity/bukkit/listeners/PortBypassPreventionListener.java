@@ -18,7 +18,7 @@
 package it.zs0bye.bettersecurity.bukkit.listeners;
 
 import it.zs0bye.bettersecurity.bukkit.BetterSecurityBukkit;
-import it.zs0bye.bettersecurity.bukkit.files.enums.Config;
+import it.zs0bye.bettersecurity.bukkit.files.readers.Config;
 import it.zs0bye.bettersecurity.bukkit.warnings.Warnings;
 import it.zs0bye.bettersecurity.bukkit.warnings.enums.TypeWarning;
 import org.bukkit.Bukkit;

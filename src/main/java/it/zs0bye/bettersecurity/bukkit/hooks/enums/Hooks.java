@@ -18,38 +18,52 @@
 package it.zs0bye.bettersecurity.bukkit.hooks.enums;
 
 import it.zs0bye.bettersecurity.bukkit.BetterSecurityBukkit;
-import it.zs0bye.bettersecurity.bukkit.files.enums.Config;
-import lombok.Getter;
+import it.zs0bye.bettersecurity.bukkit.modules.Module;
+import it.zs0bye.bettersecurity.common.utils.enums.ConsoleUtils;
 import org.bukkit.Bukkit;
+
+import java.util.logging.Logger;
 
 public enum Hooks {
     PLACEHOLDERAPI("PlaceholderAPI"),
-    PROTOCOLLIB("ProtocolLib");
+    PROTOCOLLIB("ProtocolLib"),
+    PLUGMAN("PlugMan");
 
+    private final String name;
     private final BetterSecurityBukkit plugin;
-    private final String path;
+    private static boolean loaded;
 
-    @Getter
-    private boolean check;
-
-    Hooks(final String path) {
+    Hooks(final String name) {
+        this.name = name;
         this.plugin = BetterSecurityBukkit.getInstance();
-        this.path = path;
     }
 
-    public void load() {
-        if(!Config.valueOf("SETTINGS_HOOKS_" + path.toUpperCase()).getBoolean()) {
-            check = false;
-            return;
+    public boolean isNotLoaded() {
+        if(Bukkit.getPluginManager().getPlugin(this.name) == null) {
+            loaded = false;
+            return true;
         }
-
-        if (Bukkit.getPluginManager().getPlugin(path) != null) {
-            check = true;
-            return;
-        }
-
-        this.plugin.getLogger().severe("Could not find " + path + " This plugin is required.");
-        Bukkit.getPluginManager().disablePlugin(this.plugin);
-        check = false;
+        if(loaded) return false;
+        this.plugin.getLogger().info(ConsoleUtils.YELLOW + "┃ • Registered " + this.name + " hook." + ConsoleUtils.RESET);
+        loaded = true;
+        return false;
     }
+
+    public boolean securityWarning() {
+        if(!this.isNotLoaded()) return false;
+        if(Module.TAB_COMPLETE.isDisabled()) return true;
+        final Logger logger = this.plugin.getLogger();
+        logger.warning("----------------------------------------- TAB COMPLETE NOT SAFE -----------------------------------------");
+        logger.warning("You are using the \"TabComplete\" module, but you don't have ProtocolLib.");
+        logger.warning("If you want to manage the complete tab, this plugin is essential for your security!");
+        logger.warning("Do you want to know why? I'll give you a list:");
+        logger.warning("1) Without ProtocolLib, you will not be able to manage the complete tab for server versions 1.8-1.12.2.");
+        logger.warning("2) Without ProtocolLib, if you have a 1.13+ server with ViaBackwards + ViaRewind,");
+        logger.warning("   players joining with 1.8-1.12 clients will be able to bypass tab-complete handling.");
+        logger.warning("3) Without ProtocolLib, if you have a server 1.13+ client like \"MeteorClient\", they can see your");
+        logger.warning("   plugins using the following command: .server plugins MassScan");
+        logger.warning("--- To ignore this warning, insert the \"ProtocolLib\" plugin (https://ci.dmulloy2.net/job/ProtocolLib/) ---");
+        return true;
+    }
+
 }

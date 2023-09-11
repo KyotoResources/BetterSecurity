@@ -19,7 +19,7 @@ package it.zs0bye.bettersecurity.bukkit.listeners;
 
 import it.zs0bye.bettersecurity.bukkit.BetterSecurityBukkit;
 import it.zs0bye.bettersecurity.bukkit.executors.SendExecutors;
-import it.zs0bye.bettersecurity.bukkit.files.enums.Config;
+import it.zs0bye.bettersecurity.bukkit.files.readers.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -143,7 +143,7 @@ public class PermissionPreventionListener implements Listener {
     private boolean groups(final Player player) {
         if(!Config.PERMISSION_PREVENTION_GROUPS_ENABLED.getBoolean()) return false;
         if(player.isOp()) return false;
-        for(final String group : Config.PERMISSION_PREVENTION_GROUPS_LIST.getConfigurationSection()) {
+        for(final String group : Config.PERMISSION_PREVENTION_GROUPS_LIST.getSection()) {
             if(!player.hasPermission("group." + group)) continue;
             final String path = Config.PERMISSION_PREVENTION_GROUPS_LIST.getPath() + "." + group;
 
@@ -157,7 +157,7 @@ public class PermissionPreventionListener implements Listener {
     private boolean permissions(final Player player) {
         if(!Config.PERMISSION_PREVENTION_PERMISSIONS_ENABLED.getBoolean()) return false;
         if(player.isOp()) return false;
-        for(final String permission : Config.PERMISSION_PREVENTION_PERMISSIONS_LIST.getConfigurationSection()) {
+        for(final String permission : Config.PERMISSION_PREVENTION_PERMISSIONS_LIST.getSection()) {
             final String permconvert = permission.replace("_", ".");
             if(!player.hasPermission(permconvert)) continue;
             final String path = Config.PERMISSION_PREVENTION_PERMISSIONS_LIST.getPath() + "." + permission;
@@ -171,8 +171,8 @@ public class PermissionPreventionListener implements Listener {
 
     private boolean bypass_players(String path, final Player player) {
         path = path + Config.PERMISSION_PREVENTION_BYPASS_PLAYERS.getPath();
-        if(!Config.CUSTOM.contains(path)) return false;
-        return Config.CUSTOM.getStringList(path).contains(player.getName()) || Config.CUSTOM.getStringList(path).contains(player.getUniqueId().toString());
+        if(!Config.INSTANCE.contains(path)) return false;
+        return Config.INSTANCE.getStringList(path).contains(player.getName()) || Config.INSTANCE.getStringList(path).contains(player.getUniqueId().toString());
     }
 
 }

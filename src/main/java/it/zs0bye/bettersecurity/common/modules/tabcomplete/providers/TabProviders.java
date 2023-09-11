@@ -15,31 +15,33 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package it.zs0bye.bettersecurity.bungee.modules.tabcomplete.providers;
+package it.zs0bye.bettersecurity.common.modules.tabcomplete.providers;
 
 import it.zs0bye.bettersecurity.common.methods.Method;
 import it.zs0bye.bettersecurity.common.methods.MethodType;
-import net.md_5.bungee.api.plugin.Cancellable;
 
-import java.util.*;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Consumer;
 
 public abstract class TabProviders {
 
-    protected Set<String> legacy(final MethodType methodType, final String completion, final Set<String> newsuggestions, final List<String> oldsuggestions, final List<String> commands, final Cancellable cancelled) {
+    protected Set<String> legacy(final MethodType methodType, final String completion, final Set<String> newsuggestions, final List<String> oldsuggestions, final List<String> commands, Consumer<Boolean> cancelled) {
         String firstcompletion = completion.contains(" ") ? completion.split(" ")[0] : completion;
         firstcompletion = firstcompletion.replaceFirst("/", "");
+
         final Method method = new Method(methodType, oldsuggestions, firstcompletion);
         for(final String suggestion : oldsuggestions) {
 
             if (methodType == MethodType.BLACKLIST && method.contains()) {
                 commands.clear();
-                cancelled.setCancelled(true);
+                cancelled.accept(true);
             }
 
             if (!completion.startsWith("/")) break;
-            if (!completion.contains(" ")) cancelled.setCancelled(false);
+            if (!completion.contains(" ")) cancelled.accept(false);
             if (completion.startsWith("/" + suggestion) || completion.contains(" ")) {
-                if (methodType == MethodType.WHITELIST && method.contains()) cancelled.setCancelled(false);
+                if (methodType == MethodType.WHITELIST && method.contains()) cancelled.accept(false);
                 break;
             }
 

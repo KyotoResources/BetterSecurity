@@ -18,9 +18,11 @@
 package it.zs0bye.bettersecurity.bungee.commands;
 
 import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
+import it.zs0bye.bettersecurity.bungee.BungeeUser;
 import it.zs0bye.bettersecurity.bungee.commands.subcmds.AboutSubCMD;
 import it.zs0bye.bettersecurity.bungee.commands.subcmds.HelpSubCMD;
 import it.zs0bye.bettersecurity.bungee.commands.subcmds.ReloadSubCMD;
+import it.zs0bye.bettersecurity.common.BetterUser;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
@@ -46,26 +48,27 @@ public class MainCommand extends Command implements TabExecutor {
     @Override
     public void execute(final CommandSender sender, final String[] args) {
 
+        final BetterUser user = new BungeeUser(sender);
         if(!sender.hasPermission(this.getName() + ".command")) {
-            new AboutSubCMD(this.getName(), sender, this.plugin);
+            new AboutSubCMD(this.getName(), user, this.plugin);
             return;
         }
 
         if(args.length == 0) {
-            new HelpSubCMD(this.getName(), sender, this.plugin);
+            new HelpSubCMD(this.getName(), user, this.plugin);
             return;
         }
 
         if(args.length == 1) {
-            new ReloadSubCMD(this.getName(), args, sender, this.plugin);
-            new AboutSubCMD(this.getName(), args, sender, this.plugin);
+            new ReloadSubCMD(this.getName(), args, user, this.plugin);
+            new AboutSubCMD(this.getName(), args, user, this.plugin);
 
             if(checkArgs(args, "reload", "about")) return;
-            new HelpSubCMD(this.getName(), sender,this.plugin);
+            new HelpSubCMD(this.getName(), user, this.plugin);
             return;
         }
 
-        new HelpSubCMD(this.getName(), sender, this.plugin);
+        new HelpSubCMD(this.getName(), user, this.plugin);
     }
 
     @Override

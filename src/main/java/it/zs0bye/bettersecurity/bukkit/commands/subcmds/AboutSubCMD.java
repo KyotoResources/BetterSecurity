@@ -20,6 +20,7 @@ package it.zs0bye.bettersecurity.bukkit.commands.subcmds;
 import it.zs0bye.bettersecurity.bukkit.BetterSecurityBukkit;
 import it.zs0bye.bettersecurity.bukkit.commands.BaseCommand;
 import it.zs0bye.bettersecurity.bukkit.utils.StringUtils;
+import it.zs0bye.bettersecurity.common.BetterUser;
 import it.zs0bye.bettersecurity.common.utils.CStringUtils;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -34,21 +35,21 @@ public class AboutSubCMD extends BaseCommand {
 
     private final String command;
     private BetterSecurityBukkit plugin;
-    private CommandSender sender;
+    private BetterUser user;
 
-    public AboutSubCMD(final String command, final String[] args, final CommandSender sender, final BetterSecurityBukkit plugin) {
+    public AboutSubCMD(final String command, final String[] args, final BetterUser user, final BetterSecurityBukkit plugin) {
         this.plugin = plugin;
         this.command = command;
-        this.sender = sender;
+        this.user = user;
 
         if(!args[0].equalsIgnoreCase(getName())) return;
         this.execute();
     }
 
-    public AboutSubCMD(final String command, final CommandSender sender, final BetterSecurityBukkit plugin) {
+    public AboutSubCMD(final String command, final BetterUser user, final BetterSecurityBukkit plugin) {
         this.plugin = plugin;
         this.command = command;
-        this.sender = sender;
+        this.user = user;
         this.execute();
     }
 
@@ -66,16 +67,17 @@ public class AboutSubCMD extends BaseCommand {
     @Override
     protected void execute() {
 
-        StringUtils.image(this.sender, this.getLegacyText());
+        final CommandSender sender = (CommandSender) this.user.getSender();
+        StringUtils.image(sender, this.getLegacyText());
 
         try {
             Class.forName("org.bukkit.command.CommandSender$Spigot");
-            this.sender.spigot().sendMessage(this.getClickableLink());
+            sender.spigot().sendMessage(this.getClickableLink());
         } catch (final ClassNotFoundException e) {
-            this.sender.sendMessage(CStringUtils.center("§e§nhttps://ds.kyotoresources.space"));
+            sender.sendMessage(CStringUtils.center("§e§nhttps://ds.kyotoresources.space"));
         }
 
-        this.sender.sendMessage("");
+        sender.sendMessage("");
 
     }
 

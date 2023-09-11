@@ -15,34 +15,36 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package it.zs0bye.bettersecurity.bungee.modules.tabcomplete.modes.advanced;
+package it.zs0bye.bettersecurity.common.modules.tabcomplete.modes.advanced;
 
 import com.mojang.brigadier.tree.CommandNode;
-import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
-import it.zs0bye.bettersecurity.bungee.files.readers.Tab;
-import it.zs0bye.bettersecurity.bungee.modules.tabcomplete.TabHandler;
-import it.zs0bye.bettersecurity.bungee.modules.tabcomplete.providers.TabProviders;
-import it.zs0bye.bettersecurity.bungee.modules.tabcomplete.providers.SuggestionProvider;
+import it.zs0bye.bettersecurity.common.BetterUser;
+import it.zs0bye.bettersecurity.common.SoftwareType;
 import it.zs0bye.bettersecurity.common.methods.Method;
 import it.zs0bye.bettersecurity.common.methods.MethodType;
+import it.zs0bye.bettersecurity.common.modules.tabcomplete.TabHandler;
+import it.zs0bye.bettersecurity.common.modules.tabcomplete.providers.SuggestionProvider;
+import it.zs0bye.bettersecurity.common.modules.tabcomplete.providers.TabProviders;
 import it.zs0bye.bettersecurity.common.utils.CStringUtils;
 import lombok.Getter;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.md_5.bungee.api.plugin.Cancellable;
 
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.logging.Logger;
 
 @Getter
 public class AdvancedMode extends TabProviders implements SuggestionProvider {
 
-    private final BetterSecurityBungee plugin;
+    private final Logger logger;
     private final TabHandler handler;
-    private final ProxiedPlayer player;
+    private final BetterUser user;
+    private final SoftwareType softwareType;
 
-    public AdvancedMode(final TabHandler handler, final BetterSecurityBungee plugin, final ProxiedPlayer player) {
+    public AdvancedMode(final TabHandler handler, final Logger logger, final BetterUser user, final SoftwareType type) {
         this.handler = handler;
-        this.plugin = plugin;
-        this.player = player;
+        this.logger = logger;
+        this.user = user;
+        this.softwareType = type;
     }
 
     private MethodType getMethodType(final TabGroup group) {
@@ -53,7 +55,7 @@ public class AdvancedMode extends TabProviders implements SuggestionProvider {
         final List<TabGroup> groups = new ArrayList<>();
         final Map<Integer, TabGroup> map = new HashMap<>();
         for(final String egroup : this.enabledGroups()) {
-            final TabGroup group = new TabGroup(this.plugin, egroup, player, new TabHandler(this.plugin, player));
+            final TabGroup group = new TabGroup(this.logger, egroup, this.user, new TabHandler(this.logger, this.user, this.handler.getReader(), this.softwareType));
             if(this.hasDuplications(group, map)) break;
             map.put(group.getPriority(), group);
         }
@@ -64,9 +66,9 @@ public class AdvancedMode extends TabProviders implements SuggestionProvider {
 
     private Collection<String> enabledGroups() {
         final Collection<String> groups = new HashSet<>();
-        final List<String> enabled_groups = Tab.ADV_MODE_ENABLED_GROUPS.getStringList();
+        final List<String> enabled_groups = this.handler.reader("ADV_MODE_ENABLED_GROUPS").getStringList();
         if(enabled_groups.contains("*")) {
-            groups.addAll(Tab.ADV_MODE_GROUPS.getSection());
+            groups.addAll(this.handler.reader("ADV_MODE_GROUPS").getSection());
             return groups;
         }
         groups.addAll(enabled_groups);
@@ -76,15 +78,15 @@ public class AdvancedMode extends TabProviders implements SuggestionProvider {
     private boolean hasDuplications(final TabGroup group, final Map<Integer, TabGroup> map) {
         final int priority = group.getPriority();
         if(!map.containsKey(priority)) return false;
-        this.plugin.getLogger().severe("Group \"" + group.getName() + "\" contains a duplicate priority (" + priority + "). Please set a different priority for all groups.");
+        this.logger.severe("Group \"" + group.getName() + "\" contains a duplicate priority (" + priority + "). Please set a different priority for all groups.");
         return true;
     }
 
     @Override
-    public void addSuggestions(final List<String> commands, final String completion, final Cancellable cancelled) {
+    public void addSuggestions(final List<String> commands, final String completion, final Consumer<Boolean> cancelled) {
 
         final Set<String> suggestions = new HashSet<>();
-        cancelled.setCancelled(true);
+        cancelled.accept(true);
 
         this.groups().forEach(group -> suggestions.addAll(this.legacy(
                 this.getMethodType(group),
@@ -95,7 +97,7 @@ public class AdvancedMode extends TabProviders implements SuggestionProvider {
                 cancelled)));
 
         if(!suggestions.isEmpty()) {
-            commands.addAll(Tab.PARTIAL_MATCHES.getBoolean() ?
+            commands.addAll(this.handler.reader("PARTIAL_MATCHES").getBoolean() ?
                     CStringUtils.copyPartialMatches(completion, suggestions) :
                     suggestions);
             return;
@@ -103,7 +105,7 @@ public class AdvancedMode extends TabProviders implements SuggestionProvider {
 
         if(completion.contains(" ")) return;
         commands.clear();
-        cancelled.setCancelled(true);
+        cancelled.accept(true);
     }
 
     @Override

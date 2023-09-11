@@ -22,6 +22,7 @@ import it.zs0bye.bettersecurity.bungee.commands.BaseCommand;
 import it.zs0bye.bettersecurity.bungee.files.FileHandler;
 import it.zs0bye.bettersecurity.bungee.files.readers.Config;
 import it.zs0bye.bettersecurity.bungee.files.readers.Lang;
+import it.zs0bye.bettersecurity.common.BetterUser;
 import net.md_5.bungee.api.CommandSender;
 
 import java.util.*;
@@ -29,12 +30,12 @@ import java.util.*;
 public class ReloadSubCMD extends BaseCommand {
 
     private final String command;
-    private CommandSender sender;
+    private BetterUser user;
     private BetterSecurityBungee plugin;
 
-    public ReloadSubCMD(final String command, final String[] args, final CommandSender sender, final BetterSecurityBungee plugin) {
+    public ReloadSubCMD(final String command, final String[] args, final BetterUser user, final BetterSecurityBungee plugin) {
         this.command = command;
-        this.sender = sender;
+        this.user = user;
         this.plugin = plugin;
         if(!args[0].equalsIgnoreCase(this.getName())) return;
         this.execute();
@@ -53,8 +54,8 @@ public class ReloadSubCMD extends BaseCommand {
 
     @Override
     protected void execute() {
-        if(!this.sender.hasPermission(this.command + ".command." + this.getName())) {
-            Lang.INSUFFICIENT_PERMISSIONS.send(this.sender);
+        if(!this.user.hasPermission(this.command + ".command." + this.getName())) {
+            Lang.INSUFFICIENT_PERMISSIONS.send(this.user);
             return;
         }
 
@@ -65,13 +66,13 @@ public class ReloadSubCMD extends BaseCommand {
 
         handlers.forEach(file -> {
             if(file.reload()) return;
-            Lang.RELOAD_NEW_LANGUAGE_DETECTED.send(this.sender, new HashMap<String, String>(){{
+            Lang.RELOAD_NEW_LANGUAGE_DETECTED.send(this.user, new HashMap<String, String>(){{
                 put("%lang%", Config.SETTINGS_LOCALE.getString());
                 put("%command%", command);
             }});
         });
 
-        Lang.RELOAD_CONFIGURATIONS.send(this.sender);
+        Lang.RELOAD_CONFIGURATIONS.send(this.user);
     }
 
 }

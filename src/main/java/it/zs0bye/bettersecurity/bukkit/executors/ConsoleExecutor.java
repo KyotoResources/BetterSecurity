@@ -18,7 +18,7 @@
 package it.zs0bye.bettersecurity.bukkit.executors;
 
 import it.zs0bye.bettersecurity.bukkit.BetterSecurityBukkit;
-import it.zs0bye.bettersecurity.bukkit.hooks.HooksManager;
+import it.zs0bye.bettersecurity.bukkit.hooks.HooksHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -28,7 +28,7 @@ public class ConsoleExecutor extends Executors {
     private final String execute;
     private final Player player;
 
-    private final HooksManager hooks;
+    private final HooksHandler hooks;
 
     public ConsoleExecutor(final BetterSecurityBukkit plugin, final String execute, final Player player) {
         this.plugin = plugin;

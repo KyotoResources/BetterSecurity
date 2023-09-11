@@ -18,9 +18,11 @@
 package it.zs0bye.bettersecurity.bukkit.listeners;
 
 import it.zs0bye.bettersecurity.bukkit.BetterSecurityBukkit;
+import it.zs0bye.bettersecurity.bukkit.files.readers.Command;
+import it.zs0bye.bettersecurity.bukkit.modules.Module;
 import it.zs0bye.bettersecurity.bukkit.warnings.Warnings;
 import it.zs0bye.bettersecurity.bukkit.executors.SendExecutors;
-import it.zs0bye.bettersecurity.bukkit.files.enums.Config;
+import it.zs0bye.bettersecurity.bukkit.files.readers.Config;
 import it.zs0bye.bettersecurity.bukkit.warnings.enums.TypeWarning;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -39,11 +41,12 @@ public class BlocksCmdsListener implements Listener {
     public BlocksCmdsListener(final BetterSecurityBukkit plugin) {
         this.plugin = plugin;
         this.placeholders = this.plugin.getCmdsPlaceholders();
-        if(!Config.BLOCKS_COMMANDS_ENABLED.getBoolean()) return;
+        if(Module.COMMANDS.isDisabled()) return;
+        if(!Command.BLOCKS_COMMANDS_ENABLED.getBoolean()) return;
         this.plugin.getServer().getPluginManager().registerEvent(
                 PlayerCommandPreprocessEvent.class,
                 this,
-                EventPriority.valueOf(Config.BLOCKS_COMMANDS_PRIORITY.getString().toUpperCase()),
+                EventPriority.valueOf(Command.BLOCKS_COMMANDS_PRIORITY.getString().toUpperCase()),
                 ((listener, event) -> this.onCommandPreprocess((PlayerCommandPreprocessEvent) event)),
                 this.plugin);
     }
@@ -51,7 +54,8 @@ public class BlocksCmdsListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onCommandPreprocess(final PlayerCommandPreprocessEvent event) {
 
-        if(!Config.BLOCKS_COMMANDS_ENABLED.getBoolean()) return;
+        if(Module.COMMANDS.isDisabled()) return;
+        if(!Command.BLOCKS_COMMANDS_ENABLED.getBoolean()) return;
 
         final Player player = event.getPlayer();
         final String command = event.getMessage()
@@ -65,16 +69,16 @@ public class BlocksCmdsListener implements Listener {
         this.placeholders.put("%player%", player.getName());
         this.placeholders.put("%command%", "/" + command);
 
-        SendExecutors.send(this.plugin, Config.BLOCKS_COMMANDS_EXECUTORS.getStringList(), player, this.placeholders);
+        SendExecutors.send(this.plugin, Command.BLOCKS_COMMANDS_EXECUTORS.getStringList(), player, this.placeholders);
         event.setCancelled(true);
 
-        if(!Config.BLOCKS_COMMANDS_WARNING.getBoolean()) return;
+        if(!Command.BLOCKS_COMMANDS_WARNING.getBoolean()) return;
         new Warnings(this.plugin, player, TypeWarning.COMMANDS, command);
     }
 
     private boolean canBlock(final String command) {
-        final String method = Config.BLOCKS_COMMANDS_METHOD.getString();
-        final List<String> commands = Config.BLOCKS_COMMANDS.getStringList();
+        final String method = Command.BLOCKS_COMMANDS_METHOD.getString();
+        final List<String> commands = Command.BLOCKS_COMMANDS.getStringList();
         if(method.equals("BLACKLIST")) return !commands.contains(command);
         if(method.equals("WHITELIST")) return commands.contains(command);
         return true;

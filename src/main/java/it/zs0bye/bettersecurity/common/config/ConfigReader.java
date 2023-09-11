@@ -15,9 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package it.zs0bye.bettersecurity.bungee.files;
+package it.zs0bye.bettersecurity.common.config;
 
-import net.md_5.bungee.api.CommandSender;
+import it.zs0bye.bettersecurity.common.BetterUser;
 
 import java.util.Collection;
 import java.util.List;
@@ -27,13 +27,15 @@ public interface ConfigReader {
 
     void reloadConfig();
 
-    FileType getType();
+    Object getType();
 
     String getPath();
 
+    Object getObject(final String... var);
+
     String getString(final String... var);
 
-    String getCustomString(String replace, final String... var);
+    String getCustomString(String replace);
 
     String getCustomString(final String... var);
 
@@ -45,13 +47,13 @@ public interface ConfigReader {
 
     int getInt(final String... var);
 
-    void send(final CommandSender sender, final String... var);
+    void send(final BetterUser user, final String... var);
 
-    void send(final CommandSender sender, final Map<String, String> placeholders, final String... var);
+    void send(final BetterUser user, final Map<String, String> placeholders, final String... var);
 
-    void sendList(final CommandSender sender, final String... var);
+    void sendList(final BetterUser user, final String... var);
 
-    void sendList(final CommandSender sender, final Map<String, String> placeholders, final String... var);
+    void sendList(final BetterUser user, final Map<String, String> placeholders, final String... var);
 
     String variables(final String... var);
 

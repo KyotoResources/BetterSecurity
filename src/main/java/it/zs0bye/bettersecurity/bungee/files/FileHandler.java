@@ -20,6 +20,7 @@ package it.zs0bye.bettersecurity.bungee.files;
 import com.google.common.io.ByteStreams;
 import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
 import it.zs0bye.bettersecurity.bungee.files.readers.Config;
+import it.zs0bye.bettersecurity.common.config.ConfigReader;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import net.md_5.bungee.config.Configuration;

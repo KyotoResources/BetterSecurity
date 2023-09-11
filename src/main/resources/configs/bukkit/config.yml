@@ -13,6 +13,11 @@
 #   Version: ${project.version} | Bukkit Version
 #   Configuration
 #
+#   Supported Plugins: PlaceholderAPI, ProtocolLib.
+#   -> To use them, just start the server with the plugin in the list.
+#      Remember: If you add plugins with plugman, even if you do /bettersecurity reload nothing will change,
+#                you will have to restart the server if you want the hook to work.
+#
 #   Do you need help?
 #   -> https://docs.kyotoresources.space
 #
@@ -60,7 +65,6 @@
 #  _  / __ _  _ \_  __ \  _ \_  ___/  __ `/_  /
 #  / /_/ / /  __/  / / /  __/  /   / /_/ /_  /
 #  \____/  \___//_/ /_/\___//_/    \__,_/ /_/
-#
 Settings:
   prefix: '&6BetterSecurity &8┃ &7'
   # Available languages: en_US, it_IT
@@ -69,128 +73,23 @@ Settings:
     enabled: true
     # Types Available: NORMAL, DOWNLOAD
     type: NORMAL
-  hooks:
-    # Adds support for all executors.
-    PlaceholderAPI: false
-    # < ⚠ > Absolutely recommended for complete tab protection!
-    ProtocolLib: false
 
 
-#  ______________           ______      ________      ______       _________                        ______    _____
-#  ___  __ )__  /______________  /__    ___  __/_____ ___  /_      __  ____/____________ ______________  /______  /_____
-#  __  __  |_  /_  __ \  ___/_  //_/    __  /  _  __ `/_  __ \     _  /    _  __ \_  __ `__ \__  __ \_  /_  _ \  __/  _ \
-#  _  /_/ /_  / / /_/ / /__ _  ,<       _  /   / /_/ /_  /_/ /     / /___  / /_/ /  / / / / /_  /_/ /  / /  __/ /_ /  __/
-#  /_____/ /_/  \____/\___/ /_/|_|      /_/    \__,_/ /_.___/      \____/  \____//_/ /_/ /_/_  .___//_/  \___/\__/ \___/
-#                                                                                           /_/
-Block_Tab_Complete:
+#  ______  ___     _________      ______
+#  ___   |/  /___________  /___  ____  /____________
+#  __  /|_/ /_  __ \  __  /_  / / /_  /_  _ \_  ___/
+#  _  /  / / / /_/ / /_/ / / /_/ /_  / /  __/(__  )
+#  /_/  /_/  \____/\__,_/  \__,_/ /_/  \___//____/
+#
+# You can enable the modules to better manage your server, according to your needs.
+# To configure the modules, you can find the files at: /plugins/BetterSecurity/modules/<module>.yml
+Modules:
 
-  # --------- < ⚠ > ---------
-  # WARNING: It is absolutely recommended to use ProtocolLib for all versions of spigot.
-  # This way you will be able to 100% block any attempts to steal plugins.
-  # If you have set ProtocolLib, make sure that "Settings -> Hooks -> ProtocolLib" is true
-  # (It is not enough to reload the plugin, you have to restart the server)
+  # If it is "true" you will enable the Tab Complete management module.
+  tab_complete: true
 
-  # < ? > Does your server have version 1.13+? So if you reload the plugin,
-  # you will have to join the server again to see the changes.
-  enabled: true
-
-  # Prevents tabbing of these commands, so as not to conflict with other plugins.
-  blacklisted_suggestions:
-    - 'pl'
-    - 'plugins'
-    - 'ver'
-    - 'version'
-    - 'about'
-    - '?'
-    - 'help'
-    - 'bukkit:pl'
-    - 'bukkit:plugins'
-    - 'bukkit:ver'
-    - 'bukkit:version'
-    - 'bukkit:about'
-    - 'bukkit:?'
-    - 'bukkit:help'
-    - 'minecraft:?'
-    - 'minecraft:help'
-
-  bypass:
-    # Here you can enter what kind of bypass you prefer
-    # to be able to perform the complete tab:
-    # - PERMISSION | (Bypass via permission: bettersecurity.bypass.antitab)
-    # - PLAYERS | (Bypass by player name and uuid. Permission excluded)
-    method: 'PERMISSION'
-    # Tip. You can put both the player's name and his UUID.
-    players:
-      - 'playerName1'
-      - '8667ba71-b85a-4004-af54-457a9734eed7'
-
-  whitelisted_suggestions:
-
-    enabled: true
-
-    # If it is on "true", you will be able to tab the command much more conveniently!
-    # For greater safety, it is not recommended to use it because it could cause problems.
-    # (If the player access is from 1.13+ you can ignore this section)
-    partial_matches: false
-
-    # Here you can enter groups in the "groups" list, which are enabled in the server.
-    # If you enter "*", you will enable all groups.
-    enabled_groups:
-      - '*'
-
-    # This is the list of suggestions groups whitelisted in the complete tab.
-    # In these groups you can put the following requirements:
-    # - required_permission: <permission> | (If you set this requirement, the group will go only for those who have the specified permission)
-    # - required_players: ['playername1', 'playername2'] | (If you put this requirement, the group will go only for the players in the list)
-    # If you want to put multiple requirements in one group you can do it safely.
-    groups:
-      # This is an example of a group with no requirements, suggestions inside this group will be seen by everyone.
-      global:
-        # List of whitelisted suggestions in complete tabs.
-        suggestions:
-          - 'spawn'
-          - 'tell'
-          - 'msg'
-          - 'w'
-          - 'whisper'
-          - 't'
-          - 'r'
-          - 'reply'
-      # This is an example of a group that only requires a permit.
-      # The player who has that permission will see this list of suggestions.
-      helper:
-        required_permission: 'bettersecurity.tab.helper'
-        suggestions:
-          - 'tempban'
-          - 'tempmute'
-          - 'unban'
-          - 'pardon'
-          - 'kick'
-          - 'unmute'
-          - 'warn'
-          - 'warnings'
-          - 'history'
-          - 'dupeip'
-          - 'ss'
-          - 'freeze'
-          - 'unfreeze'
-      # This is an example of a group that only requires a list of players.
-      # Players in this list will see these suggestions.
-      admin:
-        required_permission: 'bettersecurity.tab.admin'
-        required_players:
-          - 'playername1'
-          - 'playername2'
-        suggestions:
-          - 'fly'
-          - 'gamemode'
-          - 'gm'
-          - 'god'
-          - 'mute'
-          - 'ban'
-          - 'ipban'
-          - 'ipmute'
-          - 'clearchat'
+  # If it is "true" you will enable the command management module.
+  commands: true
 
 
 #  ___       __                    _____
@@ -224,231 +123,6 @@ Warnings:
       format:
         - '[MESSAGE] &e[%server_name%] &f%player% &7tried to enter via port > &b%port% &7(&d%ip%&7)'
       console: '%player% tried to enter via port %port% with the IP: %ip%'
-
-
-#  _________             _____                       _____  __      ______                                     _________                                         _________
-#  __  ____/___  __________  /_____________ ___      __  / / /_________  /_________________      ________      __  ____/____________ __________ _________ _____________  /
-#  _  /    _  / / /_  ___/  __/  __ \_  __ `__ \     _  / / /__  __ \_  //_/_  __ \  __ \_ | /| / /_  __ \     _  /    _  __ \_  __ `__ \_  __ `__ \  __ `/_  __ \  __  /
-#  / /___  / /_/ /_(__  )/ /_ / /_/ /  / / / / /     / /_/ / _  / / /  ,<  _  / / / /_/ /_ |/ |/ /_  / / /     / /___  / /_/ /  / / / / /  / / / / / /_/ /_  / / / /_/ /
-#  \____/  \__,_/ /____/ \__/ \____//_/ /_/ /_/      \____/  /_/ /_//_/|_| /_/ /_/\____/____/|__/ /_/ /_/      \____/  \____//_/ /_/ /_//_/ /_/ /_/\__,_/ /_/ /_/\__,_/
-#
-Unknown_Command:
-
-  # --------- < ⚠ > ---------
-  # This feature is only recommended for versions 1.19+!
-  # This is because spigot does not currently edit the unknown command via spigot.yml,
-  # but remains the default one. If you have a version lower than 1.19, you can leave it to false.
-  # If you use PlugMan, it can cause problems if the plugin it loads registers commands for the first time.
-  enabled: false
-
-  # Here you can set the priority of the event. You can find the priority list with this link
-  # --> https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/EventPriority.html
-  priority: HIGHEST
-
-  # To ignore this section put "exempt_commands: []"
-  # This function allows you, in case of problems, to be able to insert a
-  # list of commands that the plugin will ignore.
-  # The command set by default was put as an example for those who use ChatControl-Red,
-  # who when running /tell also execute a command that is not registered on Bukkit.
-  exempt_commands:
-    - '#flp'
-
-  # If set to "true", it will fetch the unknown message directly from spigot.yml.
-  # If it's false, then it will use the executor below.
-  use_spigot_message: true
-
-  # If "use_spigot_message" is true, ignore this section.
-  # < ? > You can find more information about the executors in the header.
-  executors:
-    - '[MESSAGE] %prefix%The "&b%command%&7" command was not found.'
-
-
-#  ______________           ______      ________              _____
-#  ___  __ )__  /______________  /__    __  ___/____  __________  /______ ____  __
-#  __  __  |_  /_  __ \  ___/_  //_/    _____ \__  / / /_  __ \  __/  __ `/_  |/_/
-#  _  /_/ /_  / / /_/ / /__ _  ,<       ____/ /_  /_/ /_  / / / /_ / /_/ /__>  <
-#  /_____/ /_/  \____/\___/ /_/|_|      /____/ _\__, / /_/ /_/\__/ \__,_/ /_/|_|
-#                                              /____/
-Block_Syntax:
-
-  enabled: true
-
-  # Here you can set the priority of the event. You can find the priority list with this link
-  # --> https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/EventPriority.html
-  priority: HIGHEST
-
-  # If it is on "true" the execution attempt warning will be sent to chat.
-  warning: true
-
-  # Message that is sent if one tries to do: <plugin>:<command>.
-  # Tip. It is useful to avoid being in situations where you can bypass blocked commands,
-  # or commands known as minecraft:me, minecraft:tell, etc...
-  # < ? > You can find more information about the executors in the header.
-  executors:
-    - '[MESSAGE] %prefix%&cYou can''t do /<plugin>:<command>'
-    - '[TITLE] &e&lBETTER SECURITY;&c&l┃ &cYou can''t do /<plugin>:<command>;20;40;20'
-
-
-#  ______________           ______             _________                                         _________
-#  ___  __ )__  /______________  /_________    __  ____/____________ __________ _________ _____________  /_______
-#  __  __  |_  /_  __ \  ___/_  //_/_  ___/    _  /    _  __ \_  __ `__ \_  __ `__ \  __ `/_  __ \  __  /__  ___/
-#  _  /_/ /_  / / /_/ / /__ _  ,<  _(__  )     / /___  / /_/ /  / / / / /  / / / / / /_/ /_  / / / /_/ / _(__  )
-#  /_____/ /_/  \____/\___/ /_/|_| /____/      \____/  \____//_/ /_/ /_//_/ /_/ /_/\__,_/ /_/ /_/\__,_/  /____/
-#
-Blocks_Commands:
-
-  enabled: true
-
-  # Here you can set the priority of the event. You can find the priority list with this link
-  # --> https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/EventPriority.html
-  priority: HIGHEST
-
-  # If it is on "true" the execution attempt warning will be sent to chat.
-  warning: true
-
-  # Here you can enter the type of method you want to use to block commands:
-  # - BLACKLIST | (The commands in the list will be blocked)
-  # - WHITELIST | (The commands in the list will be able to execute)
-  method: 'BLACKLIST'
-
-  # This message will be shown as soon as the command is blocked.
-  # < ? > You can find more information about the executors in the header.
-  executors:
-    - '[MESSAGE] %prefix%&cYou cannot execute this command!'
-
-  # List of blocked or enabled commands according to the selected method.
-  commands:
-    - 'pl'
-    - 'plugins'
-    - 'ver'
-    - 'version'
-    - 'about'
-    - '?'
-    - 'help'
-    - 'icanhasbukkit'
-
-
-#  ______________           ______             _______       ______            _________                         ______
-#  ___  __ )__  /______________  /_________    __  __ \_________  /____  __    __  ____/____________________________  /____
-#  __  __  |_  /_  __ \  ___/_  //_/_  ___/    _  / / /_  __ \_  /__  / / /    _  /    _  __ \_  __ \_  ___/  __ \_  /_  _ \
-#  _  /_/ /_  / / /_/ / /__ _  ,<  _(__  )     / /_/ /_  / / /  / _  /_/ /     / /___  / /_/ /  / / /(__  )/ /_/ /  / /  __/
-#  /_____/ /_/  \____/\___/ /_/|_| /____/      \____/ /_/ /_//_/  _\__, /      \____/  \____//_/ /_//____/ \____//_/  \___/
-#                                                                 /____/
-Commands_Only_Console:
-
-  enabled: true
-
-  # Here you can set the priority of the event. You can find the priority list with this link
-  # --> https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/EventPriority.html
-  priority: HIGHEST
-
-  # If it is on "true" the execution attempt warning will be sent to chat.
-  warning: true
-
-  # This message will be shown as soon as the command is blocked.
-  # < ? > You can find more information about the executors in the header.
-  executors:
-    - '[MESSAGE] %prefix%&cYou cannot execute this command!'
-
-  # List of commands that can only be executed from the console.
-  commands:
-    - 'op'
-    - 'minecraft:op'
-    - 'deop'
-    - 'minecraft:deop'
-    - 'reload'
-    - 'minecraft:reload'
-    - 'rl'
-    - 'minecraft:rl'
-    - 'execute'
-    - 'minecraft:execute'
-
-
-#  ______________           ______             _______       ______            ______________
-#  ___  __ )__  /______________  /_________    __  __ \_________  /____  __    ___  __ \__  /_____ _____  _____________________
-#  __  __  |_  /_  __ \  ___/_  //_/_  ___/    _  / / /_  __ \_  /__  / / /    __  /_/ /_  /_  __ `/_  / / /  _ \_  ___/_  ___/
-#  _  /_/ /_  / / /_/ / /__ _  ,<  _(__  )     / /_/ /_  / / /  / _  /_/ /     _  ____/_  / / /_/ /_  /_/ //  __/  /   _(__  )
-#  /_____/ /_/  \____/\___/ /_/|_| /____/      \____/ /_/ /_//_/  _\__, /      /_/     /_/  \__,_/ _\__, / \___//_/    /____/
-#                                                                 /____/                           /____/
-Commands_Only_Players:
-
-  enabled: true
-
-  # Here you can set the priority of the event. You can find the priority list with this link
-  # --> https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/EventPriority.html
-  priority: HIGHEST
-
-  # If it is on "true" the execution attempt warning will be sent to chat.
-  warning: true
-
-  # This message will be shown as soon as the command is blocked.
-  # < ? > You can find more information about the executors in the header.
-  executors:
-    - '[MESSAGE] %prefix%&cYou cannot execute this command!'
-
-  # List of players authorized to execute the commands below.
-  # Tip. You can put both the player's name and his UUID.
-  bypass_players:
-    - 'playerName1'
-    - '8667ba71-b85a-4004-af54-457a9734eed7'
-
-  # List of commands that players in the list above can perform.
-  commands:
-    - 'pl'
-    - 'plugins'
-    - 'bukkit:pl'
-    - 'bukkit:plugins'
-
-
-#  ______________           ______             _________             _____                       _________                                         _________
-#  ___  __ )__  /______________  /_________    __  ____/___  __________  /_____________ ___      __  ____/____________ __________ _________ _____________  /_______
-#  __  __  |_  /_  __ \  ___/_  //_/_  ___/    _  /    _  / / /_  ___/  __/  __ \_  __ `__ \     _  /    _  __ \_  __ `__ \_  __ `__ \  __ `/_  __ \  __  /__  ___/
-#  _  /_/ /_  / / /_/ / /__ _  ,<  _(__  )     / /___  / /_/ /_(__  )/ /_ / /_/ /  / / / / /     / /___  / /_/ /  / / / / /  / / / / / /_/ /_  / / / /_/ / _(__  )
-#  /_____/ /_/  \____/\___/ /_/|_| /____/      \____/  \__,_/ /____/ \__/ \____//_/ /_/ /_/      \____/  \____//_/ /_/ /_//_/ /_/ /_/\__,_/ /_/ /_/\__,_/  /____/
-#
-Block_Custom_Commands:
-
-  enabled: false
-
-  # This allows you to run an executor for each command.
-  # < ? > You can find more information about the executors in the header.
-  commands:
-    # In this example the command will be blocked for everyone.
-    example_Command1:
-      command: 'examplecommand1'
-      priority: HIGHEST
-      warning: true
-      executors:
-        - '[MESSAGE] %prefix%&cYou cannot execute this command!'
-        - '[ACTION] &c&l⚠ &7You tried to run the command: &c%command%'
-    # In this example, however, it requires permission to execute the command.
-    example_Command2:
-      command: 'examplecommand2'
-      priority: HIGHEST
-      warning: true
-      permission_required: 'bettersecurity.bypass.exampleCommand2'
-      executors:
-        - '[MESSAGE] %prefix%&cYou cannot execute this command!'
-    # In this other example, only the players on the list will be able to perform it.
-    example_Command3:
-      command: 'examplecommand3'
-      priority: HIGHEST
-      # Tip. You can put both the player's name and his UUID.
-      required_players:
-        - 'playerName1'
-        - '8667ba71-b85a-4004-af54-457a9734eed7'
-      executors:
-        - '[MESSAGE] %prefix%&cYou cannot execute this command!'
-    # In this example, he shows you how you can block multiple commands with the same executor.
-    example_Command4:
-      commands:
-        - 'examplecommand4'
-        - 'examplecommand5'
-      priority: HIGHEST
-      warning: true
-      permission_required: 'bettersecurity.bypass.exampleCommands'
-      executors:
-        - '[MESSAGE] %prefix%&cYou cannot execute this command!'
 
 
 #  ________             ______                       _________             _____                       ______  ___
@@ -636,4 +310,4 @@ Port_Bypass_Prevention:
 #   |_|   \___/ \_/\_/ \___|_|  \___|\__,_| |_.__/ \__, | |_|\_\__, |\___/ \__\___/|_| \_\___||___/\___/ \__,_|_|  \___\___||___/
 #                                                  |___/       |___/
 # Don't change this section!
-Configuration Version: '1.0'
+Configuration Version: '1.1'

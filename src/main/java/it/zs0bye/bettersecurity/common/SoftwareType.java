@@ -1,6 +1,6 @@
 /*
  * Security plugin for your server - https://github.com/KyotoResources/BetterSecurity
- * Copyright (C) 2023 KyotoResources
+ * Copyright (c) 2023 KyotoResources
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,28 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package it.zs0bye.bettersecurity.bukkit.files;
+package it.zs0bye.bettersecurity.common;
 
-import it.zs0bye.bettersecurity.bukkit.BetterSecurityBukkit;
-import lombok.Getter;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-
-import java.io.File;
-
-@Getter
-public class SpigotFile {
-
-    private final BetterSecurityBukkit plugin;
-    private final File file;
-
-    public SpigotFile(final BetterSecurityBukkit plugin) {
-        this.plugin = plugin;
-        this.file = new File(this.plugin.getDataFolder(), "../../spigot.yml");
-    }
-
-    public FileConfiguration getConfig() {
-        return YamlConfiguration.loadConfiguration(this.file);
-    }
+public enum SoftwareType {
+    CRAFTBUKKIT,
+    PROXY;
 
 }

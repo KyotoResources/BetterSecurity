@@ -18,17 +18,16 @@
 package it.zs0bye.bettersecurity.bukkit.listeners;
 
 import it.zs0bye.bettersecurity.bukkit.BetterSecurityBukkit;
+import it.zs0bye.bettersecurity.bukkit.files.readers.Command;
+import it.zs0bye.bettersecurity.bukkit.modules.Module;
 import it.zs0bye.bettersecurity.bukkit.warnings.Warnings;
 import it.zs0bye.bettersecurity.bukkit.executors.SendExecutors;
-import it.zs0bye.bettersecurity.bukkit.files.enums.Config;
 import it.zs0bye.bettersecurity.bukkit.warnings.enums.TypeWarning;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionDefault;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,10 +48,11 @@ public class BlockCustomCmdsListener implements Listener {
     public BlockCustomCmdsListener(final BetterSecurityBukkit plugin) {
         this.plugin = plugin;
         this.placeholders = this.plugin.getCmdsPlaceholders();
-        if(!Config.BLOCK_CUSTOM_COMMANDS_ENABLED.getBoolean()) return;
-        Config.BLOCK_CUSTOM_COMMANDS.getConfigurationSection().forEach(command -> {
-            final String path = Config.BLOCK_CUSTOM_COMMANDS.getPath() + "." + command;
-            final String priority = Config.BLOCK_CUSTOM_COMMANDS_PRIORITY.getString(path).toUpperCase();
+        if(Module.COMMANDS.isDisabled()) return;
+        if(!Command.BLOCK_CUSTOM_COMMANDS_ENABLED.getBoolean()) return;
+        Command.BLOCK_CUSTOM_COMMANDS.getSection().forEach(command -> {
+            final String path = Command.BLOCK_CUSTOM_COMMANDS.getPath() + "." + command;
+            final String priority = Command.BLOCK_CUSTOM_COMMANDS_PRIORITY.getString(path).toUpperCase();
             final BlockCustomCmdsListener cmdsListener = new BlockCustomCmdsListener(this.plugin, command);
             this.plugin.getServer().getPluginManager().registerEvent(
                     PlayerCommandPreprocessEvent.class,
@@ -67,28 +67,30 @@ public class BlockCustomCmdsListener implements Listener {
         this.plugin = plugin;
         this.placeholders = this.plugin.getCmdsPlaceholders();
 
-        if(!Config.BLOCK_CUSTOM_COMMANDS_ENABLED.getBoolean()) return;
+        if(Module.COMMANDS.isDisabled()) return;
+        if(!Command.BLOCK_CUSTOM_COMMANDS_ENABLED.getBoolean()) return;
 
-        final String path = Config.BLOCK_CUSTOM_COMMANDS.getPath() + "." + command;
-        final String warning_path = path + Config.BLOCK_CUSTOM_COMMANDS_WARNING.getPath();
-        final String permission_path = path + Config.BLOCK_CUSTOM_COMMANDS_PERMISSION_REQUIRED.getPath();
-        final String required_players_path = path + Config.BLOCK_CUSTOM_COMMANDS_REQUIRED_PLAYERS.getPath();
-        final String regCommand = path + Config.BLOCK_CUSTOM_COMMANDS_COMMAND.getPath();
-        final String regCommands = path + Config.BLOCK_CUSTOM_COMMANDS_COMMANDS.getPath();
+        final String path = Command.BLOCK_CUSTOM_COMMANDS.getPath() + "." + command;
+        final String warning_path = path + Command.BLOCK_CUSTOM_COMMANDS_WARNING.getPath();
+        final String permission_path = path + Command.BLOCK_CUSTOM_COMMANDS_PERMISSION_REQUIRED.getPath();
+        final String required_players_path = path + Command.BLOCK_CUSTOM_COMMANDS_REQUIRED_PLAYERS.getPath();
+        final String regCommand = path + Command.BLOCK_CUSTOM_COMMANDS_COMMAND.getPath();
+        final String regCommands = path + Command.BLOCK_CUSTOM_COMMANDS_COMMANDS.getPath();
 
-        this.regCommand = Config.CUSTOM.contains(regCommand) ? Config.CUSTOM.getString(regCommand) : "";
-        this.regCommands = Config.CUSTOM.contains(regCommands) ? Config.CUSTOM.getStringList(regCommands) : new ArrayList<>();
-        this.executors = Config.CUSTOM.getStringList(path + Config.BLOCK_CUSTOM_COMMANDS_EXECUTORS.getPath());
+        this.regCommand = Command.INSTANCE.contains(regCommand) ? Command.INSTANCE.getString(regCommand) : "";
+        this.regCommands = Command.INSTANCE.contains(regCommands) ? Command.INSTANCE.getStringList(regCommands) : new ArrayList<>();
+        this.executors = Command.INSTANCE.getStringList(path + Command.BLOCK_CUSTOM_COMMANDS_EXECUTORS.getPath());
 
-        if(this.contains(warning_path)) this.warning = Config.CUSTOM.getBoolean(warning_path);
-        if(this.contains(permission_path)) this.permission_required = Config.CUSTOM.getString(permission_path);
-        if(this.contains(required_players_path)) this.required_players = Config.CUSTOM.getStringList(required_players_path);
+        if(this.contains(warning_path)) this.warning = Command.INSTANCE.getBoolean(warning_path);
+        if(this.contains(permission_path)) this.permission_required = Command.INSTANCE.getString(permission_path);
+        if(this.contains(required_players_path)) this.required_players = Command.INSTANCE.getStringList(required_players_path);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onCommandPreprocess(final PlayerCommandPreprocessEvent event) {
 
-        if(!Config.BLOCK_CUSTOM_COMMANDS_ENABLED.getBoolean()) return;
+        if(Module.COMMANDS.isDisabled()) return;
+        if(!Command.BLOCK_CUSTOM_COMMANDS_ENABLED.getBoolean()) return;
 
         final Player player = event.getPlayer();
         final String command = event.getMessage()
@@ -112,7 +114,7 @@ public class BlockCustomCmdsListener implements Listener {
     }
 
     private boolean contains(final String path) {
-        return Config.CUSTOM.contains(path);
+        return Command.INSTANCE.contains(path);
     }
 
 }

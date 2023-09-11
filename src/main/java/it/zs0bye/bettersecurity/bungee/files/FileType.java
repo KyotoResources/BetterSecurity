@@ -22,6 +22,7 @@ import it.zs0bye.bettersecurity.bungee.files.readers.Command;
 import it.zs0bye.bettersecurity.bungee.files.readers.Config;
 import it.zs0bye.bettersecurity.bungee.files.readers.Lang;
 import it.zs0bye.bettersecurity.bungee.files.readers.Tab;
+import it.zs0bye.bettersecurity.common.config.ConfigReader;
 import lombok.Getter;
 import lombok.SneakyThrows;
 

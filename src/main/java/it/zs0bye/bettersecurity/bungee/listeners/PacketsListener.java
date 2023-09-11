@@ -20,13 +20,17 @@ package it.zs0bye.bettersecurity.bungee.listeners;
 import com.mojang.brigadier.tree.CommandNode;
 import io.netty.channel.Channel;
 import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
+import it.zs0bye.bettersecurity.bungee.BungeeUser;
 import it.zs0bye.bettersecurity.bungee.event.PacketEvent;
 import it.zs0bye.bettersecurity.bungee.files.readers.Tab;
 import it.zs0bye.bettersecurity.bungee.modules.Module;
 import it.zs0bye.bettersecurity.bungee.packet.PacketDecoder;
 import it.zs0bye.bettersecurity.bungee.packet.PacketEncoder;
-import it.zs0bye.bettersecurity.bungee.modules.tabcomplete.TabHandler;
+import it.zs0bye.bettersecurity.common.BetterUser;
+import it.zs0bye.bettersecurity.common.SoftwareType;
+import it.zs0bye.bettersecurity.common.modules.tabcomplete.TabHandler;
 import it.zs0bye.bettersecurity.common.utils.VersionUtils;
+import lombok.Getter;
 import net.md_5.bungee.ServerConnection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PostLoginEvent;
@@ -38,7 +42,6 @@ import net.md_5.bungee.netty.PipelineUtils;
 import net.md_5.bungee.protocol.packet.Commands;
 
 import java.util.Collection;
-import java.util.concurrent.TimeUnit;
 
 public class PacketsListener implements Listener {
 
@@ -46,6 +49,9 @@ public class PacketsListener implements Listener {
 
     private final String BS_PACKET_DECODER = "bs-packet-decoder";
     private final String BS_PACKET_ENCODER = "bs-packet-encoder";
+
+    @Getter
+    private static Commands waterPacket = null;
 
     public PacketsListener(final BetterSecurityBungee plugin) {
         this.plugin = plugin;
@@ -80,10 +86,11 @@ public class PacketsListener implements Listener {
         if (!(event.getSender() instanceof ProxiedPlayer)) return;
         if (!(event.getPacket() instanceof Commands)) return;
         final ProxiedPlayer player = event.getPlayer();
+        final BetterUser user = new BungeeUser(player);
         final Commands packet = (Commands) event.getPacket();
         final Collection<CommandNode<?>> childrens = packet.getRoot().getChildren();
         childrens.removeIf(node -> node.getName().contains(":"));
-        new TabHandler(this.plugin, player).injectTabSuggestions(childrens);
+        new TabHandler(this.plugin.getLogger(), user, Tab.class, SoftwareType.PROXY).injectTabSuggestions(childrens);
 
         player.getServer().getInfo().ping((serverPing, throwable) -> {
             if(serverPing == null || serverPing.getVersion() == null) return;
@@ -101,8 +108,7 @@ public class PacketsListener implements Listener {
                 version = version.split("\\.")[0] + "." + version.split("\\.")[1];
             if(VersionUtils.legacy(Double.parseDouble(version))) return;
             if(!WaterTabCompleteListener.isRegistered()) return;
-            this.plugin.getProxy().getScheduler().schedule(this.plugin, () ->
-                    player.unsafe().sendPacket(packet), 10L, TimeUnit.MILLISECONDS);
+            waterPacket = packet;
         });
     }
 

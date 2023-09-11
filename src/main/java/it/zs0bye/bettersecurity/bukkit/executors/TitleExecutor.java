@@ -18,14 +18,14 @@
 package it.zs0bye.bettersecurity.bukkit.executors;
 
 import it.zs0bye.bettersecurity.bukkit.BetterSecurityBukkit;
-import it.zs0bye.bettersecurity.bukkit.hooks.HooksManager;
+import it.zs0bye.bettersecurity.bukkit.hooks.HooksHandler;
 import it.zs0bye.bettersecurity.bukkit.reflections.TitleField;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class TitleExecutor extends Executors {
 
-    private final HooksManager hooks;
+    private final HooksHandler hooks;
     private final String execute;
     private final Player player;
 

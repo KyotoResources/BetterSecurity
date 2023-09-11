@@ -15,21 +15,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package it.zs0bye.bettersecurity.bungee.modules.tabcomplete.providers;
+package it.zs0bye.bettersecurity.bukkit.files.spigot;
 
-import com.mojang.brigadier.tree.CommandNode;
-import net.md_5.bungee.api.plugin.Cancellable;
+import it.zs0bye.bettersecurity.bukkit.BetterSecurityBukkit;
+import lombok.Getter;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.io.File;
 
-public interface SuggestionProvider {
+@Getter
+public class SpigotFile {
 
-    void addSuggestions(final List<String> commands, final String completion, final Cancellable cancelled);
+    private final BetterSecurityBukkit plugin;
+    private final File file;
 
-    void addSuggestions(final Set<String> suggestions);
+    public SpigotFile(final BetterSecurityBukkit plugin) {
+        this.plugin = plugin;
+        this.file = new File(this.plugin.getDataFolder(), "../../spigot.yml");
+    }
 
-    void addSuggestions(final Collection<CommandNode<?>> childrens);
+    public FileConfiguration getConfig() {
+        return YamlConfiguration.loadConfiguration(this.file);
+    }
 
 }

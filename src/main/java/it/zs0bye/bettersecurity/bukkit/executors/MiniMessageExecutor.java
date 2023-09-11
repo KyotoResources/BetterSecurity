@@ -18,8 +18,8 @@
 package it.zs0bye.bettersecurity.bukkit.executors;
 
 import it.zs0bye.bettersecurity.bukkit.BetterSecurityBukkit;
-import it.zs0bye.bettersecurity.bukkit.files.enums.Config;
-import it.zs0bye.bettersecurity.bukkit.hooks.HooksManager;
+import it.zs0bye.bettersecurity.bukkit.files.readers.Config;
+import it.zs0bye.bettersecurity.bukkit.hooks.HooksHandler;
 import it.zs0bye.bettersecurity.common.utils.CStringUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -31,7 +31,7 @@ public class MiniMessageExecutor extends Executors {
     private final BetterSecurityBukkit plugin;
     private final String execute;
     private final Player player;
-    private final HooksManager hooks;
+    private final HooksHandler hooks;
 
     public MiniMessageExecutor(final BetterSecurityBukkit plugin, final String execute, final Player player) {
         this.plugin = plugin;

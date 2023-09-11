@@ -19,17 +19,22 @@ package it.zs0bye.bettersecurity.bungee.listeners;
 
 import io.github.waterfallmc.waterfall.event.ProxyDefineCommandsEvent;
 import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
+import it.zs0bye.bettersecurity.bungee.BungeeUser;
 import it.zs0bye.bettersecurity.bungee.files.readers.Tab;
 import it.zs0bye.bettersecurity.bungee.modules.Module;
-import it.zs0bye.bettersecurity.bungee.modules.tabcomplete.TabHandler;
+import it.zs0bye.bettersecurity.common.BetterUser;
+import it.zs0bye.bettersecurity.common.SoftwareType;
+import it.zs0bye.bettersecurity.common.modules.tabcomplete.TabHandler;
 import lombok.Getter;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
+import net.md_5.bungee.protocol.packet.Commands;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class WaterTabCompleteListener implements Listener {
 
@@ -45,9 +50,16 @@ public class WaterTabCompleteListener implements Listener {
      @EventHandler(priority = EventPriority.HIGHEST)
     public void onProxyDefine(final ProxyDefineCommandsEvent event) {
          if(hasDisabled()) return;
-         final ProxiedPlayer player = (ProxiedPlayer) event.getReceiver();
+         final BetterUser user = new BungeeUser((ProxiedPlayer) event.getReceiver());
          final Map<String, Command> commands = event.getCommands();
-         new TabHandler(this.plugin, player).injectTabSuggestions(commands.keySet());
+         new TabHandler(this.plugin.getLogger(), user, Tab.class, SoftwareType.PROXY).injectTabSuggestions(commands.keySet());
+
+         this.plugin.getProxy().getScheduler().schedule(this.plugin, () -> {
+             final ProxiedPlayer player = (ProxiedPlayer) user.getPlayer();
+             final Commands packet = PacketsListener.getWaterPacket();
+             if (packet == null) return;
+             player.unsafe().sendPacket(packet);
+         }, 1L, TimeUnit.MILLISECONDS);
      }
 
      public static void register(final BetterSecurityBungee plugin) {

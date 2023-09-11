@@ -20,6 +20,7 @@ package it.zs0bye.bettersecurity.bungee.commands.subcmds;
 import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
 import it.zs0bye.bettersecurity.bungee.commands.BaseCommand;
 import it.zs0bye.bettersecurity.bungee.utils.StringUtils;
+import it.zs0bye.bettersecurity.common.BetterUser;
 import it.zs0bye.bettersecurity.common.utils.CStringUtils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -35,21 +36,21 @@ public class AboutSubCMD extends BaseCommand {
 
     private final String command;
     private BetterSecurityBungee plugin;
-    private CommandSender sender;
+    private BetterUser user;
 
-    public AboutSubCMD(final String command, final String[] args, final CommandSender sender, final BetterSecurityBungee plugin) {
+    public AboutSubCMD(final String command, final String[] args, final BetterUser user, final BetterSecurityBungee plugin) {
         this.plugin = plugin;
         this.command = command;
-        this.sender = sender;
+        this.user = user;
 
         if(!args[0].equalsIgnoreCase(getName())) return;
         this.execute();
     }
 
-    public AboutSubCMD(final String command, final CommandSender sender, final BetterSecurityBungee plugin) {
+    public AboutSubCMD(final String command, final BetterUser user, final BetterSecurityBungee plugin) {
         this.plugin = plugin;
         this.command = command;
-        this.sender = sender;
+        this.user = user;
         this.execute();
     }
 
@@ -67,10 +68,10 @@ public class AboutSubCMD extends BaseCommand {
     @Override
     protected void execute() {
 
-        StringUtils.image(this.sender, this.getLegacyText());
-        this.sender.sendMessage(this.getClickableLink());
-        this.sender.sendMessage(new TextComponent(""));
-
+        final CommandSender sender = (CommandSender) this.user.getSender();
+        StringUtils.image(sender, this.getLegacyText());
+        sender.sendMessage(this.getClickableLink());
+        sender.sendMessage(new TextComponent(""));
     }
 
     private String[] getLegacyText() {

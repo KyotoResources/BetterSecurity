@@ -19,7 +19,7 @@ package it.zs0bye.bettersecurity.bukkit.warnings;
 
 import it.zs0bye.bettersecurity.bukkit.BetterSecurityBukkit;
 import it.zs0bye.bettersecurity.bukkit.executors.SendExecutors;
-import it.zs0bye.bettersecurity.bukkit.files.enums.Config;
+import it.zs0bye.bettersecurity.bukkit.files.readers.Config;
 import it.zs0bye.bettersecurity.bukkit.warnings.enums.TypeWarning;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;

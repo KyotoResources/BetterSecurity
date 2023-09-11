@@ -19,6 +19,8 @@ package it.zs0bye.bettersecurity.bukkit.files;
 
 import com.google.common.io.ByteStreams;
 import it.zs0bye.bettersecurity.bukkit.BetterSecurityBukkit;
+import it.zs0bye.bettersecurity.bukkit.files.readers.Config;
+import it.zs0bye.bettersecurity.common.config.ConfigReader;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -30,10 +32,11 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 @Getter
-public class FileManager {
+public class FileHandler {
 
     private final BetterSecurityBukkit plugin;
-    private final String fileName;
+    private final String fileName, dirName;
+    private final FileType type;
 
     private FileConfiguration config;
     private File file;
@@ -43,16 +46,18 @@ public class FileManager {
     private final static Map<String, FileConfiguration> files = new HashMap<>();
 
     @SuppressWarnings("all")
-    public FileManager(final BetterSecurityBukkit plugin, final String fileName, final String directory) {
+    public FileHandler(final BetterSecurityBukkit plugin, final FileType type) {
         this.plugin = plugin;
-        this.fileName = fileName;
+        this.type = type;
+        this.fileName = this.type.getName();
+        this.dirName = this.type.getDirectory();
         this.pattern = "configs/bukkit/" + this.fileName + ".yml";
 
-        if (directory != null) {
-            if (directory.length() > 16) return;
-            if (!Pattern.compile("^[a-zA-Z _]*").matcher(directory).matches()) return;
-            this.pattern = "configs/bukkit/" + directory + "/" + this.fileName + ".yml";
-            this.directory = new File(this.plugin.getDataFolder(), directory);
+        if (this.dirName != null) {
+            if (this.dirName.length() > 16) return;
+            if (!Pattern.compile("^[a-zA-Z _]*").matcher(this.dirName).matches()) return;
+            this.pattern = "configs/bukkit/" + this.dirName + "/" + this.fileName + ".yml";
+            this.directory = new File(this.plugin.getDataFolder(), this.dirName);
             this.file = new File(this.directory, this.fileName + ".yml");
             if(!this.directory.exists()) this.directory.mkdirs();
             return;
@@ -62,7 +67,7 @@ public class FileManager {
     }
 
     @SneakyThrows
-    public FileManager saveDefaultConfig() {
+    public FileHandler saveDefaultConfig() {
 
         if (!this.plugin.getDataFolder().exists()) this.plugin.getDataFolder().mkdirs();
 
@@ -84,6 +89,24 @@ public class FileManager {
     public boolean reload() {
         files.remove(this.fileName.toLowerCase());
         this.saveDefaultConfig();
+
+        if(this.reloadLang()) return false;
+        this.reloadReader();
+        return true;
+    }
+
+    private void reloadReader() {
+        for(final ConfigReader reader : this.type.getReader()) reader.reloadConfig();
+    }
+
+    private boolean reloadLang() {
+        final Map<FileType, FileHandler> handlers = this.plugin.getHandlers();
+        if(!handlers.containsKey(FileType.CONFIG) && !handlers.containsKey(FileType.LANG)) return false;
+        if(this.type != FileType.LANG) return false;
+        if(this.directory == null || !this.directory.exists()) return false;
+        if(this.fileName.equals(Config.SETTINGS_LOCALE.getString())) return false;
+        handlers.put(this.type, new FileHandler(this.plugin, this.type).saveDefaultConfig());
+        this.reloadReader();
         return true;
     }
 

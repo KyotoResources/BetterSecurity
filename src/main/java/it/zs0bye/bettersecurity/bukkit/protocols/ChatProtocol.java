@@ -26,7 +26,7 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.reflect.StructureModifier;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import it.zs0bye.bettersecurity.bukkit.BetterSecurityBukkit;
-import it.zs0bye.bettersecurity.bukkit.files.enums.Config;
+import it.zs0bye.bettersecurity.bukkit.files.readers.Config;
 import lombok.SneakyThrows;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -48,8 +48,8 @@ public class ChatProtocol extends PacketAdapter {
 
         final String path = Config.REPLACE_CUSTOM_MESSAGES.getPath() + "." + message;
 
-        this.target = Config.CUSTOM.getString(path + Config.REPLACE_CUSTOM_MESSAGES_TARGET.getPath());
-        this.replace = Config.CUSTOM.getString(path + Config.REPLACE_CUSTOM_MESSAGES_REPLACE.getPath());
+        this.target = Config.INSTANCE.getString(path + Config.REPLACE_CUSTOM_MESSAGES_TARGET.getPath());
+        this.replace = Config.INSTANCE.getString(path + Config.REPLACE_CUSTOM_MESSAGES_REPLACE.getPath());
 
     }
 

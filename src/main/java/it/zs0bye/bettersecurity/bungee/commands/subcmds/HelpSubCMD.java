@@ -20,6 +20,7 @@ package it.zs0bye.bettersecurity.bungee.commands.subcmds;
 import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
 import it.zs0bye.bettersecurity.bungee.commands.BaseCommand;
 import it.zs0bye.bettersecurity.bungee.files.readers.Lang;
+import it.zs0bye.bettersecurity.common.BetterUser;
 import net.md_5.bungee.api.CommandSender;
 
 import java.util.HashMap;
@@ -28,12 +29,12 @@ import java.util.Set;
 public class HelpSubCMD extends BaseCommand {
 
     private final String command;
-    private CommandSender sender;
+    private BetterUser user;
     private BetterSecurityBungee plugin;
 
-    public HelpSubCMD(final String command, final CommandSender sender, final BetterSecurityBungee plugin) {
+    public HelpSubCMD(final String command, final BetterUser user, final BetterSecurityBungee plugin) {
         this.command = command;
-        this.sender = sender;
+        this.user = user;
         this.plugin = plugin;
         this.execute();
     }
@@ -52,12 +53,12 @@ public class HelpSubCMD extends BaseCommand {
     @Override
     protected void execute() {
 
-        if (!this.sender.hasPermission(this.command + ".command." + this.getName())) {
-            Lang.INSUFFICIENT_PERMISSIONS.send(this.sender);
+        if (!this.user.hasPermission(this.command + ".command." + this.getName())) {
+            Lang.INSUFFICIENT_PERMISSIONS.send(this.user);
             return;
         }
 
-        Lang.HELP_TEXTS.sendList(this.sender, new HashMap<String, String>() {{
+        Lang.HELP_TEXTS.sendList(this.user, new HashMap<String, String>() {{
             put("%command%", command);
             put("%plugin%", plugin.getDescription().getName());
             put("%version%", "v" + plugin.getDescription().getVersion());

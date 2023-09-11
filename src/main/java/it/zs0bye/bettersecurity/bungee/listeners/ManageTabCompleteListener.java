@@ -18,8 +18,12 @@
 package it.zs0bye.bettersecurity.bungee.listeners;
 
 import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
+import it.zs0bye.bettersecurity.bungee.BungeeUser;
+import it.zs0bye.bettersecurity.bungee.files.readers.Tab;
 import it.zs0bye.bettersecurity.bungee.modules.Module;
-import it.zs0bye.bettersecurity.bungee.modules.tabcomplete.TabHandler;
+import it.zs0bye.bettersecurity.common.BetterUser;
+import it.zs0bye.bettersecurity.common.SoftwareType;
+import it.zs0bye.bettersecurity.common.modules.tabcomplete.TabHandler;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.TabCompleteEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -38,10 +42,10 @@ public class ManageTabCompleteListener implements Listener {
     @EventHandler
     public void onTabComplete(final TabCompleteEvent event) {
         if(Module.TAB_COMPLETE.isDisabled()) return;
-        final ProxiedPlayer player = (ProxiedPlayer) event.getSender();
+        final BetterUser user = new BungeeUser((ProxiedPlayer) event.getSender());
         final String completion = event.getCursor();
         final List<String> commands = event.getSuggestions();
-        new TabHandler(this.plugin, player).injectTabSuggestions(commands, completion, event);
+        new TabHandler(this.plugin.getLogger(), user, Tab.class, SoftwareType.PROXY).injectTabSuggestions(commands, completion, event::setCancelled);
     }
 
 }

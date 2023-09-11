@@ -17,14 +17,16 @@
 
 package it.zs0bye.bettersecurity.bukkit;
 
+import it.zs0bye.bettersecurity.bukkit.commands.MainCommand;
 import it.zs0bye.bettersecurity.bukkit.executors.SendExecutors;
-import it.zs0bye.bettersecurity.bukkit.files.FileManager;
-import it.zs0bye.bettersecurity.bukkit.files.SpigotFile;
-import it.zs0bye.bettersecurity.bukkit.files.enums.Config;
-import it.zs0bye.bettersecurity.bukkit.files.enums.Lang;
-import it.zs0bye.bettersecurity.bukkit.hooks.HooksManager;
+import it.zs0bye.bettersecurity.bukkit.files.FileHandler;
+import it.zs0bye.bettersecurity.bukkit.files.FileType;
+import it.zs0bye.bettersecurity.bukkit.files.spigot.SpigotFile;
+import it.zs0bye.bettersecurity.bukkit.files.readers.Config;
+import it.zs0bye.bettersecurity.bukkit.files.readers.Lang;
+import it.zs0bye.bettersecurity.bukkit.hooks.HooksHandler;
 import it.zs0bye.bettersecurity.bukkit.listeners.*;
-import it.zs0bye.bettersecurity.bukkit.utils.VersionUtils;
+import it.zs0bye.bettersecurity.bukkit.modules.Module;
 import it.zs0bye.bettersecurity.common.updater.UpdateType;
 import it.zs0bye.bettersecurity.common.updater.VandalUpdater;
 import it.zs0bye.bettersecurity.common.utils.enums.ConsoleUtils;
@@ -33,6 +35,7 @@ import lombok.SneakyThrows;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
@@ -48,13 +51,12 @@ public final class BetterSecurityBukkit extends JavaPlugin implements PluginMess
 
     @Getter
     private static BetterSecurityBukkit instance;
+    private final static Map<FileType, FileHandler> handlers = new HashMap<>();
 
-    private FileManager configFile;
-    private FileManager languagesFile;
     private SpigotFile spigotFile;
     private BukkitAudiences adventure;
 
-    private HooksManager hooks;
+    private HooksHandler hooks;
 
     private String updateMsg;
 
@@ -111,9 +113,9 @@ public final class BetterSecurityBukkit extends JavaPlugin implements PluginMess
         this.getLogger().info(ConsoleUtils.YELLOW + "┃ Loading resources.." + ConsoleUtils.RESET);
 
         this.spigotFile = new SpigotFile(this);
-        this.configFile = new FileManager(this, "config", null).saveDefaultConfig();
-        this.languagesFile = new FileManager(this, Config.SETTINGS_LOCALE.getString(), "languages")
-                .saveDefaultConfig();
+        handlers.put(FileType.CONFIG, new FileHandler(this, FileType.CONFIG).saveDefaultConfig());
+        handlers.put(FileType.LANG, new FileHandler(this, FileType.LANG).saveDefaultConfig());
+        Module.loadFiles(handlers);
 
         this.getLogger().info(ConsoleUtils.YELLOW + "┃ Resources uploaded successfully!" + ConsoleUtils.RESET);
     }
@@ -122,7 +124,7 @@ public final class BetterSecurityBukkit extends JavaPlugin implements PluginMess
         this.getLogger().info("");
         this.getLogger().info(ConsoleUtils.YELLOW + "┃ Loading Hooks.." + ConsoleUtils.RESET);
 
-        this.hooks = new HooksManager(this);
+        this.hooks = new HooksHandler(this);
         this.hooks.regPlugMan();
         this.registerProtocols();
 
@@ -134,7 +136,8 @@ public final class BetterSecurityBukkit extends JavaPlugin implements PluginMess
         this.getLogger().info("");
         this.getLogger().info(ConsoleUtils.YELLOW + "┃ Registering commands.." + ConsoleUtils.RESET);
 
-
+        this.getCommand("bettersecurity").setExecutor(new MainCommand(this));
+        this.getCommand("bettersecurity").setTabCompleter(new MainCommand(this));
 
         this.getLogger().info(ConsoleUtils.YELLOW + "┃ Commands registered successfully!" + ConsoleUtils.RESET);
     }
@@ -143,25 +146,16 @@ public final class BetterSecurityBukkit extends JavaPlugin implements PluginMess
         this.getLogger().info("");
         this.getLogger().info(ConsoleUtils.YELLOW + "┃ Registering events.." + ConsoleUtils.RESET);
 
-        new TabComplete();
         this.registerListeners();
 
         this.getLogger().info(ConsoleUtils.YELLOW + "┃ Events registered successfully!" + ConsoleUtils.RESET);
     }
 
     public void registerListeners() {
-        new BlocksCmdsListener(this);
-        new BlockSyntaxListener(this);
-        new CmdsOnlyConsoleListener(this);
-        new CmdsOnlyPlayersListener(this);
-        new UnknownCommandListener(this);
-        new BlockCustomCmdsListener(this);
-
+        Module.loadListeners();
         this.getServer().getPluginManager().registerEvents(new PermissionPreventionListener(this), this);
         this.getServer().getPluginManager().registerEvents(new PortBypassPreventionListener(this), this);
-
-        if(VersionUtils.legacy()) return;
-        this.getServer().getPluginManager().registerEvents(new BlockTabCompleteListener(), this);
+        ManageTabCompleteListener.register(this);
     }
 
     private void loadUpdater() {
@@ -184,6 +178,14 @@ public final class BetterSecurityBukkit extends JavaPlugin implements PluginMess
 
     private void registerPlaceholders() {
         this.cmdsPlaceholders.put("%unknown_command%", this.spigotFile.getConfig().getString("messages.unknown-command"));
+    }
+
+    public Map<FileType, FileHandler> getHandlers() {
+        return handlers;
+    }
+
+    public FileConfiguration getConfig(final FileType type) {
+        return handlers.get(type).getConfig();
     }
 
     @SneakyThrows
