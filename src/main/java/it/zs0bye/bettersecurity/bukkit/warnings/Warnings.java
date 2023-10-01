@@ -17,16 +17,16 @@
 
 package it.zs0bye.bettersecurity.bukkit.warnings;
 
+import com.google.common.io.ByteArrayDataOutput;
 import it.zs0bye.bettersecurity.bukkit.BetterSecurityBukkit;
 import it.zs0bye.bettersecurity.bukkit.executors.SendExecutors;
 import it.zs0bye.bettersecurity.bukkit.files.readers.Config;
 import it.zs0bye.bettersecurity.bukkit.warnings.enums.TypeWarning;
+import it.zs0bye.bettersecurity.common.channels.ChannelRegistrar;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -91,27 +91,16 @@ public class Warnings {
     @SneakyThrows
     private boolean sendProxy(final String player, final String command) {
         if(!Config.WARNINGS_PROXY.getBoolean()) return false;
-
-        final ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        final DataOutputStream out = new DataOutputStream(stream);
-        out.writeUTF("WarningCMD");
-        out.writeUTF(player);
-        out.writeUTF(command);
-        this.player.sendPluginMessage(this.plugin, "bsecurity:sender", stream.toByteArray());
+        final ByteArrayDataOutput stream = ChannelRegistrar.sendOutput("BS-WarningCMD", player, command);
+        this.player.sendPluginMessage(this.plugin, ChannelRegistrar.PLUGIN_SENDER, stream.toByteArray());
         return true;
     }
 
     @SneakyThrows
     private boolean sendProxy(final String player, final String port, final String ip) {
         if(!Config.WARNINGS_PROXY.getBoolean()) return false;
-
-        final ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        final DataOutputStream out = new DataOutputStream(stream);
-        out.writeUTF("WarningPBP");
-        out.writeUTF(player);
-        out.writeUTF(port);
-        out.writeUTF(ip);
-        this.player.sendPluginMessage(this.plugin, "bsecurity:sender", stream.toByteArray());
+        final ByteArrayDataOutput stream = ChannelRegistrar.sendOutput("BS-WarningPBP", player, port, ip);
+        this.player.sendPluginMessage(this.plugin, ChannelRegistrar.PLUGIN_SENDER, stream.toByteArray());
         return true;
     }
 

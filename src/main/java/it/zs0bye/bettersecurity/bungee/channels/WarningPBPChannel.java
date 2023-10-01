@@ -1,6 +1,6 @@
 /*
  * Security plugin for your server - https://github.com/KyotoResources/BetterSecurity
- * Copyright (C) 2023 KyotoResources
+ * Copyright (c) 2023 KyotoResources
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,32 +15,32 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package it.zs0bye.bettersecurity.bungee.listeners;
+package it.zs0bye.bettersecurity.bungee.channels;
 
 import it.zs0bye.bettersecurity.bungee.BetterSecurityBungee;
-import it.zs0bye.bettersecurity.bungee.channels.TabMergeChannel;
-import it.zs0bye.bettersecurity.bungee.channels.WarningCMDChannel;
-import it.zs0bye.bettersecurity.bungee.channels.WarningPBPChannel;
-import it.zs0bye.bettersecurity.common.channels.ChannelHandler;
 import it.zs0bye.bettersecurity.common.channels.ChannelRegistrar;
 import lombok.AllArgsConstructor;
-import net.md_5.bungee.api.event.PluginMessageEvent;
-import net.md_5.bungee.api.plugin.Listener;
-import net.md_5.bungee.event.EventHandler;
+import net.md_5.bungee.api.config.ServerInfo;
 
 @AllArgsConstructor
-public class PluginMessageListener implements Listener {
+public class WarningPBPChannel extends ChannelRegistrar {
 
     private final BetterSecurityBungee plugin;
 
-    @EventHandler
-    public void onPluginMessage(final PluginMessageEvent event) {
-        if (!event.getTag().equalsIgnoreCase(ChannelRegistrar.PLUGIN_SENDER)) return;
-
-        final ChannelHandler handler = new ChannelHandler(event.getData());
-        handler.register(new WarningCMDChannel(this.plugin));
-        handler.register(new WarningPBPChannel(this.plugin));
-        handler.register(new TabMergeChannel(this.plugin));
+    @Override
+    protected String getIdentifier() {
+        return "BS-WarningPBP";
     }
 
+    @Override
+    protected void receiver() {
+        final String player = this.input.readUTF();
+        final String port = this.input.readUTF();
+        final String ip = this.input.readUTF();
+
+        this.plugin.getProxy().getServers().keySet().forEach(server -> {
+            final ServerInfo serverInfo = this.plugin.getProxy().getServerInfo(server);
+            serverInfo.sendData(PLUGIN_RETURN, sendOutput(this.getIdentifier(), player, port, ip).toByteArray());
+        });
+    }
 }

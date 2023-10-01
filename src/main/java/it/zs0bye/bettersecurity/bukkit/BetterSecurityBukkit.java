@@ -17,8 +17,10 @@
 
 package it.zs0bye.bettersecurity.bukkit;
 
+import it.zs0bye.bettersecurity.bukkit.channels.TabMergeChannel;
+import it.zs0bye.bettersecurity.bukkit.channels.WarningCMDChannel;
+import it.zs0bye.bettersecurity.bukkit.channels.WarningPBPChannel;
 import it.zs0bye.bettersecurity.bukkit.commands.MainCommand;
-import it.zs0bye.bettersecurity.bukkit.executors.SendExecutors;
 import it.zs0bye.bettersecurity.bukkit.files.FileHandler;
 import it.zs0bye.bettersecurity.bukkit.files.FileType;
 import it.zs0bye.bettersecurity.bukkit.files.spigot.SpigotFile;
@@ -27,11 +29,12 @@ import it.zs0bye.bettersecurity.bukkit.files.readers.Lang;
 import it.zs0bye.bettersecurity.bukkit.hooks.HooksHandler;
 import it.zs0bye.bettersecurity.bukkit.listeners.*;
 import it.zs0bye.bettersecurity.bukkit.modules.Module;
+import it.zs0bye.bettersecurity.common.channels.ChannelHandler;
+import it.zs0bye.bettersecurity.common.channels.ChannelRegistrar;
 import it.zs0bye.bettersecurity.common.updater.UpdateType;
 import it.zs0bye.bettersecurity.common.updater.VandalUpdater;
 import it.zs0bye.bettersecurity.common.utils.enums.ConsoleUtils;
 import lombok.Getter;
-import lombok.SneakyThrows;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -41,8 +44,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -94,8 +95,8 @@ public final class BetterSecurityBukkit extends JavaPlugin implements PluginMess
         this.loadCommands();
         this.loadListeners();
 
-        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "bsecurity:sender");
-        this.getServer().getMessenger().registerIncomingPluginChannel(this, "bsecurity:return", this);
+        this.getServer().getMessenger().registerOutgoingPluginChannel(this, ChannelRegistrar.PLUGIN_SENDER);
+        this.getServer().getMessenger().registerIncomingPluginChannel(this, ChannelRegistrar.PLUGIN_RETURN, this);
 
         this.registerPlaceholders();
 
@@ -153,6 +154,7 @@ public final class BetterSecurityBukkit extends JavaPlugin implements PluginMess
 
     public void registerListeners() {
         Module.loadListeners();
+        this.getServer().getPluginManager().registerEvents(new TabMergeListener(this), this);
         this.getServer().getPluginManager().registerEvents(new PermissionPreventionListener(this), this);
         this.getServer().getPluginManager().registerEvents(new PortBypassPreventionListener(this), this);
         ManageTabCompleteListener.register(this);
@@ -188,52 +190,13 @@ public final class BetterSecurityBukkit extends JavaPlugin implements PluginMess
         return handlers.get(type).getConfig();
     }
 
-    @SneakyThrows
     @Override
     public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, byte @NotNull [] message) {
-
-        if(!Config.WARNINGS_PROXY.getBoolean()) return;
-        final DataInputStream in = new DataInputStream(new ByteArrayInputStream(message));
-
-        final String subChannel = in.readUTF();
-        this.readCMDChannel(subChannel, in);
-        this.readPBPChannel(subChannel, in);
-    }
-
-    @SneakyThrows
-    private void readCMDChannel(final String subChannel, final DataInputStream in) {
-        if (!subChannel.equalsIgnoreCase("WarningCMD")) return;
-
-        final String player = in.readUTF();
-        final String command = in.readUTF();
-
-        final Map<String, String> placeholders = new HashMap<>();
-        placeholders.put("%player%", player);
-        placeholders.put("%command%", command);
-
-        Bukkit.getOnlinePlayers().forEach(players -> {
-            if(!players.hasPermission("bettersecurity.broadcast.warnings")) return;
-            SendExecutors.send(this, Config.WARNINGS_FORMATS_CMDS_FORMAT.getStringList(), players, placeholders);
-        });
-    }
-
-    @SneakyThrows
-    private void readPBPChannel(final String subChannel, final DataInputStream in) {
-        if (!subChannel.equalsIgnoreCase("WarningPBP")) return;
-
-        final String player = in.readUTF();
-        final String port = in.readUTF();
-        final String ip = in.readUTF();
-
-        final Map<String, String> placeholders = new HashMap<>();
-        placeholders.put("%player%", player);
-        placeholders.put("%port%", port);
-        placeholders.put("%ip%", ip);
-
-        Bukkit.getOnlinePlayers().forEach(players -> {
-            if(!players.hasPermission("bettersecurity.broadcast.warnings")) return;
-            SendExecutors.send(this, Config.WARNINGS_FORMATS_PBP_FORMAT.getStringList(), players, placeholders);
-        });
+        if(!channel.equalsIgnoreCase(ChannelRegistrar.PLUGIN_RETURN)) return;
+        final ChannelHandler handler = new ChannelHandler(message);
+        handler.register(new WarningCMDChannel(this));
+        handler.register(new WarningPBPChannel(this));
+        handler.register(new TabMergeChannel());
     }
 
 }

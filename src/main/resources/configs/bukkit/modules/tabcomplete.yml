@@ -17,10 +17,9 @@
 #   -> https://docs.kyotoresources.space
 #
 #   --------- < ⚠ > ---------
-#   WARNING: It is absolutely recommended to use ProtocolLib for all versions of spigot.
-#   This way you will be able to 100% block any attempts to steal plugins.
-#   If you have set ProtocolLib, make sure that "Settings -> Hooks -> ProtocolLib" is true
-#   (It is not enough to reload the plugin, you have to restart the server)
+#   WARNING: It is absolutely recommended to use ProtocolLib (https://ci.dmulloy2.net/job/ProtocolLib/)
+#            for all versions of spigot. This way you will be able to 100% block any attempts to steal plugins.
+#   Remember: When you insert ProtocolLib it is not enough to reload the plugin, you have to restart the server.
 
 
 # If it is on "true", you will be able to tab the command much more conveniently!

@@ -24,17 +24,21 @@ import it.zs0bye.bettersecurity.common.modules.tabcomplete.TabHandler;
 import it.zs0bye.bettersecurity.common.modules.tabcomplete.providers.SuggestionProvider;
 import it.zs0bye.bettersecurity.common.modules.tabcomplete.providers.TabProviders;
 import it.zs0bye.bettersecurity.common.utils.CStringUtils;
+import lombok.Getter;
 
 import java.util.*;
 import java.util.function.Consumer;
 
 public class BasicMode extends TabProviders implements SuggestionProvider {
 
+    @Getter
+    private final String name;
     private final TabHandler handler;
     private final List<String> suggestions;
 
     public BasicMode(final TabHandler handler) {
         this.handler = handler;
+        this.name = "BasicMode";
         this.suggestions = this.handler.reader("BASIC_MODE_LIST").getStringList();
     }
 
@@ -43,11 +47,18 @@ public class BasicMode extends TabProviders implements SuggestionProvider {
     }
 
     @Override
+    public void addSuggestions() {
+        this.suggestions.forEach(suggestion -> this.childrens(false, new Method(this.getMethodType(), this.suggestions, null), suggestion, this.getWhitelisted(), this.getBlacklisted()));
+    }
+
+    @Override
     public void addSuggestions(final List<String> commands, final String completion, final Consumer<Boolean> cancelled) {
 
         cancelled.accept(true);
         final Set<String> suggestions = this.legacy(this.getMethodType(), completion, new HashSet<>(), this.suggestions, commands, cancelled);
+        this.merge(suggestions, completion, commands, cancelled);
 
+        this.getWhitelisted().addAll(suggestions);
         commands.addAll(this.handler.reader("PARTIAL_MATCHES").getBoolean() ?
                 CStringUtils.copyPartialMatches(completion, suggestions) :
                 suggestions);
@@ -59,8 +70,10 @@ public class BasicMode extends TabProviders implements SuggestionProvider {
     @Override
     public void addSuggestions(final Set<String> suggestions) {
 
-        final Set<String> newsuggestions = this.childrens(new Method(this.getMethodType(), this.suggestions, null), new HashSet<>(), new ArrayList<>(suggestions));
+        final Set<String> newsuggestions = this.childrens(new Method(this.getMethodType(), this.suggestions, null), new ArrayList<>(suggestions), new HashSet<>());
+        this.merge(new ArrayList<>(suggestions), newsuggestions);
 
+        this.getWhitelisted().addAll(newsuggestions);
         final Iterator<String> iterator = suggestions.iterator();
         while (iterator.hasNext()) {
             final String command = iterator.next();
@@ -74,8 +87,10 @@ public class BasicMode extends TabProviders implements SuggestionProvider {
 
         final List<String> childrensName = new ArrayList<>();
         for(final CommandNode<?> node : childrens) childrensName.add(node.getName());
-        final Set<String> suggestions = this.childrens(new Method(this.getMethodType(), this.suggestions, null), new HashSet<>(), childrensName);
+        final Set<String> suggestions = this.childrens(new Method(this.getMethodType(), this.suggestions, null), childrensName, new HashSet<>());
+        this.merge(childrensName, suggestions);
 
+        this.getWhitelisted().addAll(suggestions);
         childrens.removeIf(node -> {
             for(final String suggestion : suggestions) {
                 if(node.getName().equalsIgnoreCase(suggestion)) return false;

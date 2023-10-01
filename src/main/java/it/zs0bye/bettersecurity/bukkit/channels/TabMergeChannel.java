@@ -15,29 +15,27 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package it.zs0bye.bettersecurity.common.modules.tabcomplete.providers;
+package it.zs0bye.bettersecurity.bukkit.channels;
 
-import com.mojang.brigadier.tree.CommandNode;
+import it.zs0bye.bettersecurity.common.channels.ChannelRegistrar;
+import it.zs0bye.bettersecurity.common.modules.tabcomplete.TabMerge;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Consumer;
+import java.util.Arrays;
 
-public interface SuggestionProvider {
+public class TabMergeChannel extends ChannelRegistrar {
 
-    String getName();
+    @Override
+    protected String getIdentifier() {
+        return "BS-TabComplete";
+    }
 
-    Set<String> getWhitelisted();
+    @Override
+    protected void receiver() {
+        final String whitelisted = this.input.readUTF();
+        final String blacklisted = this.input.readUTF();
 
-    Set<String> getBlacklisted();
-
-    void addSuggestions();
-
-    void addSuggestions(final List<String> commands, final String completion, final Consumer<Boolean> cancelled);
-
-    void addSuggestions(final Set<String> suggestions);
-
-    void addSuggestions(final Collection<CommandNode<?>> childrens);
+        TabMerge.WHITELISTED.add(Arrays.asList(whitelisted.split(", ")));
+        TabMerge.BLACKLISTED.add(Arrays.asList(blacklisted.split(", ")));
+    }
 
 }

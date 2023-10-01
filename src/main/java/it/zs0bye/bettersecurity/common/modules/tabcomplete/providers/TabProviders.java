@@ -19,14 +19,20 @@ package it.zs0bye.bettersecurity.common.modules.tabcomplete.providers;
 
 import it.zs0bye.bettersecurity.common.methods.Method;
 import it.zs0bye.bettersecurity.common.methods.MethodType;
+import it.zs0bye.bettersecurity.common.modules.tabcomplete.TabMerge;
+import lombok.Getter;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 
+@Getter
 public abstract class TabProviders {
 
-    protected Set<String> legacy(final MethodType methodType, final String completion, final Set<String> newsuggestions, final List<String> oldsuggestions, final List<String> commands, Consumer<Boolean> cancelled) {
+    private final Set<String> whitelisted = new HashSet<>();
+
+    private final Set<String> blacklisted = new HashSet<>();
+
+    public Set<String> legacy(final MethodType methodType, final String completion, final Set<String> whitelisted, final List<String> oldsuggestions, final List<String> commands, final Consumer<Boolean> cancelled) {
         String firstcompletion = completion.contains(" ") ? completion.split(" ")[0] : completion;
         firstcompletion = firstcompletion.replaceFirst("/", "");
 
@@ -45,28 +51,36 @@ public abstract class TabProviders {
                 break;
             }
 
-            this.childrens(true, method, newsuggestions, suggestion);
+            this.childrens(true, method, suggestion, whitelisted, this.blacklisted);
         }
 
-        return newsuggestions;
+        return whitelisted;
     }
 
-    protected Set<String> childrens(final Method method, final Set<String> newsuggestions, final List<String> oldsuggestions) {
-        for (String suggestion : oldsuggestions) {
-            this.childrens(false, method, newsuggestions, suggestion);
-        }
-        return newsuggestions;
+    public Set<String> childrens(final Method method, final List<String> suggestions, final Set<String> whitelisted) {
+        suggestions.forEach(suggestion -> this.childrens(false, method, suggestion, whitelisted, this.blacklisted));
+        return whitelisted;
     }
 
-    protected void childrens(final boolean legacy, final Method method, final Set<String> newsuggestions, String suggestion) {
+    protected void childrens(final boolean legacy, final Method method, String suggestion, final Set<String> whitelisted, final Set<String> blacklisted) {
         method.setCommand(suggestion);
         suggestion = legacy ? "/" + suggestion : suggestion;
         if(!method.contains()) return;
-        if (method.getType() == MethodType.BLACKLIST && method.contains() || newsuggestions.contains(suggestion)) {
-            newsuggestions.remove(suggestion);
+        if (method.getType() == MethodType.BLACKLIST && method.contains() || whitelisted.contains(suggestion)) {
+            if(!whitelisted.contains(suggestion)) blacklisted.add(suggestion);
+            whitelisted.remove(suggestion);
             return;
         }
-        newsuggestions.add(suggestion);
+        blacklisted.remove(suggestion);
+        whitelisted.add(suggestion);
+    }
+
+    protected void merge(final Set<String> whitelisted, final String completion, final List<String> commands, final Consumer<Boolean> cancelled) {
+        for(final TabMerge merge : TabMerge.values()) whitelisted.addAll(merge.provider(this).inject(whitelisted, completion, commands, cancelled));
+    }
+
+    protected void merge(final List<String> suggestions, final Set<String> whitelisted) {
+        for(final TabMerge merge : TabMerge.values()) whitelisted.addAll(merge.provider(this).inject(whitelisted, suggestions));
     }
 
 }

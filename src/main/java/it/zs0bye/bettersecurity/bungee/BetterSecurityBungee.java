@@ -24,6 +24,7 @@ import it.zs0bye.bettersecurity.bungee.files.readers.Config;
 import it.zs0bye.bettersecurity.bungee.files.readers.Lang;
 import it.zs0bye.bettersecurity.bungee.listeners.*;
 import it.zs0bye.bettersecurity.bungee.modules.Module;
+import it.zs0bye.bettersecurity.common.channels.ChannelRegistrar;
 import it.zs0bye.bettersecurity.common.updater.UpdateType;
 import it.zs0bye.bettersecurity.common.updater.VandalUpdater;
 import it.zs0bye.bettersecurity.common.utils.enums.ConsoleUtils;
@@ -77,7 +78,7 @@ public class BetterSecurityBungee extends Plugin {
         this.loadCommands();
         this.loadListeners();
 
-        this.getProxy().registerChannel("bsecurity:sender");
+        this.getProxy().registerChannel(ChannelRegistrar.PLUGIN_SENDER);
 
         this.loadUpdater();
         new Metrics(this, 17435);

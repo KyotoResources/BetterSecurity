@@ -49,10 +49,6 @@
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <relocations>
                                 <relocation>
-                                    <pattern>org.apache</pattern>
-                                    <shadedPattern>it.zs0bye.bettersecurity.external.apache</shadedPattern>
-                                </relocation>
-                                <relocation>
                                     <pattern>org.bstats</pattern>
                                     <shadedPattern>it.zs0bye.bettersecurity.external.metrics</shadedPattern>
                                 </relocation>
@@ -125,12 +121,6 @@
             <artifactId>annotations</artifactId>
             <version>24.0.1</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.13.0</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>

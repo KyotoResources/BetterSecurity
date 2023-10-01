@@ -15,29 +15,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package it.zs0bye.bettersecurity.common.modules.tabcomplete.providers;
+package it.zs0bye.bettersecurity.common.channels;
 
-import com.mojang.brigadier.tree.CommandNode;
+import com.google.common.io.ByteStreams;
+import lombok.AllArgsConstructor;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Consumer;
+@AllArgsConstructor
+public class ChannelHandler {
 
-public interface SuggestionProvider {
+    private final byte[] data;
 
-    String getName();
-
-    Set<String> getWhitelisted();
-
-    Set<String> getBlacklisted();
-
-    void addSuggestions();
-
-    void addSuggestions(final List<String> commands, final String completion, final Consumer<Boolean> cancelled);
-
-    void addSuggestions(final Set<String> suggestions);
-
-    void addSuggestions(final Collection<CommandNode<?>> childrens);
+    public void register(final ChannelRegistrar channel) {
+        channel.setInput(ByteStreams.newDataInput(this.data));
+        channel.process(ChannelRegistrar::receiver);
+    }
 
 }

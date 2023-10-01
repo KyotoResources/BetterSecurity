@@ -80,9 +80,16 @@ public class TabHandler {
         return false;
     }
 
-    private SuggestionProvider provider() {
+    public SuggestionProvider provider() {
         if (this.reader("ADV_MODE_ENABLED").getBoolean()) return new AdvancedMode(this, this.logger, this.user, this.softwareType);
         return new BasicMode(this);
+    }
+
+    public SuggestionProvider injectTabSuggestions() {
+        if(this.bypass()) return null;
+        final SuggestionProvider provider = this.provider();
+        provider.addSuggestions();
+        return provider;
     }
 
     public void injectTabSuggestions(final List<String> commands, final String completion, final Consumer<Boolean> cancelled) {

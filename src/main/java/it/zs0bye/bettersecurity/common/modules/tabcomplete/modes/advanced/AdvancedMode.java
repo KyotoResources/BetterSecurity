@@ -35,6 +35,7 @@ import java.util.logging.Logger;
 @Getter
 public class AdvancedMode extends TabProviders implements SuggestionProvider {
 
+    private final String name;
     private final Logger logger;
     private final TabHandler handler;
     private final BetterUser user;
@@ -45,6 +46,7 @@ public class AdvancedMode extends TabProviders implements SuggestionProvider {
         this.logger = logger;
         this.user = user;
         this.softwareType = type;
+        this.name = "AdvancedMode";
     }
 
     private MethodType getMethodType(final TabGroup group) {
@@ -83,6 +85,11 @@ public class AdvancedMode extends TabProviders implements SuggestionProvider {
     }
 
     @Override
+    public void addSuggestions() {
+        this.groups().forEach(group -> this.childrens(new Method(this.getMethodType(group), group.getSuggestions(), null), group.getSuggestions(), this.getWhitelisted()));
+    }
+
+    @Override
     public void addSuggestions(final List<String> commands, final String completion, final Consumer<Boolean> cancelled) {
 
         final Set<String> suggestions = new HashSet<>();
@@ -96,7 +103,9 @@ public class AdvancedMode extends TabProviders implements SuggestionProvider {
                 commands,
                 cancelled)));
 
+        this.merge(suggestions, completion, commands, cancelled);
         if(!suggestions.isEmpty()) {
+            this.getWhitelisted().addAll(suggestions);
             commands.addAll(this.handler.reader("PARTIAL_MATCHES").getBoolean() ?
                     CStringUtils.copyPartialMatches(completion, suggestions) :
                     suggestions);
@@ -114,8 +123,9 @@ public class AdvancedMode extends TabProviders implements SuggestionProvider {
 
         this.groups().forEach(group -> newsuggestions.addAll(this.childrens(
                 new Method(this.getMethodType(group), group.getSuggestions(), null),
-                newsuggestions,
-                new ArrayList<>(suggestions))));
+                new ArrayList<>(suggestions), newsuggestions)));
+        this.merge(new ArrayList<>(suggestions), newsuggestions);
+        this.getWhitelisted().addAll(newsuggestions);
 
         final Iterator<String> iterator = suggestions.iterator();
         while (iterator.hasNext()) {
@@ -133,8 +143,9 @@ public class AdvancedMode extends TabProviders implements SuggestionProvider {
         for (final CommandNode<?> node : childrens) childrensName.add(node.getName());
         this.groups().forEach(group -> suggestions.addAll(this.childrens(
                 new Method(this.getMethodType(group), group.getSuggestions(), null),
-                suggestions,
-                childrensName)));
+                childrensName, suggestions)));
+        this.merge(childrensName, suggestions);
+        this.getWhitelisted().addAll(suggestions);
 
         childrens.removeIf(node -> {
             for (final String suggestion : suggestions) {

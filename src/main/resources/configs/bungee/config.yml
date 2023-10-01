@@ -20,6 +20,7 @@
 #
 # - [MESSAGE] text                                         | (Func. Send a chat message) | (Example: [MESSAGE] &aHello World!)
 #
+
 # - [MINI_MESSAGE] mini format message                     | (Func. Send a chat message with the MiniMessage format)
 #                                                          | (Tip. To use this format read this page: https://docs.adventure.kyori.net/minimessage/index.html)
 #                                                          | (Example: [MINI_MESSAGE] <green>Hello World!)
@@ -75,10 +76,14 @@ Settings:
 # To configure the modules, you can find the files at: /plugins/BetterSecurity/modules/<module>.yml
 Modules:
 
-  # If it is "true" you will enable the Tab Complete management module.
+  # Setting this option to "true" will enable control of Tab-Completion that is defined at
+  #   @ modules/tabcomplete.yml
+  # <!> You must configure this file as if the module is enabled here, it will apply default example configuration
   tab_complete: true
 
-  # If it is "true" you will enable the command management module.
+  # Setting this option to "true" will enable control of Command Execution that is defined at
+  #   @ modules/commands.yml
+  # <!> You must configure this file as if the module is enabled here, it will apply default example configuration
   commands: true
 
 
