@@ -29,6 +29,8 @@ import net.md_5.bungee.api.event.TabCompleteEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ManageTabCompleteListener implements Listener {
@@ -44,8 +46,10 @@ public class ManageTabCompleteListener implements Listener {
         if(Module.TAB_COMPLETE.isDisabled()) return;
         final BetterUser user = new BungeeUser((ProxiedPlayer) event.getSender());
         final String completion = event.getCursor();
-        final List<String> commands = event.getSuggestions();
-        new TabHandler(this.plugin.getLogger(), user, Tab.class, SoftwareType.PROXY).injectTabSuggestions(commands, completion, event::setCancelled);
+        final List<String> suggestions = event.getSuggestions();
+        final TabHandler handler = new TabHandler(this.plugin.getLogger(), user, Tab.class, SoftwareType.PROXY);
+        handler.injectTabSuggestions(suggestions, completion, event::setCancelled);
+        handler.injectTabChildrens(completion, suggestions, event::setCancelled);
     }
 
 }

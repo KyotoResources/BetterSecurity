@@ -20,8 +20,8 @@ package it.zs0bye.bettersecurity.common.modules.tabcomplete.modes.advanced;
 import com.mojang.brigadier.tree.CommandNode;
 import it.zs0bye.bettersecurity.common.BetterUser;
 import it.zs0bye.bettersecurity.common.SoftwareType;
-import it.zs0bye.bettersecurity.common.methods.Method;
-import it.zs0bye.bettersecurity.common.methods.MethodType;
+import it.zs0bye.bettersecurity.common.modules.methods.Method;
+import it.zs0bye.bettersecurity.common.modules.methods.MethodType;
 import it.zs0bye.bettersecurity.common.modules.tabcomplete.TabHandler;
 import it.zs0bye.bettersecurity.common.modules.tabcomplete.providers.SuggestionProvider;
 import it.zs0bye.bettersecurity.common.modules.tabcomplete.providers.TabProviders;
@@ -50,7 +50,10 @@ public class AdvancedMode extends TabProviders implements SuggestionProvider {
     }
 
     private MethodType getMethodType(final TabGroup group) {
-        return this.handler.getMethodType(group.getMethodPath(), group.getName(), group.getPermission());
+        return MethodType.INSTANCE
+                .setGroup(group.getName())
+                .setPermission(group.getPermission())
+                .getTypeByPath(this.handler, group.getMethodPath());
     }
 
     private List<TabGroup> groups() {
@@ -86,7 +89,7 @@ public class AdvancedMode extends TabProviders implements SuggestionProvider {
 
     @Override
     public void addSuggestions() {
-        this.groups().forEach(group -> this.childrens(new Method(this.getMethodType(group), group.getSuggestions(), null), group.getSuggestions(), this.getWhitelisted()));
+        this.groups().forEach(group -> this.result(new Method(this.getMethodType(group), group.getSuggestions(), null), group.getSuggestions(), this.getWhitelisted()));
     }
 
     @Override
@@ -121,7 +124,7 @@ public class AdvancedMode extends TabProviders implements SuggestionProvider {
     public void addSuggestions(final Set<String> suggestions) {
         final Set<String> newsuggestions = new HashSet<>();
 
-        this.groups().forEach(group -> newsuggestions.addAll(this.childrens(
+        this.groups().forEach(group -> newsuggestions.addAll(this.result(
                 new Method(this.getMethodType(group), group.getSuggestions(), null),
                 new ArrayList<>(suggestions), newsuggestions)));
         this.merge(new ArrayList<>(suggestions), newsuggestions);
@@ -141,7 +144,7 @@ public class AdvancedMode extends TabProviders implements SuggestionProvider {
 
         final List<String> childrensName = new ArrayList<>();
         for (final CommandNode<?> node : childrens) childrensName.add(node.getName());
-        this.groups().forEach(group -> suggestions.addAll(this.childrens(
+        this.groups().forEach(group -> suggestions.addAll(this.result(
                 new Method(this.getMethodType(group), group.getSuggestions(), null),
                 childrensName, suggestions)));
         this.merge(childrensName, suggestions);
@@ -153,6 +156,11 @@ public class AdvancedMode extends TabProviders implements SuggestionProvider {
             }
             return true;
         });
+    }
+
+    @Override
+    public void addChildrens(String completion, List<String> childrens, final Consumer<Boolean> cancelled) {
+        this.groups().forEach(group -> this.childrens(this.getMethodType(group), completion, group.getSuggestions(), childrens, cancelled));
     }
 
 }

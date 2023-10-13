@@ -17,9 +17,10 @@
 
 package it.zs0bye.bettersecurity.common.modules.tabcomplete.providers;
 
-import it.zs0bye.bettersecurity.common.methods.Method;
-import it.zs0bye.bettersecurity.common.methods.MethodType;
+import it.zs0bye.bettersecurity.common.modules.methods.Method;
+import it.zs0bye.bettersecurity.common.modules.methods.MethodType;
 import it.zs0bye.bettersecurity.common.modules.tabcomplete.TabMerge;
+import it.zs0bye.bettersecurity.common.modules.tabcomplete.TabChildren;
 import lombok.Getter;
 
 import java.util.*;
@@ -32,42 +33,47 @@ public abstract class TabProviders {
 
     private final Set<String> blacklisted = new HashSet<>();
 
-    public Set<String> legacy(final MethodType methodType, final String completion, final Set<String> whitelisted, final List<String> oldsuggestions, final List<String> commands, final Consumer<Boolean> cancelled) {
+    public Set<String> legacy(final MethodType methodType, final String completion, final Set<String> whitelisted, final List<String> suggestions, final List<String> args, final Consumer<Boolean> cancelled) {
         String firstcompletion = completion.contains(" ") ? completion.split(" ")[0] : completion;
         firstcompletion = firstcompletion.replaceFirst("/", "");
 
-        final Method method = new Method(methodType, oldsuggestions, firstcompletion);
-        for(final String suggestion : oldsuggestions) {
+        final Method method = new Method(methodType, suggestions, firstcompletion);
+        for(final String suggestion : suggestions) {
 
             if (methodType == MethodType.BLACKLIST && method.contains()) {
-                commands.clear();
+                args.clear();
                 cancelled.accept(true);
             }
 
             if (!completion.startsWith("/")) break;
             if (!completion.contains(" ")) cancelled.accept(false);
-            if (completion.startsWith("/" + suggestion) || completion.contains(" ")) {
-                if (methodType == MethodType.WHITELIST && method.contains()) cancelled.accept(false);
+            if (completion.startsWith("/" + this.getIdentifier(suggestion)) || completion.contains(" ")) {
+                if (!(methodType == MethodType.WHITELIST && method.contains())) continue;
+                cancelled.accept(false);
                 break;
             }
 
-            this.childrens(true, method, suggestion, whitelisted, this.blacklisted);
+            this.result(true, method, suggestion, whitelisted, this.blacklisted);
         }
 
         return whitelisted;
     }
 
-    public Set<String> childrens(final Method method, final List<String> suggestions, final Set<String> whitelisted) {
-        suggestions.forEach(suggestion -> this.childrens(false, method, suggestion, whitelisted, this.blacklisted));
+    public Set<String> result(final Method method, final List<String> suggestions, final Set<String> whitelisted) {
+        suggestions.forEach(suggestion -> this.result(false, method, this.getIdentifier(suggestion), whitelisted, this.blacklisted));
         return whitelisted;
     }
 
-    protected void childrens(final boolean legacy, final Method method, String suggestion, final Set<String> whitelisted, final Set<String> blacklisted) {
+    protected void result(final boolean legacy, final Method method, String suggestion, final Set<String> whitelisted, final Set<String> blacklisted) {
+        final String save_suggestion = suggestion;
+
+        suggestion = this.getIdentifier(suggestion);
         method.setCommand(suggestion);
         suggestion = legacy ? "/" + suggestion : suggestion;
         if(!method.contains()) return;
         if (method.getType() == MethodType.BLACKLIST && method.contains() || whitelisted.contains(suggestion)) {
             if(!whitelisted.contains(suggestion)) blacklisted.add(suggestion);
+            if(save_suggestion.contains(" ")) return;
             whitelisted.remove(suggestion);
             return;
         }
@@ -75,12 +81,25 @@ public abstract class TabProviders {
         whitelisted.add(suggestion);
     }
 
-    protected void merge(final Set<String> whitelisted, final String completion, final List<String> commands, final Consumer<Boolean> cancelled) {
-        for(final TabMerge merge : TabMerge.values()) whitelisted.addAll(merge.provider(this).inject(whitelisted, completion, commands, cancelled));
+    protected void merge(final Set<String> whitelisted, final String completion, final List<String> args, final Consumer<Boolean> cancelled) {
+        for(final TabMerge merge : TabMerge.values()) whitelisted.addAll(merge.provider(this).inject(whitelisted, completion, args, cancelled));
     }
 
     protected void merge(final List<String> suggestions, final Set<String> whitelisted) {
         for(final TabMerge merge : TabMerge.values()) whitelisted.addAll(merge.provider(this).inject(whitelisted, suggestions));
+    }
+
+    protected void childrens(final MethodType methodType, final String completion, final List<String> suggestions, final List<String> args, final Consumer<Boolean> cancelled) {
+        final Method method = new Method(methodType, suggestions, null);
+        final List<TabChildren> childrens = TabChildren.getChildrens(method, completion, suggestions, cancelled);
+        childrens.forEach(children -> {
+            method.setCommand(children.getIdentifier());
+            children.addChildrens(args);
+        });
+    }
+
+    private String getIdentifier(final String suggestion) {
+        return suggestion.contains(" ") ? suggestion.split(" ")[0] : suggestion;
     }
 
 }

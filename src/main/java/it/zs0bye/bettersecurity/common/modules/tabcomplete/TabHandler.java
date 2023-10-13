@@ -21,7 +21,6 @@ import com.mojang.brigadier.tree.CommandNode;
 import it.zs0bye.bettersecurity.common.BetterUser;
 import it.zs0bye.bettersecurity.common.SoftwareType;
 import it.zs0bye.bettersecurity.common.config.ConfigReader;
-import it.zs0bye.bettersecurity.common.methods.MethodType;
 import it.zs0bye.bettersecurity.common.modules.tabcomplete.modes.BasicMode;
 import it.zs0bye.bettersecurity.common.modules.tabcomplete.modes.advanced.AdvancedMode;
 import it.zs0bye.bettersecurity.common.modules.tabcomplete.providers.SuggestionProvider;
@@ -33,14 +32,13 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
 
+@Getter
 public class TabHandler {
 
     private final Logger logger;
     private final BetterUser user;
 
-    @Getter
     private final Class<? extends Enum> reader;
-    @Getter
     private final SoftwareType softwareType;
 
     public TabHandler(final Logger logger, final BetterUser user, final Class<? extends Enum> reader, final SoftwareType type) {
@@ -48,26 +46,6 @@ public class TabHandler {
         this.user = user;
         this.reader = reader;
         this.softwareType = type;
-    }
-
-    public MethodType getMethodType(final String path, String group, String permission) {
-        group = group.isEmpty() ? group : "." + group;
-        permission = permission.isEmpty() ? "bettersecurity.tab" + group : permission;
-        for(final MethodType type : MethodType.values()) {
-            if(!this.user.hasPermission(permission + "." + type.getName())) continue;
-            return type;
-        }
-        final String configType = this.reader("INSTANCE").getString(path).toUpperCase();
-        if (!MethodType.getTypes().contains(configType)) {
-            this.logger.warning("There was a problem in this path \"" + path + "\"! It can only be either WHITELIST or BLACKLIST. By default it was set to WHITELIST.");
-            return MethodType.WHITELIST;
-        }
-        final MethodType type = MethodType.valueOf(configType);
-        if(this.user.hasPermission(permission + ".INVERT")) {
-            if(type == MethodType.BLACKLIST) return MethodType.WHITELIST;
-            return MethodType.BLACKLIST;
-        }
-        return type;
     }
 
     private boolean bypass() {
@@ -105,6 +83,11 @@ public class TabHandler {
     public void injectTabSuggestions(final Collection<CommandNode<?>> childrens) {
         if (this.bypass()) return;
         this.provider().addSuggestions(childrens);
+    }
+
+    public void injectTabChildrens(final String completion, final List<String> childrens, final Consumer<Boolean> cancelled) {
+        if (this.bypass()) return;
+        this.provider().addChildrens(completion, childrens, cancelled);
     }
 
     public ConfigReader reader(final String value) {

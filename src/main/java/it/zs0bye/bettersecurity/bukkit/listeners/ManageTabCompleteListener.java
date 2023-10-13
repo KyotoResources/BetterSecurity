@@ -50,7 +50,9 @@ public class ManageTabCompleteListener implements Listener {
         final BetterUser user = new BukkitUser(event.getSender());
         final String completion = event.getBuffer();
         final List<String> suggestions = event.getCompletions();
-        new TabHandler(this.plugin.getLogger(), user, Tab.class, SoftwareType.CRAFTBUKKIT).injectTabSuggestions(suggestions, completion, event::setCancelled);
+        final TabHandler handler = new TabHandler(this.plugin.getLogger(), user, Tab.class, SoftwareType.CRAFTBUKKIT);
+        handler.injectTabSuggestions(suggestions, completion, event::setCancelled);
+        handler.injectTabChildrens(completion, suggestions, event::setCancelled);
     }
 
     @EventHandler

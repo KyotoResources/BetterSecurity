@@ -17,8 +17,8 @@
 
 package it.zs0bye.bettersecurity.common.modules.tabcomplete;
 
-import it.zs0bye.bettersecurity.common.methods.Method;
-import it.zs0bye.bettersecurity.common.methods.MethodType;
+import it.zs0bye.bettersecurity.common.modules.methods.Method;
+import it.zs0bye.bettersecurity.common.modules.methods.MethodType;
 import it.zs0bye.bettersecurity.common.modules.tabcomplete.providers.TabProviders;
 
 import java.util.ArrayList;
@@ -60,7 +60,7 @@ public enum TabMerge {
 
     public Set<String> inject(final Set<String> whitelisted, final List<String> suggestions) {
         if(this.provider == null || this.get().isEmpty()) return new HashSet<>();
-        this.provider.childrens(new Method(this.methodType, new ArrayList<>(this.get()), null), suggestions, whitelisted);
+        this.provider.result(new Method(this.methodType, new ArrayList<>(this.get()), null), suggestions, whitelisted);
         return whitelisted;
     }
 

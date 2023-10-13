@@ -18,8 +18,8 @@
 package it.zs0bye.bettersecurity.common.modules.tabcomplete.modes;
 
 import com.mojang.brigadier.tree.CommandNode;
-import it.zs0bye.bettersecurity.common.methods.Method;
-import it.zs0bye.bettersecurity.common.methods.MethodType;
+import it.zs0bye.bettersecurity.common.modules.methods.Method;
+import it.zs0bye.bettersecurity.common.modules.methods.MethodType;
 import it.zs0bye.bettersecurity.common.modules.tabcomplete.TabHandler;
 import it.zs0bye.bettersecurity.common.modules.tabcomplete.providers.SuggestionProvider;
 import it.zs0bye.bettersecurity.common.modules.tabcomplete.providers.TabProviders;
@@ -43,12 +43,12 @@ public class BasicMode extends TabProviders implements SuggestionProvider {
     }
 
     private MethodType getMethodType() {
-        return this.handler.getMethodType(this.handler.reader("BASIC_MODE_METHOD").getPath(), "", "");
+        return MethodType.INSTANCE.getTypeByPath(this.handler, this.handler.reader("BASIC_MODE_METHOD").getPath());
     }
 
     @Override
     public void addSuggestions() {
-        this.suggestions.forEach(suggestion -> this.childrens(false, new Method(this.getMethodType(), this.suggestions, null), suggestion, this.getWhitelisted(), this.getBlacklisted()));
+        this.suggestions.forEach(suggestion -> this.result(false, new Method(this.getMethodType(), this.suggestions, null), suggestion, this.getWhitelisted(), this.getBlacklisted()));
     }
 
     @Override
@@ -70,7 +70,7 @@ public class BasicMode extends TabProviders implements SuggestionProvider {
     @Override
     public void addSuggestions(final Set<String> suggestions) {
 
-        final Set<String> newsuggestions = this.childrens(new Method(this.getMethodType(), this.suggestions, null), new ArrayList<>(suggestions), new HashSet<>());
+        final Set<String> newsuggestions = this.result(new Method(this.getMethodType(), this.suggestions, null), new ArrayList<>(suggestions), new HashSet<>());
         this.merge(new ArrayList<>(suggestions), newsuggestions);
 
         this.getWhitelisted().addAll(newsuggestions);
@@ -87,7 +87,7 @@ public class BasicMode extends TabProviders implements SuggestionProvider {
 
         final List<String> childrensName = new ArrayList<>();
         for(final CommandNode<?> node : childrens) childrensName.add(node.getName());
-        final Set<String> suggestions = this.childrens(new Method(this.getMethodType(), this.suggestions, null), childrensName, new HashSet<>());
+        final Set<String> suggestions = this.result(new Method(this.getMethodType(), this.suggestions, null), childrensName, new HashSet<>());
         this.merge(childrensName, suggestions);
 
         this.getWhitelisted().addAll(suggestions);
@@ -97,6 +97,11 @@ public class BasicMode extends TabProviders implements SuggestionProvider {
             }
             return true;
         });
+    }
+
+    @Override
+    public void addChildrens(final String completion, final List<String> childrens, final Consumer<Boolean> cancelled) {
+        this.childrens(this.getMethodType(), completion, this.suggestions, childrens, cancelled);
     }
 
 }

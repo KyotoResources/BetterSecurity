@@ -1,6 +1,6 @@
 /*
  * Security plugin for your server - https://github.com/KyotoResources/BetterSecurity
- * Copyright (C) 2023 KyotoResources
+ * Copyright (c) 2023 KyotoResources
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,12 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package it.zs0bye.bettersecurity.common.methods;
+package it.zs0bye.bettersecurity.common.modules.methods;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -33,7 +34,13 @@ public class Method {
     private String command;
 
     public boolean contains() {
-        return this.suggestions.contains(this.command);
+        return this.getIdentifiers().contains(this.command);
+    }
+
+    public List<String> getIdentifiers() {
+        final List<String> identifiers = new ArrayList<>();
+        this.suggestions.forEach(suggestion -> identifiers.add(suggestion.contains(" ") ? suggestion.split(" ")[0] : suggestion));
+        return identifiers;
     }
 
 }

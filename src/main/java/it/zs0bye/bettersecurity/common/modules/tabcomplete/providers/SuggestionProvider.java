@@ -40,4 +40,6 @@ public interface SuggestionProvider {
 
     void addSuggestions(final Collection<CommandNode<?>> childrens);
 
+    void addChildrens(final String completion, final List<String> childrens, final Consumer<Boolean> cancelled);
+
 }
