@@ -22,6 +22,8 @@ import it.zs0bye.bettersecurity.bukkit.modules.Module;
 import it.zs0bye.bettersecurity.common.utils.enums.ConsoleUtils;
 import org.bukkit.Bukkit;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Logger;
 
 public enum Hooks {
@@ -31,7 +33,7 @@ public enum Hooks {
 
     private final String name;
     private final BetterSecurityBukkit plugin;
-    private static boolean loaded;
+    private final Set<String> registered = new HashSet<>();
 
     Hooks(final String name) {
         this.name = name;
@@ -39,13 +41,10 @@ public enum Hooks {
     }
 
     public boolean isNotLoaded() {
-        if(Bukkit.getPluginManager().getPlugin(this.name) == null) {
-            loaded = false;
-            return true;
-        }
-        if(loaded) return false;
+        if(Bukkit.getPluginManager().getPlugin(this.name) == null) return true;
+        if(this.registered.contains(this.name)) return false;
         this.plugin.getLogger().info(ConsoleUtils.YELLOW + "┃ • Registered " + this.name + " hook." + ConsoleUtils.RESET);
-        loaded = true;
+        this.registered.add(this.name);
         return false;
     }
 

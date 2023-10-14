@@ -49,7 +49,7 @@ public class TabChildren {
 
     private List<String> getResultList(final int position) {
         final List<String> result = new ArrayList<>();
-        final String children = this.childrens[position];
+        final String children = this.childrens[position].replace("|", " ");
         if(children.equals("*")) {
             if(this.hasMethodBlacklist()) cancelled.accept(true);
             return result;

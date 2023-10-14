@@ -359,15 +359,19 @@ advanced_mode:
       # You can also use the following types of formats, for each sub-suggestion:
       # - '*'                                    | If you enter this symbol, you will use the plugin's default sub-suggestion.
       #                                          | Example: command1 * test1 test2 | Example: command1 test1 * *
+      #
       # - <suggestion>                           | You can simply enter the text of the suggestion you want to insert.
       #                                          | Example: command2 test1 test2   | Example: command2 test3 test4
-      # - %[<suggestion1>, <suggestion2>, ecc..] | You can insert a list of sub-suggestions for a single line.
-      #                                          | Example: command3 * %[test1, test2, test3] finaltest
+      #
+      # - %[<suggestion1>,<suggestion2>, ecc..]  | You can insert a list of sub-suggestions for a single line.
+      #                                          | Warning! Do not insert spaces within the list.
+      #                                          | Example: command3 * %[test1,test2,test3] finaltest
+      # You can also add spaces (only for the 1.13+ tab) using the "|" symbol. For example: command1 enter|your|password test2
       #
       # The content list of actual commands that will be manipulated by the group and it's options.
       list:
-        - 'repair %[hand, all]'
-        - 'erepair %[hand, all]'
+        - 'repair %[hand,all]'
+        - 'erepair %[hand,all]'
 
     # This is the group name, it could be ANY given name, a namespace.
     example_subsuggestions_2-blacklist:
@@ -385,10 +389,14 @@ advanced_mode:
       # You can also use the following types of formats, for each sub-suggestion:
       # - '*'                                    | If you insert this symbol, you will blacklist the sub-suggestions where it is inserted.
       #                                          | Example: command1 * test1 test2 | Example: command1 test1 * *
+      #
       # - <suggestion>                           | You can simply enter the text of the suggestion you want to remove.
       #                                          | Example: command2 test1 test2   | Example: command2 test3 test4
-      # - %[<suggestion1>, <suggestion2>, ecc..] | You can insert a list of sub-suggestions for a single line.
-      #                                          | Example: command3 * %[test1, test2, test3] finaltest
+      #
+      # - %[<suggestion1>,<suggestion2>,ecc..]   | You can insert a list of sub-suggestions for a single line.
+      #                                          | Warning! Do not insert spaces within the list.
+      #                                          | Example: command3 * %[test1,test2,test3] finaltest
+      # You can also add spaces (only for the 1.13+ tab) using the "|" symbol. For example: command1 enter|your|password test2
       #
       # The content list of actual commands that will be manipulated by the group and it's options.
       list:
@@ -411,10 +419,14 @@ advanced_mode:
       # You can also use the following types of formats, for each sub-suggestion:
       # - '*'                                    | If you enter this symbol, you will use the plugin's default sub-suggestion.
       #                                          | Example: command1 * test1 test2 | Example: command1 test1 * *
+      #
       # - <suggestion>                           | You can simply enter the text of the suggestion you want to insert.
       #                                          | Example: command2 test1 test2   | Example: command2 test3 test4
-      # - %[<suggestion1>, <suggestion2>, ecc..] | You can insert a list of sub-suggestions for a single line.
-      #                                          | Example: command3 * %[test1, test2, test3] finaltest
+      #
+      # - %[<suggestion1>,<suggestion2>, ecc..]  | You can insert a list of sub-suggestions for a single line.
+      #                                          | Warning! Do not insert spaces within the list.
+      #                                          | Example: command3 * %[test1,test2,test3] finaltest
+      # You can also add spaces (only for the 1.13+ tab) using the "|" symbol. For example: command1 enter|your|password test2
       #
       # The content list of actual commands that will be manipulated by the group and it's options.
       list:

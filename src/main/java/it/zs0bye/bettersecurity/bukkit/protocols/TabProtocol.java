@@ -55,20 +55,22 @@ public class TabProtocol extends PacketAdapter {
         final BetterUser user = new BukkitUser(player);
 
         final String completion = packet.getSpecificModifier(String.class).read(0).toLowerCase();
-        final List<String> commands = new ArrayList<>();
+        final List<String> suggestions = new ArrayList<>();
 
-        new TabHandler(this.plugin.getLogger(), user, Tab.class, SoftwareType.CRAFTBUKKIT).injectTabSuggestions(commands, completion, event::setCancelled);
+        final TabHandler handler = new TabHandler(this.plugin.getLogger(), user, Tab.class, SoftwareType.CRAFTBUKKIT);
+        handler.injectTabSuggestions(suggestions, completion, event::setCancelled);
+        handler.injectTabChildrens(completion, suggestions, event::setCancelled);
 
+        this.replaceSuggestions(suggestions, player);
         if(completion.contains(" ")) return;
-        this.replaceSuggestions(commands, player);
         event.setCancelled(true);
     }
 
     @SneakyThrows
-    private void replaceSuggestions(final List<String> commands, final Player player) {
+    private void replaceSuggestions(final List<String> suggestions, final Player player) {
         if (!VersionUtils.legacy()) return;
         final PacketContainer serverPacket = new PacketContainer(PacketType.Play.Server.TAB_COMPLETE);
-        serverPacket.getStringArrays().write(0, commands.toArray(new String[0]));
+        serverPacket.getStringArrays().write(0, suggestions.toArray(new String[0]));
         ProtocolLibrary.getProtocolManager().sendServerPacket(player, serverPacket);
     }
 
