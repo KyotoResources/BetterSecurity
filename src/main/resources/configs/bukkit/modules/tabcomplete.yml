@@ -31,6 +31,8 @@ partial_matches: false
 # - DEFAULT    | Sort suggestions by default.
 # - ASCENDING  | Sort the suggestions from A to Z.
 # - DESCENDING | Sort the suggestions from Z to A.
+# < ⚠ > Sorting only works for 1.8-1.12.2 servers, because if you have a 1.13+ server,
+#       the suggestions are automatically sorted in ascending order.
 sort_suggestions: DEFAULT
 
 # You can use "global bypass", to ignore complete tab changes to specific players, or by permission.
