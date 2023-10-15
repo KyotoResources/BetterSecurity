@@ -63,7 +63,7 @@ public class TabChildren {
     }
 
     public void addChildrens(final List<String> childrens) {
-        if(!this.completion.startsWith("/" +  this.identifier)) return;
+        if(!(this.completion.contains(" ") && this.completion.split(" ")[0].equalsIgnoreCase("/" + this.identifier))) return;
         final long position = this.completion.chars().filter(c -> c == ' ').count();
         if(position >= this.childrens.length) return;
         cancelled.accept(false);

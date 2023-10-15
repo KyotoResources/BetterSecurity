@@ -55,9 +55,10 @@ public class BasicMode extends TabProviders implements SuggestionProvider {
     public void addSuggestions(final List<String> commands, final String completion, final Consumer<Boolean> cancelled) {
 
         cancelled.accept(true);
-        final Set<String> suggestions = this.legacy(this.getMethodType(), completion, new HashSet<>(), this.suggestions, commands, cancelled);
+        Set<String> suggestions = this.legacy(this.getMethodType(), completion, new HashSet<>(), this.suggestions, commands, cancelled);
         this.merge(suggestions, completion, commands, cancelled);
 
+        suggestions = this.handler.sort(suggestions);
         this.getWhitelisted().addAll(suggestions);
         commands.addAll(this.handler.reader("PARTIAL_MATCHES").getBoolean() ?
                 CStringUtils.copyPartialMatches(completion, suggestions) :

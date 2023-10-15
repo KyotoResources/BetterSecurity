@@ -107,11 +107,13 @@ public class AdvancedMode extends TabProviders implements SuggestionProvider {
                 cancelled)));
 
         this.merge(suggestions, completion, commands, cancelled);
+        final Set<String> sorting = this.handler.sort(suggestions);
+
         if(!suggestions.isEmpty()) {
-            this.getWhitelisted().addAll(suggestions);
+            this.getWhitelisted().addAll(sorting);
             commands.addAll(this.handler.reader("PARTIAL_MATCHES").getBoolean() ?
-                    CStringUtils.copyPartialMatches(completion, suggestions) :
-                    suggestions);
+                    CStringUtils.copyPartialMatches(completion, sorting) :
+                    sorting);
             return;
         }
 
@@ -127,6 +129,7 @@ public class AdvancedMode extends TabProviders implements SuggestionProvider {
         this.groups().forEach(group -> newsuggestions.addAll(this.result(
                 new Method(this.getMethodType(group), group.getSuggestions(), null),
                 new ArrayList<>(suggestions), newsuggestions)));
+
         this.merge(new ArrayList<>(suggestions), newsuggestions);
         this.getWhitelisted().addAll(newsuggestions);
 

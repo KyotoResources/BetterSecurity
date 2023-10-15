@@ -31,6 +31,7 @@ import java.util.Map;
 
 public enum Tab implements ConfigReader {
     INSTANCE(""),
+    SORT_SUGGESTIONS("sort_suggestions"),
     PARTIAL_MATCHES("partial_matches"),
     GLOBAL_BYPASS_ENABLED("global_bypass.enabled"),
     GLOBAL_BYPASS_METHOD("global_bypass.method"),

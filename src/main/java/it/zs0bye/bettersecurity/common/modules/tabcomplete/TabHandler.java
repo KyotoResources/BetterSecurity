@@ -94,4 +94,8 @@ public class TabHandler {
         return (ConfigReader) Enum.valueOf(this.reader, value);
     }
 
+    public Set<String> sort(final Set<String> list) {
+        return new TabSorting(this).sort(list);
+    }
+
 }

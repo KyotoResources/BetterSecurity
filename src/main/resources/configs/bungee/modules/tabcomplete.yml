@@ -35,6 +35,12 @@ ignore_1_13_tab_complete: false
 # This is because by activating this method, blocking the tab only from the bungeecord, it may not work correctly.
 partial_matches: false
 
+# Allows you to sort suggestions. Sorting available:
+# - DEFAULT    | Sort suggestions by default.
+# - ASCENDING  | Sort the suggestions from A to Z.
+# - DESCENDING | Sort the suggestions from Z to A.
+sort_suggestions: DEFAULT
+
 # You can use "global bypass", to ignore complete tab changes to specific players, or by permission.
 # In this way, whoever has the global bypass, will be able to use the entire complete tab with
 # the suggestions of all the commands (both bukkit and bungeecord).
