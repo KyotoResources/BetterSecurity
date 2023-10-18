@@ -103,10 +103,6 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
-        <repository>
-            <id>exceptionflug</id>
-            <url>https://mvn.exceptionflug.de/repository/exceptionflug-public/</url>
-        </repository>
     </repositories>
 
     <dependencies>
