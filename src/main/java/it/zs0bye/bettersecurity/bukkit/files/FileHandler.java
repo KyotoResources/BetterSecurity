@@ -42,6 +42,7 @@ public class FileHandler {
     private File file;
     private String pattern;
     private File directory;
+    private String[] ignored;
 
     private final static Map<String, FileConfiguration> files = new HashMap<>();
 
@@ -80,9 +81,14 @@ public class FileHandler {
         }
 
         final CommentedConfiguration cconfig = CommentedConfiguration.loadConfiguration(this.file);
-        cconfig.syncWithConfig(this.file, this.plugin.getResource(this.pattern));
+        cconfig.syncWithConfig(this.file, this.plugin.getResource(this.pattern), ignored != null ? ignored : new String[0]);
         this.config = this.initConfig();
         files.put(this.fileName.toLowerCase(), this.config);
+        return this;
+    }
+
+    public FileHandler ignored(final String... ignore) {
+        this.ignored = ignore;
         return this;
     }
 

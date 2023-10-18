@@ -27,22 +27,24 @@ import lombok.SneakyThrows;
 import org.bukkit.event.Listener;
 
 import java.lang.reflect.Constructor;
-import java.util.Map;
+import java.util.*;
 
 @Getter
 public enum Module {
-    TAB_COMPLETE(FileType.TAB, (Class<? extends Listener>) null),
-    COMMANDS(FileType.COMMAND, BlockCustomCmdsListener.class, BlocksCmdsListener.class, BlockSyntaxListener.class, CmdsOnlyConsoleListener.class, CmdsOnlyPlayersListener.class);
+    TAB_COMPLETE(FileType.TAB, new String[] {"advanced_mode.groups"}, (Class<? extends Listener>) null),
+    COMMANDS(FileType.COMMAND, new String[0], BlockCustomCmdsListener.class, BlocksCmdsListener.class, BlockSyntaxListener.class, CmdsOnlyConsoleListener.class, CmdsOnlyPlayersListener.class);
 
     private final BetterSecurityBukkit plugin;
 
     private final FileType type;
+    private final String[] ignored;
     private final Class<? extends Listener>[] listeners;
 
     @SafeVarargs
-    Module(final FileType type, final Class<? extends Listener>... listeners) {
+    Module(final FileType type, final String[] ignored, final Class<? extends Listener>... listeners) {
         this.plugin = BetterSecurityBukkit.getInstance();
         this.type = type;
+        this.ignored = ignored;
         this.listeners = listeners;
     }
 
@@ -51,7 +53,7 @@ public enum Module {
     }
 
     public void loadFile(final Map<FileType, FileHandler> handlers) {
-        handlers.put(this.type, new FileHandler(this.plugin, this.type).saveDefaultConfig());
+        handlers.put(this.type, new FileHandler(this.plugin, this.type).ignored(this.ignored).saveDefaultConfig());
     }
 
     @SneakyThrows
