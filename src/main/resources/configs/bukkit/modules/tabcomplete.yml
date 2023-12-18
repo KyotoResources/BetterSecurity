@@ -22,6 +22,7 @@
 #   Remember: When you insert ProtocolLib it is not enough to reload the plugin, you have to restart the server.
 
 
+# ! DEPRECATED !
 # If it is on "true", you will be able to tab the command much more conveniently!
 # BUT, in order to function correctly, the use of BetterSecurity is also recommended in the spigot.
 # This is because by activating this method, blocking the tab only from the bungeecord, it may not work correctly.
