@@ -124,10 +124,37 @@ advanced_mode:
   groups:
 
     # This is the group name, it could be ANY given name, a namespace.
-    bukkit-and-minecraft-commands:
+    specific-playername-uuid-group:
 
       # Defines a priority of this specific group, whereas: LOWER number -> GREATER priority
       priority: 1
+
+      # Here you can enter the type of method you want to use to control commands from "list":
+      # - BLACKLIST | The commands in the list will be blocked for tabcompletion.
+      # - WHITELIST | The commands in the list will be allowed for tabcompletion.
+      method: 'WHITELIST'
+
+      # The specific player/UUID/group requirement. To define a group, make sure to put "g:" as prefix.
+      # < ⚠ > This option is OPTIONAL (not required). If it is defined, it will only apply for the specifically stated players/player UUIDs/groups.
+      required_property:
+        - 'playername1'
+        - '8667ba71-b85a-4004-af54-457a9734eed7'
+        - 'g:groupname1'
+
+      # The content list of actual commands that will be manipulated by the group and it's options.
+      list:
+        - 'pl'
+        - 'plugins'
+        - 'bukkit:pl'
+        - 'bukkit:plugins'
+        - 'reload'
+        - 'stop'
+
+    # This is the group name, it could be ANY given name, a namespace.
+    bukkit-and-minecraft-commands:
+
+      # Defines a priority of this specific group, whereas: LOWER number -> GREATER priority
+      priority: 2
 
       # Here you can enter the type of method you want to use to control commands from "list":
       # - BLACKLIST | The commands in the list will be blocked for tabcompletion.
@@ -152,31 +179,6 @@ advanced_mode:
         - 'bukkit:help'
         - 'minecraft:?'
         - 'minecraft:help'
-
-    # This is the group name, it could be ANY given name, a namespace.
-    specific-playername-uuid-group:
-
-      # Defines a priority of this specific group, whereas: LOWER number -> GREATER priority
-      priority: 2
-
-      # Here you can enter the type of method you want to use to control commands from "list":
-      # - BLACKLIST | The commands in the list will be blocked for tabcompletion.
-      # - WHITELIST | The commands in the list will be allowed for tabcompletion.
-      method: 'WHITELIST'
-
-      # The specific player/UUID/group requirement. To define a group, make sure to put "g:" as prefix.
-      # < ⚠ > This option is OPTIONAL (not required). If it is defined, it will only apply for the specifically stated players/player UUIDs/groups.
-      required_property:
-        - 'playername1'
-        - '8667ba71-b85a-4004-af54-457a9734eed7'
-        - 'g:groupname1'
-
-      # The content list of actual commands that will be manipulated by the group and it's options.
-      list:
-        - 'pl'
-        - 'plugins'
-        - 'bukkit:pl'
-        - 'bukkit:plugins'
 
     # This is the group name, it could be ANY given name, a namespace.
     moderation-commands:
@@ -370,7 +372,7 @@ advanced_mode:
         - 'home *'
         - 'warp'
         - 'warp *'
-        - 'me this|is|auto|completion|as|whole|sentence'
+        - 'me this|is|auto|completion|from|bukkit|as|whole|sentence'
 
 
 #    ____                                _   _             _  __           _        ____
