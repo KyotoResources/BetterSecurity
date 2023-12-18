@@ -33,7 +33,7 @@ ignore_1_13_tab_complete: false
 # If it is on "true", you will be able to tab the command much more conveniently!
 # BUT, in order to function correctly, the use of BetterSecurity is also recommended in the spigot.
 # This is because by activating this method, blocking the tab only from the bungeecord, it may not work correctly.
-partial_matches: false
+partial_matches: true
 
 # Allows you to sort suggestions. Sorting available:
 # - DEFAULT    | Sort suggestions by default.
@@ -79,6 +79,12 @@ basic_mode:
 
   # < ⚠ > Remember that this list will only be in function if "advanced_mode" is NOT enabled.
   list:
+    - 'bungee'
+    - 'waterfall'
+    - 'flamecord'
+    - 'bpl'
+    - 'bplugins'
+    # bungeecord commands above
     - 'pl'
     - 'plugins'
     - 'ver'
@@ -132,10 +138,58 @@ advanced_mode:
   groups:
 
     # This is the group name, it could be ANY given name, a namespace.
-    example_blacklist:
+    specific-playername-uuid-group:
 
       # Defines a priority of this specific group, whereas: LOWER number -> GREATER priority
       priority: 1
+
+      # Here you can enter the type of method you want to use to control commands from "list":
+      # - BLACKLIST | The commands in the list will be blocked for tabcompletion.
+      # - WHITELIST | The commands in the list will be allowed for tabcompletion.
+      method: 'WHITELIST'
+
+      # The specific player/UUID/group requirement. To define a group, make sure to put "g:" as prefix.
+      # < ⚠ > This option is OPTIONAL (not required). If it is defined, it will only apply for the specifically stated players/player UUIDs/groups.
+      required_property:
+        - 'playername1'
+        - '8667ba71-b85a-4004-af54-457a9734eed7'
+        - 'g:groupname1'
+
+      # The content list of actual commands that will be manipulated by the group and it's options.
+      list:
+        - 'bpl'
+        - 'bplugins'
+        #- 'pl'
+        #- 'plugins'
+        #- 'bukkit:pl'
+        #- 'bukkit:plugins'
+        - 'greload'
+        - 'end'
+
+    # This is the group name, it could be ANY given name, a namespace.
+    proxy-commands:
+
+      # Defines a priority of this specific group, whereas: LOWER number -> GREATER priority
+      priority: 2
+
+      # Here you can enter the type of method you want to use to control commands from "list":
+      # - BLACKLIST | The commands in the list will be blocked for tabcompletion.
+      # - WHITELIST | The commands in the list will be allowed for tabcompletion.
+      method: 'BLACKLIST'
+
+      # The content list of actual commands that will be manipulated by the group and it's options.
+      list:
+        - 'bungee'
+        - 'waterfall'
+        - 'flamecord'
+        - 'bpl'
+        - 'bplugins'
+
+    # This is the group name, it could be ANY given name, a namespace.
+    bukkit-and-minecraft-commands:
+
+      # Defines a priority of this specific group, whereas: LOWER number -> GREATER priority
+      priority: 3
 
       # Here you can enter the type of method you want to use to control commands from "list":
       # - BLACKLIST | The commands in the list will be blocked for tabcompletion.
@@ -162,100 +216,10 @@ advanced_mode:
         - 'minecraft:help'
 
     # This is the group name, it could be ANY given name, a namespace.
-    example_playersonly:
-
-      # Defines a priority of this specific group, whereas: LOWER number -> GREATER priority
-      priority: 2
-
-      # Here you can enter the type of method you want to use to control commands from "list":
-      # - BLACKLIST | The commands in the list will be blocked for tabcompletion.
-      # - WHITELIST | The commands in the list will be allowed for tabcompletion.
-      method: 'WHITELIST'
-
-      # The specific player/UUID/group requirement. To define a group, make sure to put "g:" as prefix.
-      # < ⚠ > This option is OPTIONAL (not required). If it is defined, it will only apply for the specifically stated players/player UUIDs/groups.
-      required_property:
-        - 'playername1'
-        - '8667ba71-b85a-4004-af54-457a9734eed7'
-        - 'g:groupname1'
-
-      # The content list of actual commands that will be manipulated by the group and it's options.
-      list:
-        - 'bpl'
-        - 'bplugins'
-
-    # This is the group name, it could be ANY given name, a namespace.
-    example_operator:
-
-      # Defines a priority of this specific group, whereas: LOWER number -> GREATER priority
-      priority: 3
-
-      # Here you can enter the type of method you want to use to control commands from "list":
-      # - BLACKLIST | The commands in the list will be blocked for tabcompletion.
-      # - WHITELIST | The commands in the list will be allowed for tabcompletion.
-      method: 'WHITELIST'
-
-      # The specific player/UUID/group requirement. To define a group, make sure to put "g:" as prefix.
-      # < ⚠ > This option is OPTIONAL (not required). If it is defined, it will only apply for the specifically stated players/player UUIDs/groups.
-      required_property:
-        - 'playername1'
-        - '8667ba71-b85a-4004-af54-457a9734eed7'
-        - 'g:groupname1'
-
-      # The content list of actual commands that will be manipulated by the group and it's options.
-      list:
-        - 'greload'
-        - 'end'
-
-    # This is the group name, it could be ANY given name, a namespace.
-    example_admin:
+    moderation-commands:
 
       # Defines a priority of this specific group, whereas: LOWER number -> GREATER priority
       priority: 4
-
-      # Here you can enter the type of method you want to use to control commands from "list":
-      # - BLACKLIST | The commands in the list will be blocked for tabcompletion.
-      # - WHITELIST | The commands in the list will be allowed for tabcompletion.
-      method: 'WHITELIST'
-
-      # The sub-server(s) on which this group and its options will apply. If the list is empty, this group won't apply to any sub-server(s) at all.
-      # - "*"           | This will mean that group will apply for ALL sub-servers that are registered at the moment.
-      # - "example"     | This will mean that group will apply for sub-server called "example".
-      # - "!example"    | This will mean that group will NOT apply for sub-server called "example".
-      # - "#ex_arena-"  | This will mean that group will apply for sub-server starting with "ex_arena-".
-      # - "!#ex_arena-" | This will mean that group will NOT apply for sub-server starting with "ex_arena-".
-      # < ⚠ > This option is OPTIONAL (not required). If it is not defined, this group will apply for all sub-servers
-      target_servers:
-        - '*' # if you are going to define only this '*', you can delete this "target_servers" section for this group as it will work the same without it
-
-      # The permission node requirement.
-      # < ⚠ > This option is OPTIONAL (not required). If it is defined, it will only apply for the players/groups that have the defined permission node.
-      required_permission: 'bettersecurity.tab.example_admin'
-
-      # The specific player/UUID/group requirement. To define a group, make sure to put "g:" as prefix.
-      # < ⚠ > This option is OPTIONAL (not required). If it is defined, it will only apply for the specifically stated players/player UUIDs/groups.
-      required_property:
-        - 'playername1'
-        - '8667ba71-b85a-4004-af54-457a9734eed7'
-        - 'g:groupname1'
-
-      # The content list of actual commands that will be manipulated by the group and it's options.
-      list:
-        #- 'fly'
-        #- 'gamemode'
-        #- 'gm'
-        #- 'god'
-        - 'mute'
-        - 'ban'
-        - 'ipban'
-        - 'ipmute'
-        - 'clearchat'
-
-    # This is the group name, it could be ANY given name, a namespace.
-    example_staff:
-
-      # Defines a priority of this specific group, whereas: LOWER number -> GREATER priority
-      priority: 5
 
       # Here you can enter the type of method you want to use to control commands from "list":
       # - BLACKLIST | The commands in the list will be blocked for tabcompletion.
@@ -275,29 +239,24 @@ advanced_mode:
 
       # The permission node requirement.
       # < ⚠ > This option is OPTIONAL (not required). If it is defined, it will only apply for the players/groups that have the defined permission node.
-      required_permission: 'bettersecurity.tab.example_staff'
+      required_permission: 'bettersecurity.tab.moderation'
 
       # The content list of actual commands that will be manipulated by the group and it's options.
       list:
+        #- 'ban'
         #- 'tempban'
+        #- 'mute'
         #- 'tempmute'
-        #- 'unban'
-        #- 'pardon'
-        #- 'kick'
-        #- 'unmute'
-        - 'warn'
-        - 'warnings'
-        - 'history'
-        - 'dupeip'
-        - 'ss'
-        - 'freeze'
-        - 'unfreeze'
+        - 'unban'
+        - 'unmute'
+        - 'kick'
+        - 'pardon'
 
     # This is the group name, it could be ANY given name, a namespace.
-    example_donors:
+    donor-commands:
 
       # Defines a priority of this specific group, whereas: LOWER number -> GREATER priority
-      priority: 6
+      priority: 5
 
       # Here you can enter the type of method you want to use to control commands from "list":
       # - BLACKLIST | The commands in the list will be blocked for tabcompletion.
@@ -322,15 +281,15 @@ advanced_mode:
       # The content list of actual commands that will be manipulated by the group and it's options.
       list:
         #- 'fly'
-        #- 'god'
+        #- 'efly'
         - 'craft'
-        - 'repair'
+        - 'recipe'
 
     # This is the group name, it could be ANY given name, a namespace.
-    example_general:
+    general-commands:
 
       # Defines a priority of this specific group, whereas: LOWER number -> GREATER priority
-      priority: 7
+      priority: 6
 
       # Here you can enter the type of method you want to use to control commands from "list":
       # - BLACKLIST | The commands in the list will be blocked for tabcompletion.
@@ -351,18 +310,18 @@ advanced_mode:
       list:
         #- 'spawn'
         #- 'tell'
+        #- 't'
         #- 'msg'
-        #- 'w'
         - 'whisper'
-        - 't'
-        - 'r'
+        - 'w'
         - 'reply'
+        - 'r'
 
     # This is the group name, it could be ANY given name, a namespace.
-    example_subsuggestions_1:
+    subsuggestion-commands-1:
 
       # Defines a priority of this specific group, whereas: LOWER number -> GREATER priority
-      priority: 8
+      priority: 7
 
       # Here you can enter the type of method you want to use to control commands from "list":
       # - BLACKLIST | The commands in the list will be blocked for execution.
@@ -389,10 +348,10 @@ advanced_mode:
         - 'efix %[hand,all]'
 
     # This is the group name, it could be ANY given name, a namespace.
-    example_subsuggestions_2-blacklist:
+    subsuggestion-commands-2:
 
       # Defines a priority of this specific group, whereas: LOWER number -> GREATER priority
-      priority: 9
+      priority: 8
 
       # Here you can enter the type of method you want to use to control commands from "list":
       # - BLACKLIST | The commands in the list will be blocked for execution.
@@ -400,7 +359,7 @@ advanced_mode:
       method: 'BLACKLIST'
 
       # You can manage sub-suggestions too, did you know that?
-      # The valid format you can use to add sub-suggestions is as follows: command <TAB> <TAB> ecc..
+      # The valid format you can use to add sub-suggestions is as follows: command <TAB> <TAB> etc..
       # You can also use the following types of formats, for each sub-suggestion:
       # - '*'                                    | If you insert this symbol, you will blacklist the sub-suggestions where it is inserted.
       #                                          | Example: command1 * test1 test2 | Example: command1 test1 * *
@@ -418,10 +377,10 @@ advanced_mode:
         - 'tpa * *'
 
     # This is the group name, it could be ANY given name, a namespace.
-    example_subsuggestions_2-whitelist:
+    subsuggestion-commands-3:
 
       # Defines a priority of this specific group, whereas: LOWER number -> GREATER priority
-      priority: 10
+      priority: 9
 
       # Here you can enter the type of method you want to use to control commands from "list":
       # - BLACKLIST | The commands in the list will be blocked for execution.
@@ -444,7 +403,10 @@ advanced_mode:
       #
       # The content list of actual commands that will be manipulated by the group and it's options.
       list:
+        - 'tpa'
         - 'tpa *'
+        - 'me'
+        - 'me this|is|auto|completion|from|bungeecord|as|whole|sentence'
 
 
 #    ____                                _   _             _  __           _        ____
