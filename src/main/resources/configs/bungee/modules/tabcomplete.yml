@@ -33,7 +33,7 @@ ignore_1_13_tab_complete: false
 # If it is on "true", you will be able to tab the command much more conveniently!
 # BUT, in order to function correctly, the use of BetterSecurity is also recommended in the spigot.
 # This is because by activating this method, blocking the tab only from the bungeecord, it may not work correctly.
-partial_matches: true
+partial_matches: false
 
 # Allows you to sort suggestions. Sorting available:
 # - DEFAULT    | Sort suggestions by default.
