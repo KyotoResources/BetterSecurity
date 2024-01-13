@@ -5,6 +5,8 @@ softdepend: [PlaceholderAPI, ProtocolLib, PlugMan, PlugManX]
 api-version: 1.13
 author: zS0bye
 description: Your safety is the priority of everything!
+libraries:
+   - org.apache.commons:commons-lang3:3.14.0
 commands:
   bettersecurity:
     description: Main command of BetterSecurity
